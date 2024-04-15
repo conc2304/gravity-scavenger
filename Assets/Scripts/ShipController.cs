@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RotateToMouse : MonoBehaviour
+public class ShipController : MonoBehaviour
 {
     public Camera cam;
     public Transform player;
+    public Rigidbody rigidBody;
+
     Vector2 mousePos;
     Vector3 playerPos;
-
 
     // Update is called once per frame
     void Update()
@@ -17,7 +18,6 @@ public class RotateToMouse : MonoBehaviour
         // potentially causing jerky or delayed movement.
         mousePos = Input.mousePosition;
         playerPos = cam.WorldToScreenPoint(player.position);
-
     }
 
     // FixedUpdate is called fixed intervals determined by the physics system
@@ -34,6 +34,12 @@ public class RotateToMouse : MonoBehaviour
 
         Quaternion newRotation = Quaternion.Euler(0, 0, angle);
         player.rotation = newRotation;
+
+
+        if (Input.GetMouseButton(0))
+        {
+            rigidBody.AddForce(transform.right);
+        }
 
     }
 }

@@ -7,14 +7,24 @@ public class TrackPlayer : MonoBehaviour
 
     [SerializeField] private Vector3 offset;
     [SerializeField] private float damping;
-    public Transform target;
+    public GameObject player;
+
+    private Transform target;
     private Vector3 vel = Vector3.zero;
+    private Rigidbody rb;
+    private void Start()
+    {
+        rb = player.GetComponent<Rigidbody>();
+        target = player.GetComponent<Transform>();
+        vel = rb.velocity;
+    }
 
 
     // Update is called once per frame
     private void FixedUpdate()
     {
         Vector3 targetPos = target.position + offset;
+        print(vel);
         targetPos.z = transform.position.z;
         transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref vel, damping);
     }
