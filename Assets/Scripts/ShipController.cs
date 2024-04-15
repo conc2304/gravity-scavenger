@@ -7,6 +7,7 @@ public class ShipController : MonoBehaviour
     public Camera cam;
     public Transform player;
     public Rigidbody rigidBody;
+    public float acceleration = 10f;
 
     Vector2 mousePos;
     Vector3 playerPos;
@@ -38,7 +39,7 @@ public class ShipController : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
-            rigidBody.AddForce(transform.right);
+            rigidBody.AddForce(transform.right * acceleration);
         }
 
     }
