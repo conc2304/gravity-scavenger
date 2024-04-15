@@ -8,7 +8,7 @@ public class SimpleControls : MonoBehaviour
     float speed = 5f;
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         transform.Translate(new Vector3(
             Input.GetAxis("Horizontal") * speed,
