@@ -611,7 +611,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: {x: 0, y: 0, z: 0}
-  damping: 0.1
+  damping: 0.25
   target: {fileID: 1450463661}
 --- !u!1 &1182125291
 GameObject:
@@ -2053,7 +2053,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56d8d1a292a55462ebeee5e5fb0a3faf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
   cam: {fileID: 963194227}
   player: {fileID: 1450463661}
 --- !u!4 &1450463661

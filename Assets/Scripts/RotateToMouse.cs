@@ -4,32 +4,32 @@ using UnityEngine;
 
 public class RotateToMouse : MonoBehaviour
 {
-
-    public float moveSpeed = 5f;
     public Camera cam;
     public Transform player;
-
-
-    // Vector2 movement;
     Vector2 mousePos;
+    Vector3 playerPos;
+
 
     // Update is called once per frame
     void Update()
     {
+        // if these variables were assigned in FixedUpdate(), they would only be updated at fixed intervals, 
+        // potentially causing jerky or delayed movement.
         mousePos = Input.mousePosition;
+        playerPos = cam.WorldToScreenPoint(player.position);
+
     }
 
+    // FixedUpdate is called fixed intervals determined by the physics system
     private void FixedUpdate()
     {
-
+        // get the angle of the mouse in relation to the player
+        // point the player in the direction of the mouse
         Vector2 pos;
+        pos.x = playerPos.x;
+        pos.y = playerPos.y;
 
-        pos.x = 0;
-        pos.y = 0;
-
-        // print("RB: " + pos.x + ", " + pos.y);
         Vector2 lookDir = mousePos - pos;
-        // float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg;
         float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg;
 
         Quaternion newRotation = Quaternion.Euler(0, 0, angle);
