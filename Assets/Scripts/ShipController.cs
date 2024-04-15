@@ -1,13 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class ShipController : MonoBehaviour
 {
+    // Laser Gun Variabls
+    [SerializeField] private GameObject laserPrefab;
+    [SerializeField] private Transform firingPoint;
+    [Range(0.1f, 1f)]
+    [SerializeField] private float fireRate = 0.5f;
+    private float fireTimer;
+
+    // Controller Variables
     public Camera cam;
     public Transform player;
     public Rigidbody rigidBody;
-    public float acceleration = 10f;
+    public float thrust = 10f;
 
     Vector2 mousePos;
     Vector3 playerPos;
@@ -19,6 +28,16 @@ public class ShipController : MonoBehaviour
         // potentially causing jerky or delayed movement.
         mousePos = Input.mousePosition;
         playerPos = cam.WorldToScreenPoint(player.position);
+
+        if (Input.GetMouseButton(1) && fireTimer <= 0f)
+        {
+            Shoot();
+            fireTimer = fireRate;
+        }
+        else
+        {
+            fireTimer -= Time.deltaTime;
+        }
     }
 
     // FixedUpdate is called fixed intervals determined by the physics system
@@ -39,8 +58,12 @@ public class ShipController : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
-            rigidBody.AddForce(transform.right * acceleration);
+            rigidBody.AddForce(transform.right * thrust * Time.deltaTime);
         }
+    }
 
+    private void Shoot()
+    {
+        Instantiate(laserPrefab, firingPoint.position, firingPoint.rotation);
     }
 }
