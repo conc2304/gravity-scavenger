@@ -23,6 +23,5 @@ public class AddAttractee : MonoBehaviour
                 Debug.LogError("Invalid GravityFild object");
             }
         }
-
     }
 }

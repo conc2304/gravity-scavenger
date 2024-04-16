@@ -24,7 +24,6 @@ public class TrackPlayer : MonoBehaviour
     private void FixedUpdate()
     {
         Vector3 targetPos = target.position + offset;
-        print(vel);
         targetPos.z = transform.position.z;
         transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref vel, damping);
     }

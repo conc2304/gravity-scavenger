@@ -12,6 +12,9 @@ public class ShipController : MonoBehaviour
     [SerializeField] private float fireRate = 0.5f;
     private float fireTimer;
 
+    private GravityField[] gravityFields; // Reference to the GravityField script
+
+
     // Controller Variables
     public Camera cam;
     public Transform player;
@@ -51,20 +54,38 @@ public class ShipController : MonoBehaviour
         pos.y = playerPos.y;
 
         Vector2 lookDir = mousePos - pos;
-        float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg;
+        float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg + 90f;
 
         Quaternion newRotation = Quaternion.Euler(0, 0, angle);
-        player.rotation = newRotation;
+        player.localRotation = newRotation;
 
 
         if (Input.GetMouseButton(0))
         {
-            rigidBody.AddForce(transform.right * thrust * Time.deltaTime);
+            rigidBody.AddForce(thrust * Time.deltaTime * -transform.up);
         }
     }
 
     private void Shoot()
     {
         Instantiate(laserPrefab, firingPoint.position, firingPoint.rotation);
+    }
+
+    private void OnDestroy()
+    {
+        gravityFields = FindObjectsOfType<GravityField>();
+        foreach (GravityField gravityField in gravityFields)
+        {
+            // Check if the gravityField reference is not null
+            if (gravityField != null && gravityField.GetComponent<Rigidbody>() != null)
+            {
+                // Remove the attractee to the GravityField's list of attractees
+                gravityField.RemoveAttractee(this.gameObject);
+            }
+            else
+            {
+                Debug.LogError("Invalid GravityField object");
+            }
+        }
     }
 }

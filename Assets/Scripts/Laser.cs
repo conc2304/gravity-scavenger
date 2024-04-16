@@ -18,7 +18,6 @@ public class Laser : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         Destroy(gameObject, lifeTime);
-
     }
 
     // Update is called once per frame
