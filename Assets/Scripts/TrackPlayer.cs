@@ -16,7 +16,7 @@ public class TrackPlayer : MonoBehaviour
     {
         rb = player.GetComponent<Rigidbody>();
         target = player.GetComponent<Transform>();
-        // vel = rb.velocity;
+        vel = rb.velocity;
     }
 
 

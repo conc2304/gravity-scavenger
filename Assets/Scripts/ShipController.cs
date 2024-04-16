@@ -29,6 +29,7 @@ public class ShipController : MonoBehaviour
         mousePos = Input.mousePosition;
         playerPos = cam.WorldToScreenPoint(player.position);
 
+        // left mouse button to fire lasers
         if (Input.GetMouseButton(1) && fireTimer <= 0f)
         {
             Shoot();
