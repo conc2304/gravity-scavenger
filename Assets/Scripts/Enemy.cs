@@ -14,7 +14,6 @@ public class Enemy : MonoBehaviour
     private float angleRange = 30f;
 
 
-
     // Laser Gun Variabls
     [SerializeField] private GameObject laserPrefab;
     [SerializeField] private Transform firingPoint;
@@ -41,7 +40,7 @@ public class Enemy : MonoBehaviour
             RotateTowardsTarget();
         }
 
-        if (target.CompareTag("Player") && targetIsInFront && targetIsInFiringRange)
+        if (target && target.CompareTag("Player") && targetIsInFront && targetIsInFiringRange)
         {
             // if the target is our player and they are in firing range, then fire lasers at the allowed firing rate
             if (fireTimer <= 0f)
@@ -67,7 +66,9 @@ public class Enemy : MonoBehaviour
 
     private void Shoot()
     {
-        Instantiate(laserPrefab, firingPoint.position, firingPoint.rotation);
+        // shoot the laser and give it the damage amount of our entity
+        GameObject laser = Instantiate(laserPrefab, firingPoint.position, firingPoint.rotation);
+        laser.GetComponent<Laser>().damage = gameObject.GetComponent<EntityStats>().damage;
     }
 
     private void GetTarget()
@@ -94,15 +95,11 @@ public class Enemy : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
+        // if they crash the enemy destroys the player
         if (other.gameObject.CompareTag("Player"))
         {
             Destroy(other.gameObject);
             target = null;
-        }
-        else if (other.gameObject.CompareTag("Laser"))
-        {
-            Destroy(other.gameObject);
-            Destroy(gameObject);
         }
     }
 }

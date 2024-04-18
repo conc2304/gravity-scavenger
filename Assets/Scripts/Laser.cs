@@ -11,6 +11,8 @@ public class Laser : MonoBehaviour
     [Range(1, 10)]
     [SerializeField] private float lifeTime = 3f;
 
+    public int damage = 10;
+
     // prevent lasers from doing damage to the shooter
     private float collisionTimer = 0;
     private float collisionBuffer = 0.05f;
@@ -38,7 +40,16 @@ public class Laser : MonoBehaviour
 
         if (collisionTimer > collisionBuffer)
         {
+            if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Enemy"))
+            {
+                other.gameObject.GetComponent<EntityStats>().TakeDamage(damage);
+            }
             Destroy(gameObject);
         }
+    }
+
+    private void Die()
+    {
+        Destroy(gameObject);
     }
 }

@@ -30,7 +30,7 @@ public class PowerUp : MonoBehaviour
         {
             PlayerStats playerStats = player.GetComponent<PlayerStats>();
             // Todo make this dynamic based on the type of pickup
-            // playerStats.fuel += 10;
+            playerStats.AddFuel(10f);
         }
         // Remove power up object
         Destroy(gameObject);

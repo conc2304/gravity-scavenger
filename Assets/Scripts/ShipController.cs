@@ -61,7 +61,11 @@ public class ShipController : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
+            // Add thrust in the forward direction
             rigidBody.AddForce(thrust * Time.deltaTime * -transform.up);
+
+            // Deplete Fuel levels
+            gameObject.GetComponent<PlayerStats>().DepleteFuel();
         }
     }
 
