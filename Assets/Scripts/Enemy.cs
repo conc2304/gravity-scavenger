@@ -10,6 +10,20 @@ public class Enemy : MonoBehaviour
     private Rigidbody rb;
     public float rotateSpeed = 0.025f;
 
+    private bool targetIsInFront = false;
+    private float angleRange = 30f;
+
+
+
+    // Laser Gun Variabls
+    [SerializeField] private GameObject laserPrefab;
+    [SerializeField] private Transform firingPoint;
+    [Range(0.1f, 1f)]
+    [SerializeField] private float fireRate = 0.5f;
+    private float fireTimer;
+    private bool targetIsInFiringRange = false;
+    private float firingRange = 10f;
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -26,13 +40,35 @@ public class Enemy : MonoBehaviour
         {
             RotateTowardsTarget();
         }
+
+        if (target.CompareTag("Player") && targetIsInFront && targetIsInFiringRange)
+        {
+            // if the target is our player and they are in firing range, then fire lasers at the allowed firing rate
+            if (fireTimer <= 0f)
+            {
+                Shoot();
+                fireTimer = fireRate;
+            }
+            else
+            {
+                fireTimer -= Time.deltaTime;
+            }
+        }
     }
 
     private void FixedUpdate()
     {
-        rb.AddForce(thrust * -transform.up);
+        if (targetIsInFront)
+        {
+            // only turn on thrusters if our intended target is infront of us
+            rb.AddForce(thrust * -transform.up);
+        }
     }
 
+    private void Shoot()
+    {
+        Instantiate(laserPrefab, firingPoint.position, firingPoint.rotation);
+    }
 
     private void GetTarget()
     {
@@ -46,6 +82,10 @@ public class Enemy : MonoBehaviour
     {
         Vector3 targetDirection = target.position - transform.position;
         float angle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg + 90f;
+        float angle2 = Vector3.Angle(transform.up, targetDirection);
+
+        targetIsInFront = angle2 >= 180 - angleRange || angle2 <= 180 + angleRange;
+        targetIsInFiringRange = targetDirection.magnitude <= firingRange;
 
         Quaternion newRotation = Quaternion.Euler(0, 0, angle);
         // slowly interpolate to that rotation
@@ -66,3 +106,4 @@ public class Enemy : MonoBehaviour
         }
     }
 }
+

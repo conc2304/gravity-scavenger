@@ -14,12 +14,11 @@ public class ShipController : MonoBehaviour
 
     private GravityField[] gravityFields; // Reference to the GravityField script
 
-
     // Controller Variables
     public Camera cam;
     public Transform player;
     public Rigidbody rigidBody;
-    public float thrust = 10f;
+    public float thrust = 100f;
 
     Vector2 mousePos;
     Vector3 playerPos;
@@ -73,6 +72,8 @@ public class ShipController : MonoBehaviour
 
     private void OnDestroy()
     {
+        // TODO trigger an explosion animation thing
+
         gravityFields = FindObjectsOfType<GravityField>();
         foreach (GravityField gravityField in gravityFields)
         {

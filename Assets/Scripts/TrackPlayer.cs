@@ -12,6 +12,7 @@ public class TrackPlayer : MonoBehaviour
     private Transform target;
     private Vector3 vel = Vector3.zero;
     private Rigidbody rb;
+
     private void Start()
     {
         rb = player.GetComponent<Rigidbody>();
@@ -19,10 +20,28 @@ public class TrackPlayer : MonoBehaviour
         vel = rb.velocity;
     }
 
+    private void Update()
+    {
+        if (!target)
+        {
+            GetTarget();
+        }
+
+    }
+    private void GetTarget()
+    {
+        if (GameObject.FindGameObjectWithTag("Player"))
+        {
+            target = GameObject.FindGameObjectWithTag("Player").transform;
+        }
+    }
+
 
     // Update is called once per frame
     private void FixedUpdate()
     {
+        if (!target) return;
+
         Vector3 targetPos = target.position + offset;
         targetPos.z = transform.position.z;
         transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref vel, damping);
