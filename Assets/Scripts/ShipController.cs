@@ -71,7 +71,8 @@ public class ShipController : MonoBehaviour
 
     private void Shoot()
     {
-        Instantiate(laserPrefab, firingPoint.position, firingPoint.rotation);
+        GameObject laser = Instantiate(laserPrefab, firingPoint.position, firingPoint.rotation);
+        laser.GetComponent<Laser>().SetShooterTag(gameObject.tag);
     }
 
     private void OnDestroy()

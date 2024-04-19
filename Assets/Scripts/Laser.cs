@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
 public class Laser : MonoBehaviour
@@ -15,8 +16,12 @@ public class Laser : MonoBehaviour
 
     // prevent lasers from doing damage to the shooter
     private float collisionTimer = 0;
-    private float collisionBuffer = 0.05f;
+    private readonly float collisionBuffer = 0.05f;
 
+    private string shooterTag;
+
+
+    [SerializeField] private GameObject explosionEffect;
 
     private Rigidbody rb;
 
@@ -31,25 +36,40 @@ public class Laser : MonoBehaviour
     void FixedUpdate()
     {
         rb.velocity = transform.up * speed;
-
         collisionTimer += Time.deltaTime;
     }
 
     private void OnCollisionEnter(Collision other)
     {
+        other.gameObject.TryGetComponent<EntityStats>(out var stats); // if game object has entity stats then take damage
 
-        if (collisionTimer > collisionBuffer)
+        if (collisionTimer > collisionBuffer) // help get past the collider
         {
-            if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Enemy"))
+            if (other.gameObject.CompareTag(shooterTag))
             {
-                other.gameObject.GetComponent<EntityStats>().TakeDamage(damage);
+                // turn off friendly fire so enemies can't destroy each other
+                // do nothing
             }
-            Destroy(gameObject);
+            else if (stats)
+            {
+                stats.TakeDamage(damage);
+            }
+            Die();
         }
+    }
+
+    public void SetShooterTag(string tag)
+    {
+        shooterTag = tag;
     }
 
     private void Die()
     {
+        // Destroy laser
         Destroy(gameObject);
+
+        // Bullet Collision animation
+        GameObject explosion = Instantiate(explosionEffect, gameObject.transform.position, gameObject.transform.rotation);
+        Destroy(explosion, 2f);
     }
 }

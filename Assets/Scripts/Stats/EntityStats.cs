@@ -8,27 +8,23 @@ public class EntityStats : MonoBehaviour
     public int maxHealth = 100;
     public int currentHealth { get; private set; } // any script can get current health, but only set it here
 
-    // public Stat health;
-    // public Stat damage;
-    // public Stat thrust;
-    // public Stat armor;
-    // public Stat fireRate;
-
     public int armor = 10;
     public int damage = 10;
 
-    private void Awake()
+    private void Start()
     {
         currentHealth = maxHealth;
     }
 
     public void TakeDamage(int damage)
     {
+        print("Take Damage: " + gameObject.tag + " - " + damage);
         // let armor and sheild take some of the damage
         // damage -= shield.GetValue();
         damage -= armor;
         damage = Mathf.Clamp(damage, 0, int.MaxValue);
         currentHealth -= damage;
+        print(currentHealth + " - " + damage);
 
         if (currentHealth <= 0)
         {

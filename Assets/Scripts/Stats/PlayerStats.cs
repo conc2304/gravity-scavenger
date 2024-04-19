@@ -11,7 +11,7 @@ public class PlayerStats : EntityStats
 
     // only main player is concerned with shield, fuel, and money
     public float maxFuel = 100f;
-    public float fuelRate = 0.0000f;
+    public float fuelRate = 0.01f;
     public float currentFuel { get; private set; }
 
 
@@ -25,7 +25,6 @@ public class PlayerStats : EntityStats
         currentFuel = maxFuel;
         healthBar.SetSliderMax(maxHealth);
         fuelBar.SetSliderMax(maxFuel);
-        print(currentFuel + " : " + maxFuel);
     }
 
     public void UpdateHealthBar()
@@ -40,9 +39,7 @@ public class PlayerStats : EntityStats
 
     public void DepleteFuel()
     {
-        print("Deplete");
         currentFuel -= fuelRate;
-        print(currentFuel);
         UpdateFuelBar();
     }
 

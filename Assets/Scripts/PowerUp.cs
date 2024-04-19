@@ -23,7 +23,9 @@ public class PowerUp : MonoBehaviour
         Debug.Log("Power up Picked up");
 
         // Spawn pickup effect
-        Instantiate(pickupEffect, transform.position, transform.rotation);
+        GameObject pickupEffectInstance = Instantiate(pickupEffect, transform.position, transform.rotation);
+        Destroy(pickupEffectInstance, 2f); // destroy it after its done playing
+
 
         // Apply power up effect
         if (applyPowerUp)

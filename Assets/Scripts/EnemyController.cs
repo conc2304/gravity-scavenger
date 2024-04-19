@@ -1,17 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class Enemy : MonoBehaviour
+public class EnemyController : MonoBehaviour
 {
 
     public Transform target;
     public float thrust = 3f;
     private Rigidbody rb;
-    public float rotateSpeed = 0.025f;
+    public float rotateSpeed = 0.05f;
+
+    // [SerializeField] private GameObject explosionEffect;
 
     private bool targetIsInFront = false;
-    private float angleRange = 30f;
+    private readonly float angleRange = 30f; // used to calculate if target is in front
 
 
     // Laser Gun Variabls
@@ -68,7 +71,9 @@ public class Enemy : MonoBehaviour
     {
         // shoot the laser and give it the damage amount of our entity
         GameObject laser = Instantiate(laserPrefab, firingPoint.position, firingPoint.rotation);
-        laser.GetComponent<Laser>().damage = gameObject.GetComponent<EntityStats>().damage;
+        laser.GetComponent<Laser>().SetShooterTag(gameObject.tag);
+
+        // laser.GetComponent<Laser>().damage = gameObject.GetComponent<EntityStats>().damage;
     }
 
     private void GetTarget()
@@ -98,8 +103,14 @@ public class Enemy : MonoBehaviour
         // if they crash the enemy destroys the player
         if (other.gameObject.CompareTag("Player"))
         {
-            Destroy(other.gameObject);
+            other.gameObject.GetComponent<PlayerStats>().Die();
             target = null;
+
+            // scavenge the players 
+
+            // restart scene after a few seconds
+            // todo add delay
+            SceneManager.LoadScene("Play");
         }
     }
 }
