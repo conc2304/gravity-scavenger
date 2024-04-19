@@ -5705,11 +5705,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  thrust: 3
-  rotateSpeed: 0.05
+  thrust: 2
+  rotateSpeed: 0.1
   laserPrefab: {fileID: 3052431056016438781, guid: 5445fde96bd4b485a8de644fbe34b11d, type: 3}
   firingPoint: {fileID: 364323063}
-  fireRate: 0.55
+  fireRate: 0.75
 --- !u!54 &333246374
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -25931,7 +25931,7 @@ MonoBehaviour:
   armor: 10
   damage: 10
   maxFuel: 100
-  fuelRate: 0
+  fuelRate: 0.01
   healthBar: {fileID: 1399036548}
   fuelBar: {fileID: 1057650290}
 --- !u!1 &1605694026
@@ -26636,6 +26636,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5937972663595384520, guid: ff4b0c2caab8740a0ae759166826dbc9, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5937972663595384520, guid: ff4b0c2caab8740a0ae759166826dbc9, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5937972663595384520, guid: ff4b0c2caab8740a0ae759166826dbc9, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 5937972663595384520, guid: ff4b0c2caab8740a0ae759166826dbc9, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4.2346153
