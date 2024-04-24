@@ -38,9 +38,15 @@ public class Chunk
         if (IsActive) return;   // if we have already activated it then dont respawn anything here
 
         IsActive = true;
-        SpawnItems();
-        Debug.Log("Load Chunk");
 
+        // 25% chance that this zone will be totally empty
+        float chanceOfEmptiness = 25f;
+        float r = Random.Range(0, 100);
+        Debug.Log("R: " + r);
+        if (r > chanceOfEmptiness)
+        {
+            SpawnItems();
+        }
     }
 
     public void Unload()
@@ -52,10 +58,10 @@ public class Chunk
 
     private void SpawnItems()
     {
-        // SpawnEnemies();
-        // SpawnPickups();
-        // SpawnPlanets();
-        SpawnDebugger();
+        SpawnEnemies();
+        SpawnPickups();
+        SpawnPlanets();
+        // SpawnDebugger();
     }
 
     private void SpawnDebugger()
@@ -112,11 +118,20 @@ public class Chunk
 
     private void DespawnItems()
     {
+        ValidateItemsList();
         Debug.Log("DespawnItems");
         foreach (var item in items)
         {
             Object.Destroy(item);
         }
         items.Clear();
+    }
+
+
+    // Some game objects like pickups and enemies get destroyed outside of Chunk
+    // Remove null references before we iterate over the items
+    private void ValidateItemsList()
+    {
+        items.RemoveAll(item => item == null);
     }
 }

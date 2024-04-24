@@ -45,12 +45,11 @@ public class WorldSpawner : MonoBehaviour
             for (int y = -gridPadding; y <= gridPadding; y++)
             {
 
-                // TODO not sure that this is right?
-                // // skip spawning stuff in our active viewport
-                // if (x == centerChunk.x && y == centerChunk.y)
-                // {
-                //     continue; // Skip this iteration and move to the next one
-                // }
+                // skip spawning stuff in our active viewport
+                if (x == centerChunk.x && y == centerChunk.y)
+                {
+                    continue; // Skip this iteration and move to the next one
+                }
 
                 // Create a variable representing the chunk's coordinates
                 Vector2Int chunkCoordinates = new Vector2Int(x, y);
