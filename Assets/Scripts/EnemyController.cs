@@ -20,8 +20,8 @@ public class EnemyController : MonoBehaviour
     // Laser Gun Variabls
     [SerializeField] private GameObject laserPrefab;
     [SerializeField] private Transform firingPoint;
-    [Range(0.1f, 1f)]
-    [SerializeField] private float fireRate = 0.5f;
+    [Range(0.1f, 2f)]
+    [SerializeField] private float fireRate = 2f;
     private float fireTimer;
     private bool targetIsInFiringRange = false;
     private float firingRange = 10f;
@@ -60,6 +60,7 @@ public class EnemyController : MonoBehaviour
 
     private void FixedUpdate()
     {
+
         if (targetIsInFront)
         {
             // only turn on thrusters if our intended target is infront of us
@@ -73,7 +74,14 @@ public class EnemyController : MonoBehaviour
         GameObject laser = Instantiate(laserPrefab, firingPoint.position, firingPoint.rotation);
         laser.GetComponent<Laser>().SetShooterTag(gameObject.tag);
 
-        // laser.GetComponent<Laser>().damage = gameObject.GetComponent<EntityStats>().damage;
+        gameObject.TryGetComponent<EntityStats>(out var stats); // if game object has entity stats then take damage
+        if (stats)
+        {
+            Laser laserStats = laser.GetComponent<Laser>();
+
+            laserStats.damage = stats.damage;
+            laserStats.range = stats.firingRange;
+        }
     }
 
     private void GetTarget()

@@ -17,7 +17,9 @@ public class EnemyStats : EntityStats
     //     // healthBar.SetSliderMax(maxHealth);
     // }
 
-
+    public void Update()
+    {
+    }
 
     public void UpdateHealthBar()
     {

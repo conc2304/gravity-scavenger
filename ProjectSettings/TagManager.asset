@@ -7,6 +7,9 @@ TagManager:
   - Enemy
   - Laser
   - Trajectory
+  - Fuel
+  - Health
+  - Parts
   layers:
   - Default
   - TransparentFX

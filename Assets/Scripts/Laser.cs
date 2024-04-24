@@ -10,9 +10,9 @@ public class Laser : MonoBehaviour
     [SerializeField] private float speed = 10f;
 
     [Range(1, 10)]
-    [SerializeField] private float lifeTime = 3f;
+    public float range = 3f;
 
-    public int damage = 10;
+    public float damage = 10f;
 
     // prevent lasers from doing damage to the shooter
     private float collisionTimer = 0;
@@ -29,7 +29,7 @@ public class Laser : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        Destroy(gameObject, lifeTime);
+        Destroy(gameObject, range);
     }
 
     // Update is called once per frame

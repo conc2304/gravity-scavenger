@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1203868727038385806}
   m_Layer: 0
-  m_Name: Pickup Rings
+  m_Name: PickupComp Orbiting Ring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

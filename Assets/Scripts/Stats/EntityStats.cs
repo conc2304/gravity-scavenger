@@ -5,26 +5,26 @@ using UnityEngine;
 
 public class EntityStats : MonoBehaviour
 {
-    public int maxHealth = 100;
-    public int currentHealth { get; private set; } // any script can get current health, but only set it here
+    public float maxHealth = 100f;
+    public float currentHealth;
 
-    public int armor = 10;
-    public int damage = 10;
+    public float armor = 10f;
+    public float damage = 10f;
+
+    public float firingRange = 3f;
 
     private void Start()
     {
         currentHealth = maxHealth;
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
-        print("Take Damage: " + gameObject.tag + " - " + damage);
         // let armor and sheild take some of the damage
         // damage -= shield.GetValue();
         damage -= armor;
         damage = Mathf.Clamp(damage, 0, int.MaxValue);
         currentHealth -= damage;
-        print(currentHealth + " - " + damage);
 
         if (currentHealth <= 0)
         {

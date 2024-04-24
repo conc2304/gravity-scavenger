@@ -5,22 +5,20 @@ using UnityEngine;
 public class PowerUp : MonoBehaviour
 {
     public GameObject pickupEffect;
+    public float pickupValue = 10f;
+    public float gamePoints = 10f; // points to award the player to accumulate points
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
-        {
-            Pickup(other, true);
-        }
-        else if (other.CompareTag("Enemy"))
-        {
-            Pickup(other, false);
-        }
+        bool applyPowerUp = other.CompareTag("Player");
+        if (other.CompareTag("Laser")) return;
+        Pickup(other, applyPowerUp);
     }
 
     private void Pickup(Collider player, bool applyPowerUp)
     {
-        Debug.Log("Power up Picked up");
+        string pickupType = gameObject.tag;
+        Debug.Log("Power up Picked up: " + pickupType);
 
         // Spawn pickup effect
         GameObject pickupEffectInstance = Instantiate(pickupEffect, transform.position, transform.rotation);
@@ -32,8 +30,11 @@ public class PowerUp : MonoBehaviour
         {
             PlayerStats playerStats = player.GetComponent<PlayerStats>();
             // Todo make this dynamic based on the type of pickup
-            playerStats.AddFuel(10f);
+            if (pickupType == "Fuel") playerStats.AddFuel(pickupValue);
+            if (pickupType == "Health") playerStats.AddHealth(pickupValue);
+            if (pickupType == "Parts") playerStats.AddParts(pickupValue);
         }
+
         // Remove power up object
         Destroy(gameObject);
     }
