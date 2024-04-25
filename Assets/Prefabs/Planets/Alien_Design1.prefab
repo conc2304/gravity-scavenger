@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7702893129140939625}
   - component: {fileID: 2796243018280500559}
   - component: {fileID: 1844264446563529095}
+  - component: {fileID: -8747061553276150807}
   m_Layer: 0
   m_Name: Alien_Design1
   m_TagString: Untagged
@@ -103,7 +104,7 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
@@ -151,3 +152,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attractees: []
   maxDistance: 20
+--- !u!114 &-8747061553276150807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8489013374749508764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecb917e92dfde460babc33fb57e0da6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationSpeedX: 20
+  rotationSpeedY: 15
+  rotationSpeedZ: 0
