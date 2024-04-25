@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,20 +9,17 @@ public class EnemyController : MonoBehaviour
     private Rigidbody rb;
     public float rotateSpeed = 0.05f;
 
-    // [SerializeField] private GameObject explosionEffect;
-
     private bool targetIsInFront = false;
     private readonly float angleRange = 30f; // used to calculate if target is in front
-
 
     // Laser Gun Variabls
     [SerializeField] private GameObject laserPrefab;
     [SerializeField] private Transform firingPoint;
-    [Range(0.1f, 2f)]
-    [SerializeField] private float fireRate = 2f;
+    [Range(0.1f, 5f)]
+    [SerializeField] private float fireRate = 4f;
     private float fireTimer;
     private bool targetIsInFiringRange = false;
-    private float firingRange = 10f;
+    public float firingRange = 5f;
 
     // Start is called before the first frame update
     private void Start()
@@ -111,12 +106,15 @@ public class EnemyController : MonoBehaviour
         // if they crash the enemy destroys the player
         if (other.gameObject.CompareTag("Player"))
         {
+            // Scavenge the player's parts
+            other.gameObject.GetComponent<PlayerStats>().StealParts(Random.Range(1, 3));
+
+            // Destroy the player
             other.gameObject.GetComponent<PlayerStats>().Die();
             target = null;
 
-            // scavenge the players 
 
-            // restart scene after a few seconds
+            // Restart scene after a few seconds
             // todo add delay
             SceneManager.LoadScene("Play");
         }

@@ -6,7 +6,7 @@ public class WorldSpawner : MonoBehaviour
 {
     private Camera mainCamera;
     [SerializeField] private GameObject Player;
-
+    // we are 
     private Vector2 chunkSize;
     private readonly Dictionary<Vector2Int, Chunk> chunks = new();
     private Vector2Int currentChunk;
@@ -16,6 +16,7 @@ public class WorldSpawner : MonoBehaviour
     public List<GameObject> EnemyPrefabs = new();
     public List<GameObject> PickupPrefabs = new();
 
+    private bool isFirstLoad = true;
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +29,8 @@ public class WorldSpawner : MonoBehaviour
         chunkSize = GetChunkSize();
         InitializeChunks();
         currentChunk = GetCurrentChunk(Player.transform.position);
+        UpdateChunks(currentChunk);
+        isFirstLoad = false;
     }
 
 
@@ -70,7 +73,6 @@ public class WorldSpawner : MonoBehaviour
         if (newChunk != currentChunk)
         {
             Debug.Log("New Chunk");
-            Debug.Log(newChunk);
             UpdateChunks(newChunk);
             currentChunk = newChunk;
         }
@@ -120,6 +122,8 @@ public class WorldSpawner : MonoBehaviour
 
     private Vector2 GetChunkSize()
     {
+        // We are defining the space of a chunk to be the size of the game screen times the multiplier
+        float multiplier = 1.25f;
         float cameraDepth = Mathf.Abs(mainCamera.transform.position.z); // Assumes our game happens at z = 0
 
         // Use the bottom-left and top-right corners in world coordinates
@@ -133,7 +137,7 @@ public class WorldSpawner : MonoBehaviour
         Debug.Log("World Width: " + worldWidth);
         Debug.Log("World Height: " + worldHeight);
 
-        return new Vector2(worldWidth, worldHeight);
+        return new Vector2(worldWidth * multiplier, worldHeight * multiplier);
     }
     // Calculate the chunk coordinates based on the player's position in the world space.
     public Vector2Int GetCurrentChunk(Vector3 playerPosition)
@@ -143,7 +147,7 @@ public class WorldSpawner : MonoBehaviour
         int chunkY = Mathf.FloorToInt(playerPosition.y / chunkSize.y);
 
         // Return the chunk coordinates
-        Debug.Log("GetCurrentChunk: " + new Vector2Int(chunkX, chunkY));
+        // Debug.Log("GetCurrentChunk: " + new Vector2Int(chunkX, chunkY));
         return new Vector2Int(chunkX, chunkY);
     }
 }

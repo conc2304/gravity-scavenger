@@ -24,7 +24,6 @@ public class PowerUp : MonoBehaviour
         GameObject pickupEffectInstance = Instantiate(pickupEffect, transform.position, transform.rotation);
         Destroy(pickupEffectInstance, 2f); // destroy it after its done playing
 
-
         // Apply power up effect
         if (applyPowerUp)
         {
@@ -33,6 +32,8 @@ public class PowerUp : MonoBehaviour
             if (pickupType == "Fuel") playerStats.AddFuel(pickupValue);
             if (pickupType == "Health") playerStats.AddHealth(pickupValue);
             if (pickupType == "Parts") playerStats.AddParts(pickupValue);
+
+            playerStats.AddPoints(gamePoints);
         }
 
         // Remove power up object

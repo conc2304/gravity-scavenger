@@ -39,10 +39,9 @@ public class Chunk
 
         IsActive = true;
 
-        // 25% chance that this zone will be totally empty
-        float chanceOfEmptiness = 25f;
+        // % chance that this zone will be totally empty
+        float chanceOfEmptiness = 50f;
         float r = Random.Range(0, 100);
-        Debug.Log("R: " + r);
         if (r > chanceOfEmptiness)
         {
             SpawnItems();
@@ -80,7 +79,7 @@ public class Chunk
     private void SpawnEnemies()
     {
 
-        int enemyCount = Random.Range(0, 1);
+        int enemyCount = Random.Range(0, 2);
         for (int i = 0; i < enemyCount; i++)
         {
             SpawnObject(EnemyPrefabs[Mathf.RoundToInt(Random.Range(0, EnemyPrefabs.Count))]);
@@ -101,19 +100,24 @@ public class Chunk
         int planetCount = Random.Range(0, 2); // Example range
         for (int i = 0; i < planetCount; i++)
         {
-            SpawnObject(PlanetPrefabs[Mathf.RoundToInt(Random.Range(0, PlanetPrefabs.Count))]);
+            GameObject planet = SpawnObject(PlanetPrefabs[Mathf.RoundToInt(Random.Range(0, PlanetPrefabs.Count))]);
+            planet.GetComponent<Rigidbody>().mass = Random.Range(10, 25);
+            planet.transform.localScale *= Random.Range(0.75f, 3.5f);
         }
     }
 
-    private void SpawnObject(GameObject prefab)
+    private GameObject SpawnObject(GameObject prefab)
     {
         Debug.Log("SpawnObject");
+        ValidateItemsList();
 
         float spawnX = Random.Range(boundary.xMin, boundary.xMax);
         float spawnY = Random.Range(boundary.yMin, boundary.yMax);
         Vector3 spawnPosition = new Vector3(spawnX, spawnY, Spawn_Z);
         GameObject spawnedObj = Object.Instantiate(prefab, spawnPosition, prefab.transform.rotation);
         items.Add(spawnedObj);
+
+        return spawnedObj;
     }
 
     private void DespawnItems()

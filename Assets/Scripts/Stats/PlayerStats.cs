@@ -1,23 +1,24 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 // Derive Player Stats from entity Stats
 public class PlayerStats : EntityStats
 {
-    // public Stat fuel;
-    // public Stat shield;
-    // public Stat money;
+    // Only main player is concerned with fuel, parts, and points
+    public static float maxFuel = 100f;
+    public static float fuelRate = 0.01f;
+    public static float currentFuel;
+    public static float parts = 0f;
+    public static float points = 0f;
 
-    // only main player is concerned with shield, fuel, and money
-    public float maxFuel = 100f;
-    public float fuelRate = 0.01f;
-    public float currentFuel;
-    public float parts = 0f;
-
+    // UI References
     public StatusBar healthBar;
     public StatusBar fuelBar;
 
+    [SerializeField] private Text partsText;
+    [SerializeField] private Text pointsText;
 
     // Start is called before the first frame update
     void Start()
@@ -52,19 +53,38 @@ public class PlayerStats : EntityStats
 
     public void AddHealth(float amount)
     {
-        Debug.Log("Add Health: " + amount);
         currentHealth += amount;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        Debug.Log("Add Health: " + amount + " " + currentHealth);
         UpdateHealthBar();
     }
 
     public void AddParts(float amount)
     {
         parts += amount;
+        UpdatePartsUI();
     }
 
     public void StealParts(float amount)
     {
         parts -= amount;
+        parts = Mathf.Clamp(parts, 0, Mathf.Infinity); // Can't steal what they don't have
+        UpdatePartsUI();
+    }
+
+    public void UpdatePartsUI()
+    {
+        partsText.text = "" + Mathf.Round(parts);
+    }
+
+    public void AddPoints(float amount)
+    {
+        points += amount;
+        UpdatePointsUI();
+    }
+
+    public void UpdatePointsUI()
+    {
+        pointsText.text = "" + Mathf.Round(points);
     }
 }

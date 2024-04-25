@@ -8,8 +8,7 @@ public class GravityField : MonoBehaviour
     public List<GameObject> attractees = new List<GameObject>();
     private Rigidbody rb;
 
-    [SerializeField]
-    private float maxDistance = 20f;
+    public float maxDistance = 20f;
 
     void Start()
     {
@@ -41,15 +40,20 @@ public class GravityField : MonoBehaviour
     private void Attract(GameObject attractee)
     {
         // Calculate distance to this attractee
-        Vector3 force;
         Rigidbody rbToAttract = attractee.GetComponent<Rigidbody>();
+        Vector3 force = GetForce(rb, rbToAttract);
+        rbToAttract.AddForce(force);
+    }
+
+    public Vector3 GetForce(Rigidbody rb, Rigidbody rbToAttract)
+    {
+        Vector3 force;
         Vector3 direction = rb.position - rbToAttract.position;
+
         float distance = direction.magnitude;
 
-        if (distance == 0f) return; // Don't divide by zero
-
         // don't apply force if it is too far
-        if (distance > maxDistance)
+        if (distance == 0f || distance > maxDistance)
         {
             force = new Vector3(0, 0, 0);
         }
@@ -59,7 +63,7 @@ public class GravityField : MonoBehaviour
             force = direction.normalized * forceMagnitude;
         }
 
-        rbToAttract.AddForce(force);
+        return force;
     }
 
     // Add a new attractee to the list

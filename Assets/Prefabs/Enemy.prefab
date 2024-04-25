@@ -1102,6 +1102,11 @@ MonoBehaviour:
   armor: 0
   damage: 10
   firingRange: 3
+  DeathAnimation: {fileID: 8829934830357975777, guid: ff4b0c2caab8740a0ae759166826dbc9, type: 3}
+  PickupPrefabs:
+  - {fileID: 7774372439403873602, guid: fba327d039b74437c91dd810b0de4977, type: 3}
+  - {fileID: 2978703879657906298, guid: 0bb432e1df6f842169e4e11e614fc60d, type: 3}
+  - {fileID: 6582964569847830573, guid: 2f63263cc50be44a59c6f1b24c23a989, type: 3}
 --- !u!114 &7421756624327988301
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1120,3 +1125,4 @@ MonoBehaviour:
   laserPrefab: {fileID: 3052431056016438781, guid: 5445fde96bd4b485a8de644fbe34b11d, type: 3}
   firingPoint: {fileID: 6623851907093027770}
   fireRate: 1
+  firingRange: 5

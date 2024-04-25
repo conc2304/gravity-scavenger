@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -8,32 +6,37 @@ public class TrajectoryLine : MonoBehaviour
     [SerializeField] private Transform trajectoryStart;
 
     [Header("Trajectory Line Smoothnes/Length")]
-    [SerializeField] private int segmentCount = 50;
-    [SerializeField] private float curveLength = 3.5f;
+    [SerializeField] private int segmentCount = 10;
+    [SerializeField] private float curveLength = 0.5f;
     private float prevNumDashes = 1f;
 
     private Vector3[] segments;
     private LineRenderer lineRenderer;
     private Material shader;
 
+    private GravityField[] gravityFields; // Reference to the GravityField script
+    bool inGravityField = false;
+    bool lineCollidesWithPlanet = false;
 
     // Player Vars
     private GameObject player;
-    private Rigidbody rb;
+    private Rigidbody playerRb;
+    private float playerMass;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        // get player object
+        // Get player object mass
         player = GameObject.FindGameObjectWithTag("Player");
-        rb = player.GetComponent<Rigidbody>();
+        playerRb = player.GetComponent<Rigidbody>();
+        playerMass = playerRb.mass;
+
+        // Get line shader
         shader = GetComponent<Renderer>().material;
 
-        // initialize segments
+        // Initialize line segments
         segments = new Vector3[segmentCount];
-
-        // get line renderer
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.positionCount = segmentCount;
     }
@@ -41,44 +44,118 @@ public class TrajectoryLine : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // set the starting position of the line
+        // Set  flags
+        inGravityField = false;
+        lineCollidesWithPlanet = false;
+
+        // Set the starting position of the line
         Vector3 startPos = trajectoryStart.position;
-        // Vector3 startPos = player.transform.position;
         segments[0] = startPos;
         lineRenderer.SetPosition(0, startPos);
 
-        // set the starting velocity based on player physics
-        Vector3 startVelocity = rb.velocity;
-        float totalLength = 0f; //  total length of the line
+        // Set the starting velocity based on player physics
+        Vector3 startVelocity = playerRb.velocity;
+        float totalLength = 0f; //  Accumulator for line length
 
         for (int i = 1; i < segmentCount; i++)
         {
+
             // Calculate the distance between the current point and the previous point
             float segmentLength = Vector3.Distance(segments[i], segments[i - 1]);
-            // Add the distance to the total length
             totalLength += segmentLength;
 
-
             float timeOffset = i * Time.fixedDeltaTime * curveLength;
-            // compute the gravity offset
-            Vector3 gravityOffset = new Vector3(0, 0, 0); // TODO - update gravity here
+
+            // Compute the gravity offset
+            Vector3 gravityForce = GetGravityOffset(segments[i - 1]);
+            gravityForce.z = 0; // never add z force
+
             // set the position of the point in the line renderer
-            segments[i] = segments[0] + startVelocity * timeOffset + gravityOffset;
-            lineRenderer.SetPosition(i, segments[i]);
+            segments[i] = segments[0] + startVelocity * timeOffset + gravityForce;
+            Vector3 segPt = Camera.main.WorldToScreenPoint(segments[i]);
+
+            // Use the bottom-left of screen to calculate out of bounds
+            float cameraDepth = Mathf.Abs(Camera.main.transform.position.z); // Assumes our game happens at z = 0
+            Vector3 worldBottomLeft = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, cameraDepth));
+            bool pointOutOfBounds = segPt.x > Screen.width || segPt.y > Screen.height || segPt.x < worldBottomLeft.x || segPt.y < worldBottomLeft.y;
+
+            if (pointOutOfBounds || lineCollidesWithPlanet)
+            {
+                // if new point is invalid just repeat the last one
+                lineRenderer.SetPosition(i, segments[i - 1]);
+            }
+            else
+            {
+                lineRenderer.SetPosition(i, segments[i]);
+            }
         }
 
-        // enable or disable the Line Renderer based on the total length, otherwise we have a weird blinking dot for a nose
-        lineRenderer.enabled = totalLength >= 0.25f;
+        // Enable or disable the Line Renderer based on the total length, otherwise we have a weird blinking dot for a nose
+        lineRenderer.enabled = totalLength >= 0.25f && inGravityField;
 
-        // when the line is long render more dashes and vice versa
-        // at its longest it should have 5 dashes, at its shortest half of a dash 
+        // When the line is long, render more dashes and vice versa
+        // At its longest it should have 5 dashes, at its shortest half of a dash 
         float numShaderDashes = Map(totalLength, 1f, 25f, 0.25f, 5f);
         float lerpedValue = Mathf.Lerp(prevNumDashes, numShaderDashes, 0.1f); // interpolate for smoothness
         prevNumDashes = numShaderDashes;
-        // this is the Reference our exposed property on the TrajectoryLine shader material which control the x-tiling
 
+        // Set the x tiling of ths shader via number of dashes prop
         shader.SetFloat("_Number_Of_Dashes", lerpedValue);
     }
+
+    private Vector3 GetGravityOffset(Vector3 prevSegmentPosition)
+    {
+        Vector3 totalForce = new Vector3(0, 0, 0);
+        gravityFields = FindObjectsOfType<GravityField>();
+        // Apply the gravitational force of each gravity field to our force vector
+        foreach (var gravityField in gravityFields)
+        {
+            if (gravityField == null) continue;
+
+            Vector3 force = GetForce(prevSegmentPosition, gravityField);
+            // If trajectory never passes througha a gravity field
+            // disable the trajectory line
+            if (force.magnitude > 0)
+            {
+                inGravityField = true;
+            }
+            totalForce += force;
+        }
+
+        return totalForce;
+    }
+
+
+    public Vector3 GetForce(Vector3 segmentPosition, GravityField gf)
+    {
+        Vector3 force;
+        Rigidbody planetRb = gf.GetComponent<Rigidbody>();
+        Collider collider = gf.GetComponent<MeshCollider>();
+        Vector3 direction = planetRb.position - segmentPosition;
+        float distance = direction.magnitude;
+
+        // Check if our trajectory line has collided with the planet's rigid body
+        if (collider.bounds.Contains(segmentPosition))
+        {
+            Debug.Log("Planet Collision Trajectory");
+            lineCollidesWithPlanet = true;
+        }
+
+        // don't apply force if it is too far or if it collides 
+        if (distance == 0f || distance > gf.maxDistance || lineCollidesWithPlanet)
+        {
+            force = new Vector3(0, 0, 0);
+        }
+        else
+        {
+            float forceMagnitude = planetRb.mass * playerMass / Mathf.Pow(distance, 2);
+            force = direction.normalized * forceMagnitude;
+        }
+
+        return force;
+    }
+
+
 
     private float Map(float value, float inputMin, float inputMax, float outputMin, float outputMax)
     {
