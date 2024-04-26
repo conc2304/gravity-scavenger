@@ -11,6 +11,7 @@ public class PlayerStats : EntityStats
 
     // Player stats
     public float maxFuel = 100f;
+
     public float fuelRate = 0.01f;
     public float parts = 0f;
     public float points = 0f;
@@ -37,12 +38,15 @@ public class PlayerStats : EntityStats
         {
             Destroy(gameObject); // Destroy duplicate PlayerStats instances
         }
+
+        Debug.Log("PLayer Health: " + currentHealth);
     }
 
     private void Start()
     {
         // Initialize Stats
         currentFuel = maxFuel;
+        currentHealth = maxHealth;
         healthBar.SetSliderMax(maxHealth);
         fuelBar.SetSliderMax(maxFuel);
     }
@@ -101,6 +105,6 @@ public class PlayerStats : EntityStats
             partsText.text = Mathf.Round(parts).ToString();
 
         if (pointsText != null)
-            pointsText.text = Mathf.Round(points).ToString();
+            pointsText.text = Mathf.Round(points).ToString() + " XP";
     }
 }

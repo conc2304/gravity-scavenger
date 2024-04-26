@@ -20,8 +20,6 @@ public class Chunk
     private readonly List<GameObject> PickupPrefabs = new();
     private readonly GameObject SpaceStationPrefab;
 
-    [SerializeField] bool SpawnEnemiesDebug = true;
-
     private readonly float Spawn_Z = -0.5f;
 
     public Chunk(Vector2Int coordinates, Vector2 chunkSize, List<GameObject> enemyPrefabs, List<GameObject> pickupPrefabs, List<GameObject> planetPrefabs, GameObject spaceStationPrefab)
@@ -56,14 +54,12 @@ public class Chunk
         {
             SpawnItems();
         }
-        else
+        else if (r < 5)
         {
             // Only Put Space Stations in empty chunks, and only in some of them
-            if (r < chanceOfEmptiness / 3)
-            {
-                SpawnSpaceStation();
-            }
+            SpawnSpaceStation();
         }
+
     }
 
     public void Unload()
@@ -75,10 +71,15 @@ public class Chunk
 
     private void SpawnItems()
     {
-        if (SpawnEnemiesDebug) SpawnEnemies();
-        SpawnPickups();
-        SpawnPlanets();
-        // SpawnDebugger();
+        // Make spawning game entities more random
+        float r0 = Random.Range(0, 100);
+        float r1 = Random.Range(0, 100);
+        float r2 = Random.Range(0, 100);
+
+        //  TODO - Update the chance of enemies depending on level/gamepoints
+        if (r0 < 20) SpawnEnemies();
+        if (r1 < 25) SpawnPickups();
+        if (r2 < 50) SpawnPlanets();
     }
 
     private void SpawnDebugger()
@@ -113,6 +114,8 @@ public class Chunk
         for (int i = 0; i < enemyCount; i++)
         {
             SpawnObject(EnemyPrefabs[Mathf.RoundToInt(Random.Range(0, EnemyPrefabs.Count))]);
+            // We don't add enemies to items so that if an enemy is chasing us it does not get despawn when we are running
+            // Enemy despawning is handled on its own
         }
     }
 
@@ -121,7 +124,8 @@ public class Chunk
         int pickupCount = Random.Range(0, 3); // Example range
         for (int i = 0; i < pickupCount; i++)
         {
-            SpawnObject(PickupPrefabs[Mathf.RoundToInt(Random.Range(0, PickupPrefabs.Count))]);
+            GameObject pickup = SpawnObject(PickupPrefabs[Mathf.RoundToInt(Random.Range(0, PickupPrefabs.Count))]);
+            items.Add(pickup);
         }
     }
 
@@ -135,6 +139,8 @@ public class Chunk
             planet.GetComponent<Rigidbody>().mass = Random.Range(minMass, maxMass);
             planet.GetComponent<GravityField>().maxDistance = Random.Range(minGravityRange, maxGravityRange);
             planet.transform.localScale *= Random.Range(0.75f, 3.5f);
+
+            items.Add(planet);
         }
     }
 
@@ -147,7 +153,6 @@ public class Chunk
         float spawnY = Random.Range(boundary.yMin, boundary.yMax);
         Vector3 spawnPosition = new Vector3(spawnX, spawnY, Spawn_Z);
         GameObject spawnedObj = Object.Instantiate(prefab, spawnPosition, prefab.transform.rotation);
-        items.Add(spawnedObj);
 
         return spawnedObj;
     }

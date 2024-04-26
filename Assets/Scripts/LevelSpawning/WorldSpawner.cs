@@ -69,6 +69,8 @@ public class WorldSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!Player) return;
+
         Vector2Int newChunk = GetCurrentChunk(Player.transform.position);
 
         if (newChunk != currentChunk)

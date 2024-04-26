@@ -48,6 +48,7 @@ GameObject:
   - component: {fileID: 587222189197519738}
   - component: {fileID: 3580984136312778039}
   - component: {fileID: 7421756624327988301}
+  - component: {fileID: 3419179194401133008}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -1097,10 +1098,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da57c886ebbbf4f52abcfaf415d0bec5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 50
   currentHealth: 0
+  maxHealth: 50
   armor: 0
   damage: 10
+  fireRate: 1
   firingRange: 3
   DeathAnimation: {fileID: 8829934830357975777, guid: ff4b0c2caab8740a0ae759166826dbc9, type: 3}
   PickupPrefabs:
@@ -1126,3 +1128,16 @@ MonoBehaviour:
   firingPoint: {fileID: 6623851907093027770}
   fireRate: 1
   firingRange: 5
+--- !u!114 &3419179194401133008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6849752721622279354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7010170a28c84aae8f0d359f8515fcf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DespawnDistance: 200

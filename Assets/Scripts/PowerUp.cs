@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PowerUp : MonoBehaviour
@@ -22,7 +20,7 @@ public class PowerUp : MonoBehaviour
 
         // Spawn pickup effect
         GameObject pickupEffectInstance = Instantiate(pickupEffect, transform.position, transform.rotation);
-        Destroy(pickupEffectInstance, 2f); // destroy it after its done playing
+        Destroy(pickupEffectInstance, 1.9f); // destroy it after its done playing
 
         // Apply power up effect
         if (applyPowerUp)

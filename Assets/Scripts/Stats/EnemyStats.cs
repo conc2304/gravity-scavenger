@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Derive Player Stats from entity Stats
+// Derive Enemy Stats from entity Stats
 public class EnemyStats : EntityStats
 {
     // todo add health bar for enemies
@@ -10,6 +10,8 @@ public class EnemyStats : EntityStats
     private GameObject Player;
     [SerializeField] private GameObject DeathAnimation;
 
+
+    // Pickups
     public List<GameObject> PickupPrefabs = new();
     private readonly Dictionary<int, int> pickUpProbability = new()
         {
@@ -26,6 +28,8 @@ public class EnemyStats : EntityStats
     {
         // healthBar.SetSliderMax(maxHealth);
         if (!Player) Player = GameObject.FindGameObjectWithTag("Player");
+        maxHealth = 30f;
+        currentHealth = maxHealth;
     }
 
     // Class Methods

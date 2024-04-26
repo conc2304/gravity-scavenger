@@ -14,12 +14,10 @@ public class Laser : MonoBehaviour
 
     public float damage = 10f;
 
-    // prevent lasers from doing damage to the shooter
+    // Prevent lasers from doing damage to the shooter
     private float collisionTimer = 0;
     private readonly float collisionBuffer = 0.05f;
-
     private string shooterTag;
-
 
     [SerializeField] private GameObject explosionEffect;
 
@@ -39,11 +37,11 @@ public class Laser : MonoBehaviour
         collisionTimer += Time.deltaTime;
     }
 
-    private void OnCollisionEnter(Collision other)
+    private void OnTriggerEnter(Collider other)
     {
         other.gameObject.TryGetComponent<EntityStats>(out var stats); // if game object has entity stats then take damage
 
-        if (collisionTimer > collisionBuffer) // help get past the collider
+        if (collisionTimer > collisionBuffer) // Let laser get past the collider
         {
             if (other.gameObject.CompareTag(shooterTag))
             {

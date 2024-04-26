@@ -23,10 +23,19 @@ public class ShipController : MonoBehaviour
     Vector2 mousePos;
     Vector3 playerPos;
 
-    // Update is called once per frame
+    private void Awake()
+    {
+        if (!cam)
+        {
+            cam = Camera.main;
+        }
+    }
+
     void Update()
     {
-        // if these variables were assigned in FixedUpdate(), they would only be updated at fixed intervals, 
+        if (!cam) return;
+
+        // If these variables were assigned in FixedUpdate(), they would only be updated at fixed intervals, 
         // potentially causing jerky or delayed movement.
         mousePos = Input.mousePosition;
         playerPos = cam.WorldToScreenPoint(player.position);
@@ -46,8 +55,8 @@ public class ShipController : MonoBehaviour
     // FixedUpdate is called fixed intervals determined by the physics system
     private void FixedUpdate()
     {
-        // get the angle of the mouse in relation to the player
-        // point the player in the direction of the mouse
+        // Calculate angle of the mouse in relation to the player
+        // Point the player in the direction of the mouse
         Vector2 pos;
         pos.x = playerPos.x;
         pos.y = playerPos.y;
@@ -57,7 +66,6 @@ public class ShipController : MonoBehaviour
 
         Quaternion newRotation = Quaternion.Euler(0, 0, angle);
         player.localRotation = newRotation;
-
 
         if (Input.GetMouseButton(0))
         {
