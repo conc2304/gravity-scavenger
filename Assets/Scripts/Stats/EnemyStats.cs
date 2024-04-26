@@ -5,7 +5,7 @@ using UnityEngine;
 // Derive Player Stats from entity Stats
 public class EnemyStats : EntityStats
 {
-    // todo add health bar
+    // todo add health bar for enemies
     // public StatusBar healthBar;
     private GameObject Player;
     [SerializeField] private GameObject DeathAnimation;
@@ -19,6 +19,18 @@ public class EnemyStats : EntityStats
             { 100, 1 }  // Health[1] (15% probability, added to previous percentage)
         };
 
+
+    // Unity MonoBehaviour Methods
+
+    private void Start()
+    {
+        // healthBar.SetSliderMax(maxHealth);
+        if (!Player) Player = GameObject.FindGameObjectWithTag("Player");
+    }
+
+    // Class Methods
+
+
     // Based on a percent probability, select an index that maps to the probability
     public int SelectItemIndex(int percent)
     {
@@ -28,7 +40,7 @@ public class EnemyStats : EntityStats
             // Check if the given percent falls within the current range
             if (percent <= kvp.Key)
             {
-                // Return the corresponding index
+                // Return the  index
                 return kvp.Value;
             }
         }
@@ -37,21 +49,6 @@ public class EnemyStats : EntityStats
         return pickUpProbability[pickUpProbability.Count];
     }
 
-    // Start is called before the first frame update
-    private void Start()
-    {
-        // healthBar.SetSliderMax(maxHealth);
-        if (!Player) Player = GameObject.FindGameObjectWithTag("Player");
-    }
-
-    public void Update()
-    {
-    }
-
-    public void UpdateHealthBar()
-    {
-        // healthBar.SetSlider(currentHealth);
-    }
 
 
 
@@ -70,23 +67,28 @@ public class EnemyStats : EntityStats
         float pickupValue = 5;
         if (selectedPickup.CompareTag("Fuel"))
         {
-            pickupValue = Random.Range(10, 15);
+            pickupValue = Random.Range(10, 15); // TODO make points dynamic basic on level difficulty
         }
         else if (selectedPickup.CompareTag("Health"))
         {
 
-            pickupValue = Random.Range(10, 20);
+            pickupValue = Random.Range(10, 20); // TODO make points dynamic basic on level difficulty
         }
         else if (selectedPickup.CompareTag("Parts"))
         {
-            pickupValue = Random.Range(1, 3);
+            pickupValue = Random.Range(1, 3); // TODO make points dynamic basic on level difficulty
         }
         pickupObject.GetComponent<PowerUp>().pickupValue = pickupValue;
 
         // Give the player game points for killing an enemy
         Player.GetComponent<PlayerStats>().AddPoints(10);   // TODO make points dynamic basic on level difficulty
 
-        // Kill Enemy
+        // Kill Enemy Entity
         Destroy(gameObject);
+    }
+
+    public void UpdateHealthBar()
+    {
+        // healthBar.SetSlider(currentHealth);
     }
 }

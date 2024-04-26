@@ -3082,6 +3082,7 @@ MonoBehaviour:
   trajectoryStart: {fileID: 1848860422}
   segmentCount: 10
   curveLength: 0.25
+  canDisableLine: 0
 --- !u!120 &1848860424
 LineRenderer:
   serializedVersion: 2
@@ -3462,6 +3463,7 @@ MonoBehaviour:
   - {fileID: 7774372439403873602, guid: fba327d039b74437c91dd810b0de4977, type: 3}
   - {fileID: 2978703879657906298, guid: 0bb432e1df6f842169e4e11e614fc60d, type: 3}
   - {fileID: 6582964569847830573, guid: 2f63263cc50be44a59c6f1b24c23a989, type: 3}
+  SpaceStationPrefab: {fileID: 6211615993554470468, guid: d082d5fa9de1e4f6bb45518828afae57, type: 3}
 --- !u!4 &1989278388
 Transform:
   m_ObjectHideFlags: 0

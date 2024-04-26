@@ -1,27 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class EntityStats : MonoBehaviour
 {
-    public float maxHealth = 100f;
+    // Base Entity Stats
     public float currentHealth;
-
+    public float maxHealth = 100f;
     public float armor = 10f;
     public float damage = 10f;
-
+    public float fireRate = 1f;
     public float firingRange = 3f;
 
+    // Unity MonoBehaviour Methods
     private void Start()
     {
         currentHealth = maxHealth;
     }
 
+    // Class Methods
+
     public void TakeDamage(float damage)
     {
-        // let armor and sheild take some of the damage
-        // damage -= shield.GetValue();
+        // Armor reduces damage
         damage -= armor;
         damage = Mathf.Clamp(damage, 0, int.MaxValue);
         currentHealth -= damage;
@@ -31,17 +30,17 @@ public class EntityStats : MonoBehaviour
             Die();
         }
 
-        // Update health bar
+        // Update Player UI
         if (this is PlayerStats stats)
         {
-            stats.UpdateHealthBar();
+            stats.UpdateUI();
         }
     }
 
     public virtual void Die()
     {
         // Die in some way
-        // this method is meant to be overwritten per instance
+        // This method is meant to be overwritten per instance
     }
 
 }

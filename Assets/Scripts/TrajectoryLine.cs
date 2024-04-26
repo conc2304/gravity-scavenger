@@ -1,3 +1,4 @@
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -22,6 +23,8 @@ public class TrajectoryLine : MonoBehaviour
     private GameObject player;
     private Rigidbody playerRb;
     private float playerMass;
+
+    [SerializeField] private bool canDisableLine = false;
 
 
     // Start is called before the first frame update
@@ -54,35 +57,53 @@ public class TrajectoryLine : MonoBehaviour
         lineRenderer.SetPosition(0, startPos);
 
         // Set the starting velocity based on player physics
+        Vector3 playerDirection = -player.transform.up;
         Vector3 startVelocity = playerRb.velocity;
+
         float totalLength = 0f; //  Accumulator for line length
 
         for (int i = 1; i < segmentCount; i++)
         {
+            // Debug.Log("Velocity: " + startVelocity);
+
+            // TODO
+            // To prevent really long segments, cut the timeOffset down when velocity is large
+
+            float timeOffset = i * Time.fixedDeltaTime * curveLength;
+
+            // Compute the gravity offset
+            Vector3 gravityAcceleration = GetGravityOffset(segments[i - 1]) / playerMass;
+            gravityAcceleration.z = 0; // never add z force
+
+            // Set the position of the point in the line renderer
+            // Calculate the position of an object under constant acceleration
+            segments[i] = segments[i - 1] + startVelocity * timeOffset + gravityAcceleration * (Mathf.Pow(timeOffset, 2) / 2);
+
+            // Set start velocity of the player trajectory for the next loop
+            startVelocity = (segments[i] - segments[i - 1]) / timeOffset;
+
 
             // Calculate the distance between the current point and the previous point
             float segmentLength = Vector3.Distance(segments[i], segments[i - 1]);
             totalLength += segmentLength;
 
-            float timeOffset = i * Time.fixedDeltaTime * curveLength;
-
-            // Compute the gravity offset
-            Vector3 gravityForce = GetGravityOffset(segments[i - 1]);
-            gravityForce.z = 0; // never add z force
-
-            // set the position of the point in the line renderer
-            segments[i] = segments[0] + startVelocity * timeOffset + gravityForce;
-            Vector3 segPt = Camera.main.WorldToScreenPoint(segments[i]);
-
+            // Validate segment point
             // Use the bottom-left of screen to calculate out of bounds
             float cameraDepth = Mathf.Abs(Camera.main.transform.position.z); // Assumes our game happens at z = 0
+            Vector3 segPt = Camera.main.WorldToScreenPoint(segments[i]);
             Vector3 worldBottomLeft = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, cameraDepth));
             bool pointOutOfBounds = segPt.x > Screen.width || segPt.y > Screen.height || segPt.x < worldBottomLeft.x || segPt.y < worldBottomLeft.y;
 
+            Debug.Log(pointOutOfBounds + " : " + lineCollidesWithPlanet);
             if (pointOutOfBounds || lineCollidesWithPlanet)
             {
-                // if new point is invalid just repeat the last one
-                lineRenderer.SetPosition(i, segments[i - 1]);
+                // If new point is invalid just repeat the last one
+                // to fill the rest of the line segments
+                for (int j = i; j < segmentCount; j++)
+                {
+                    lineRenderer.SetPosition(i, segments[i - 1]);
+                }
+                break;
             }
             else
             {
@@ -91,7 +112,14 @@ public class TrajectoryLine : MonoBehaviour
         }
 
         // Enable or disable the Line Renderer based on the total length, otherwise we have a weird blinking dot for a nose
-        lineRenderer.enabled = totalLength >= 0.25f && inGravityField;
+        if (canDisableLine)
+        {
+            lineRenderer.enabled = totalLength >= 0.25f && inGravityField;
+        }
+        else
+        {
+            lineRenderer.enabled = true;
+        }
 
         // When the line is long, render more dashes and vice versa
         // At its longest it should have 5 dashes, at its shortest half of a dash 
@@ -107,6 +135,8 @@ public class TrajectoryLine : MonoBehaviour
     {
         Vector3 totalForce = new Vector3(0, 0, 0);
         gravityFields = FindObjectsOfType<GravityField>();
+        Debug.Log("GF Count: " + gravityFields.Count());
+
         // Apply the gravitational force of each gravity field to our force vector
         foreach (var gravityField in gravityFields)
         {
@@ -154,6 +184,11 @@ public class TrajectoryLine : MonoBehaviour
 
         return force;
     }
+
+
+    // private Vector4 dxdt(float timeOffset, Vector4 x) {
+    //     // float xs 
+    // }
 
 
 

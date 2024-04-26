@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Chunk
 {
     public Vector2Int Coordinates;
@@ -9,13 +10,21 @@ public class Chunk
     private Vector2 size;
     private Rect boundary;
 
+    private readonly int minMass = 40;
+    private readonly int maxMass = 50;
+    private readonly int minGravityRange = 20;
+    private readonly int maxGravityRange = 50;
+
     private readonly List<GameObject> PlanetPrefabs = new();
     private readonly List<GameObject> EnemyPrefabs = new();
     private readonly List<GameObject> PickupPrefabs = new();
+    private readonly GameObject SpaceStationPrefab;
+
+    [SerializeField] bool SpawnEnemiesDebug = true;
 
     private readonly float Spawn_Z = -0.5f;
 
-    public Chunk(Vector2Int coordinates, Vector2 chunkSize, List<GameObject> enemyPrefabs, List<GameObject> pickupPrefabs, List<GameObject> planetPrefabs)
+    public Chunk(Vector2Int coordinates, Vector2 chunkSize, List<GameObject> enemyPrefabs, List<GameObject> pickupPrefabs, List<GameObject> planetPrefabs, GameObject spaceStationPrefab)
     {
         Coordinates = coordinates;
         size = chunkSize;
@@ -23,6 +32,7 @@ public class Chunk
         PlanetPrefabs = planetPrefabs;
         EnemyPrefabs = enemyPrefabs;
         PickupPrefabs = pickupPrefabs;
+        SpaceStationPrefab = spaceStationPrefab;
 
         // Calculate the boundary of the chunk based on its size and position
         boundary = new Rect(
@@ -46,6 +56,14 @@ public class Chunk
         {
             SpawnItems();
         }
+        else
+        {
+            // Only Put Space Stations in empty chunks, and only in some of them
+            if (r < chanceOfEmptiness / 3)
+            {
+                SpawnSpaceStation();
+            }
+        }
     }
 
     public void Unload()
@@ -57,7 +75,7 @@ public class Chunk
 
     private void SpawnItems()
     {
-        SpawnEnemies();
+        if (SpawnEnemiesDebug) SpawnEnemies();
         SpawnPickups();
         SpawnPlanets();
         // SpawnDebugger();
@@ -73,6 +91,18 @@ public class Chunk
 
         Vector3 spawnPosition = new Vector3(spawnX, spawnY, Spawn_Z);
         GameObject spawnedObj = Object.Instantiate(PickupPrefabs[0], spawnPosition, PickupPrefabs[0].transform.rotation);
+        items.Add(spawnedObj);
+    }
+
+    private void SpawnSpaceStation()
+    {
+        Debug.Log("SpawnSpaceStation");
+        // Put station in the middle of the chunk
+        float spawnX = boundary.center.x;
+        float spawnY = boundary.center.y;
+
+        Vector3 spawnPosition = new Vector3(spawnX, spawnY, Spawn_Z);
+        GameObject spawnedObj = Object.Instantiate(SpaceStationPrefab, spawnPosition, SpaceStationPrefab.transform.rotation);
         items.Add(spawnedObj);
     }
 
@@ -101,7 +131,9 @@ public class Chunk
         for (int i = 0; i < planetCount; i++)
         {
             GameObject planet = SpawnObject(PlanetPrefabs[Mathf.RoundToInt(Random.Range(0, PlanetPrefabs.Count))]);
-            planet.GetComponent<Rigidbody>().mass = Random.Range(10, 25);
+            // Set Gravity props
+            planet.GetComponent<Rigidbody>().mass = Random.Range(minMass, maxMass);
+            planet.GetComponent<GravityField>().maxDistance = Random.Range(minGravityRange, maxGravityRange);
             planet.transform.localScale *= Random.Range(0.75f, 3.5f);
         }
     }
