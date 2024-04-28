@@ -1,0 +1,63 @@
+.iconBtn {
+    background-color: rgba(0, 0, 0, 0.26);
+    border-left-color: rgb(0, 255, 255);
+    border-right-color: rgb(0, 255, 255);
+    border-top-color: rgb(0, 255, 255);
+    border-bottom-color: rgb(0, 255, 255);
+    border-top-left-radius: 50%;
+    border-top-right-radius: 50%;
+    border-bottom-right-radius: 50%;
+    border-bottom-left-radius: 50%;
+    color: rgb(255, 255, 255);
+    -unity-font: url("project://database/Assets/Fonts/Expansiva.otf?fileID=12800000&guid=10183f33d6bd84ea8a576b5b67e265af&type=3#Expansiva");
+    -unity-font-definition: url("project://database/Assets/Fonts/Expansiva%20SDF.asset?fileID=11400000&guid=308d0d82977f44cf0a7c93829c7994db&type=2#Expansiva SDF");
+    padding-top: 0;
+    padding-bottom: 0;
+    font-size: 24px;
+    -unity-font-style: bold;
+    width: 35px;
+    align-self: center;
+    padding-right: 0;
+    padding-left: 5px;
+    height: 35px;
+    -unity-text-align: middle-center;
+    min-width: 35px;
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    max-width: 35px;
+    max-height: 35px;
+    min-height: 35px;
+    flex-shrink: 0;
+}
+
+.iconBtn:hover {
+    transition-duration: 0.3s;
+    background-color: rgba(111, 111, 111, 0.26);
+    border-left-color: rgb(160, 255, 255);
+    border-right-color: rgb(160, 255, 255);
+    border-top-color: rgb(160, 255, 255);
+    border-bottom-color: rgb(160, 255, 255);
+    -unity-font-style: bold;
+}
+
+.iconBtn:active {
+    transition-duration: 0.3s;
+    background-color: rgba(0, 0, 0, 0.57);
+    border-left-color: rgb(126, 255, 143);
+    border-right-color: rgb(126, 255, 143);
+    border-top-color: rgb(126, 255, 143);
+    border-bottom-color: rgb(126, 255, 143);
+    -unity-font-style: bold;
+}
+
+.iconBtn.disabled {
+    transition-duration: 0.3s;
+    background-color: rgba(0, 0, 0, 0.57);
+    border-left-color: rgb(185, 185, 185);
+    border-right-color: rgb(185, 185, 185);
+    border-top-color: rgb(185, 185, 185);
+    border-bottom-color: rgb(185, 185, 185);
+    color: rgb(125, 119, 119);
+}

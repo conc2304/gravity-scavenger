@@ -3,12 +3,13 @@ using UnityEngine;
 public class EntityStats : MonoBehaviour
 {
     // Base Entity Stats
-    public float currentHealth;
     public float maxHealth = 100f;
+    public float currentHealth;
     public float armor = 10f;
     public float damage = 10f;
     public float fireRate = 1f;
     public float firingRange = 3f;
+    public float thrust;
 
     // Unity MonoBehaviour Methods
     private void Start()
@@ -35,6 +36,9 @@ public class EntityStats : MonoBehaviour
         {
             stats.UpdateUI();
         }
+
+        Debug.Log("Take Damage Entity Stats");
+
     }
 
     public virtual void Die()

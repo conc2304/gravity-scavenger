@@ -1,0 +1,4 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/PlayerUpgrade/Components/UpgradeSlot.uss?fileID=7433441132597879392&amp;guid=e5403727687bb4feeb0d960645529c39&amp;type=3#UpgradeSlot" />
+    <ui:VisualElement name="upgradeSlot" class="upgradeSlot" style="flex-shrink: 1; align-self: stretch; justify-content: center; max-height: 25px;" />
+</ui:UXML>

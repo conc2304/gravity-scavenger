@@ -135,7 +135,6 @@ public class TrajectoryLine : MonoBehaviour
     {
         Vector3 totalForce = new Vector3(0, 0, 0);
         gravityFields = FindObjectsOfType<GravityField>();
-        Debug.Log("GF Count: " + gravityFields.Count());
 
         // Apply the gravitational force of each gravity field to our force vector
         foreach (var gravityField in gravityFields)

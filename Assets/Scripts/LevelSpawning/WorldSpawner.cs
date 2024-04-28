@@ -98,12 +98,11 @@ public class WorldSpawner : MonoBehaviour
                 // Add the nearby chunk to the set of chunks to load
                 chunksToLoad.Add(nearbyChunk);
 
-                // Check if the nearby chunk is not already loaded
+                // Check if the nearby chunk is not already loaded, and if not then load one
                 if (!loadedChunks.Contains(nearbyChunk))
                 {
                     if (!chunks.ContainsKey(nearbyChunk))
                     {
-                        Debug.Log("No Chunk");
                         chunks[nearbyChunk] = new Chunk(nearbyChunk, chunkSize, EnemyPrefabs, PickupPrefabs, PlanetPrefabs, SpaceStationPrefab);
                     }
                     chunks[nearbyChunk].Load();

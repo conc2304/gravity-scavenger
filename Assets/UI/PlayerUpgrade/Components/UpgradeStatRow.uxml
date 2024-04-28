@@ -1,0 +1,17 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/PlayerUpgrade/Components/UpgradeStatRow.uss?fileID=7433441132597879392&amp;guid=502b6605f795d41f294dc501c97baa16&amp;type=3#UpgradeStatRow" />
+    <ui:VisualElement name="row" style="flex-grow: 1; flex-direction: row; justify-content: space-between; padding-top: 4px; padding-right: 0; padding-bottom: 4px; padding-left: 0;">
+        <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="statName" style="-unity-text-align: middle-left; -unity-font: url(&quot;project://database/Assets/Fonts/Expansiva%20bold.otf?fileID=12800000&amp;guid=30057a72c849448a19922707030c09dd&amp;type=3#Expansiva bold&quot;); -unity-font-definition: url(&quot;project://database/Assets/Fonts/Expansiva%20bold%20SDF.asset?fileID=11400000&amp;guid=45fa03ca27d014207bb638a44446daa7&amp;type=2#Expansiva bold SDF&quot;); color: rgb(255, 255, 255); width: 125px;" />
+        <ui:VisualElement name="statusBar" style="flex-grow: 1; justify-content: center; width: auto; flex-direction: row; align-items: center;" />
+        <ui:VisualElement name="modifiersWrapper" style="flex-grow: initial; flex-direction: row; align-items: center; width: 155px;">
+            <ui:VisualElement name="btnWrapper" style="flex-grow: 1; flex-direction: row;">
+                <ui:Label tabindex="-1" text="8" parse-escape-sequences="true" display-tooltip-when-elided="true" name="downgradeCost" style="-unity-text-align: middle-right; -unity-font: url(&quot;project://database/Assets/Fonts/Expansiva.otf?fileID=12800000&amp;guid=10183f33d6bd84ea8a576b5b67e265af&amp;type=3#Expansiva&quot;); -unity-font-definition: url(&quot;project://database/Assets/Fonts/Expansiva%20SDF.asset?fileID=11400000&amp;guid=308d0d82977f44cf0a7c93829c7994db&amp;type=2#Expansiva SDF&quot;); color: rgb(255, 255, 255); -unity-font-style: bold; margin-bottom: 4px; margin-left: 4px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; width: 20px; max-width: 20px; min-width: 20px;" />
+                <ui:Button text="-" parse-escape-sequences="true" display-tooltip-when-elided="true" name="downgradeBtn" class="menuBtn iconBtn" />
+            </ui:VisualElement>
+            <ui:VisualElement name="btnWrapper" style="flex-grow: 1; flex-direction: row;">
+                <ui:Button text="+" parse-escape-sequences="true" display-tooltip-when-elided="true" name="upgradeBtn" class="menuBtn iconBtn" />
+                <ui:Label tabindex="-1" text="8" parse-escape-sequences="true" display-tooltip-when-elided="true" name="upgradeCost" style="-unity-text-align: middle-left; -unity-font: url(&quot;project://database/Assets/Fonts/Expansiva.otf?fileID=12800000&amp;guid=10183f33d6bd84ea8a576b5b67e265af&amp;type=3#Expansiva&quot;); -unity-font-definition: url(&quot;project://database/Assets/Fonts/Expansiva%20SDF.asset?fileID=11400000&amp;guid=308d0d82977f44cf0a7c93829c7994db&amp;type=2#Expansiva SDF&quot;); color: rgb(255, 255, 255); -unity-font-style: bold; margin-left: 4px; margin-bottom: 4px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; width: 20px; max-width: 20px; min-width: 20px;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

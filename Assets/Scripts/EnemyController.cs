@@ -5,7 +5,8 @@ public class EnemyController : MonoBehaviour
 {
 
     public Transform target;
-    public float thrust = 3f;
+    private float thrust;
+    // public float thrust = 3f;
     private Rigidbody rb;
     public float rotateSpeed = 0.05f;
 
@@ -15,16 +16,18 @@ public class EnemyController : MonoBehaviour
     // Laser Gun Variabls
     [SerializeField] private GameObject laserPrefab;
     [SerializeField] private Transform firingPoint;
-    [Range(0.1f, 5f)]
-    [SerializeField] private float fireRate = 4f;
     private float fireTimer;
     private bool targetIsInFiringRange = false;
-    public float firingRange = 5f;
+    private float firingRange;
+    private float fireRate;
+    // public float firingRange = 5f;
 
-    // Start is called before the first frame update
-    private void Start()
+    private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        // Initialize stats
+        fireRate = GetComponent<EnemyStats>().fireRate;
+        firingRange = GetComponent<EnemyStats>().firingRange;
     }
 
     private void Update()
@@ -112,7 +115,6 @@ public class EnemyController : MonoBehaviour
             // Destroy the player
             other.gameObject.GetComponent<PlayerStats>().Die();
             target = null;
-
 
             // Restart scene after a few seconds
             // todo add delay

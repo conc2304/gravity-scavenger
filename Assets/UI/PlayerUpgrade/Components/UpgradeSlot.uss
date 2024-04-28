@@ -1,0 +1,28 @@
+root {
+    flex-grow: 1;
+    flex-shrin: 0;
+}
+
+.upgradeSlot {
+    flex-grow: 1;
+    height: 25px;
+    background-color: rgba(0, 0, 0, 0.26);
+    border-left-color: rgb(0, 255, 255);
+    border-right-color: rgb(0, 255, 255);
+    border-top-color: rgb(0, 255, 255);
+    border-bottom-color: rgb(0, 255, 255);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    margin-right: 8px;
+}
+
+
+.upgradeSlot.slotUsed {
+    background-color: rgb(73, 154, 116);
+}

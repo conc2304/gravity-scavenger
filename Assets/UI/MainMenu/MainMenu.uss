@@ -1,0 +1,164 @@
+.menuBtn {
+    background-color: rgba(0, 0, 0, 0.26);
+    border-left-color: rgb(0, 255, 255);
+    border-right-color: rgb(0, 255, 255);
+    border-top-color: rgb(0, 255, 255);
+    border-bottom-color: rgb(0, 255, 255);
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border-bottom-left-radius: 12px;
+    color: rgb(255, 255, 255);
+    -unity-font: url("project://database/Assets/Fonts/Expansiva.otf?fileID=12800000&guid=10183f33d6bd84ea8a576b5b67e265af&type=3#Expansiva");
+    -unity-font-definition: url("project://database/Assets/Fonts/Expansiva%20SDF.asset?fileID=11400000&guid=308d0d82977f44cf0a7c93829c7994db&type=2#Expansiva SDF");
+    padding-top: 12px;
+    padding-bottom: 12px;
+    font-size: 24px;
+    -unity-font-style: bold;
+    width: auto;
+    align-self: center;
+    padding-right: 12px;
+    padding-left: 12px;
+    height: auto;
+    -unity-text-align: middle-center;
+    min-width: 200px;
+}
+
+.menuBtn:hover {
+    transition-duration: 0.3s;
+    background-color: rgba(111, 111, 111, 0.26);
+    border-left-color: rgb(160, 255, 255);
+    border-right-color: rgb(160, 255, 255);
+    border-top-color: rgb(160, 255, 255);
+    border-bottom-color: rgb(160, 255, 255);
+    -unity-font-style: bold;
+}
+
+.modal {
+    flex-grow: 1;
+    height: 50%;
+    width: 50%;
+    background-color: rgba(23, 70, 106, 0.61);
+    border-left-color: rgb(0, 255, 255);
+    border-right-color: rgb(0, 255, 255);
+    border-top-color: rgb(0, 255, 255);
+    border-bottom-color: rgb(0, 255, 255);
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+    border-bottom-right-radius: 18px;
+    border-bottom-left-radius: 18px;
+    margin-top: 10%;
+    margin-bottom: 5%;
+}
+
+.menuBtn:active {
+    transition-duration: 0.3s;
+    background-color: rgba(0, 0, 0, 0.57);
+    border-left-color: rgb(126, 255, 143);
+    border-right-color: rgb(126, 255, 143);
+    border-top-color: rgb(126, 255, 143);
+    border-bottom-color: rgb(126, 255, 143);
+    -unity-font-style: bold;
+}
+
+.rowBtn {
+    width: 150px;
+}
+
+.row {
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-shrink: 1;
+    flex-grow: 1;
+    align-items: auto;
+    justify-content: space-between;
+    align-self: flex-start;
+}
+
+.listIcon {
+}
+
+.slotUsed {
+    background-color: rgb(73, 154, 116);
+}
+
+.destructiveBtn {
+    font-size: 16px;
+    border-left-color: rgb(255, 182, 85);
+    border-right-color: rgb(255, 182, 85);
+    border-top-color: rgb(255, 182, 85);
+    border-bottom-color: rgb(255, 182, 85);
+}
+
+.destructiveBtn:hover {
+    border-left-color: rgb(253, 223, 185);
+    border-right-color: rgb(253, 223, 185);
+    border-top-color: rgb(253, 223, 185);
+    border-bottom-color: rgb(253, 223, 185);
+}
+
+.destructiveBtn:active {
+    border-left-color: rgb(255, 96, 85);
+    border-right-color: rgb(255, 96, 85);
+    border-top-color: rgb(255, 96, 85);
+    border-bottom-color: rgb(255, 96, 85);
+}
+
+.iconBtn {
+    border-top-left-radius: 50%;
+    border-top-right-radius: 50%;
+    border-bottom-right-radius: 50%;
+    border-bottom-left-radius: 50%;
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+    min-height: 50px;
+    max-width: 50px;
+    -unity-text-align: upper-center;
+    padding-right: 8px;
+}
+
+.upgradeLabel {
+    -unity-text-align: middle-left;
+    -unity-font: url("project://database/Assets/Fonts/Expansiva%20bold.otf?fileID=12800000&guid=30057a72c849448a19922707030c09dd&type=3#Expansiva bold");
+    -unity-font-definition: url("project://database/Assets/Fonts/Expansiva%20bold%20SDF.asset?fileID=11400000&guid=45fa03ca27d014207bb638a44446daa7&type=2#Expansiva bold SDF");
+    color: rgb(255, 255, 255);
+    width: 125px;
+}
+
+.checkoutTxt {
+    color: rgb(255, 255, 255);
+    -unity-font: url("project://database/Assets/Fonts/Expansiva%20bold.otf?fileID=12800000&guid=30057a72c849448a19922707030c09dd&type=3#Expansiva bold");
+    -unity-font-definition: url("project://database/Assets/Fonts/Expansiva%20bold%20SDF.asset?fileID=11400000&guid=45fa03ca27d014207bb638a44446daa7&type=2#Expansiva bold SDF");
+}
+
+.statusBar {
+    flex-grow: 1;
+    justify-content: space-between;
+    width: 350px;
+    flex-direction: row;
+    align-items: center;
+}
+
+.upgradeSlot {
+    flex-grow: 1;
+    height: 25px;
+    background-color: rgba(0, 0, 0, 0.26);
+    border-left-color: rgb(0, 255, 255);
+    border-right-color: rgb(0, 255, 255);
+    border-top-color: rgb(0, 255, 255);
+    border-bottom-color: rgb(0, 255, 255);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    margin-right: 8px;
+}

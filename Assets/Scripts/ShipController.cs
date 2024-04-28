@@ -8,8 +8,9 @@ public class ShipController : MonoBehaviour
     // Laser Gun Variabls
     [SerializeField] private GameObject laserPrefab;
     [SerializeField] private Transform firingPoint;
-    [Range(0.1f, 1f)]
-    [SerializeField] private float fireRate = 0.5f;
+    // [Range(0.1f, 1f)]
+    // // [SerializeField] private float fireRate = 0.5f;
+    private float fireRate;
     private float fireTimer;
 
     private GravityField[] gravityFields; // Reference to the GravityField script
@@ -18,7 +19,8 @@ public class ShipController : MonoBehaviour
     public Camera cam;
     public Transform player;
     public Rigidbody rigidBody;
-    public float thrust = 100f;
+    // public float thrust = 100f;
+    private float thrust;
 
     Vector2 mousePos;
     Vector3 playerPos;
@@ -29,6 +31,10 @@ public class ShipController : MonoBehaviour
         {
             cam = Camera.main;
         }
+
+        fireRate = PlayerStatsManager.Instance.fireRate.currentValue;
+        thrust = PlayerStatsManager.Instance.thrust.currentValue;
+        Debug.Log("Thrust: " + thrust);
     }
 
     void Update()
@@ -81,6 +87,8 @@ public class ShipController : MonoBehaviour
     {
         GameObject laser = Instantiate(laserPrefab, firingPoint.position, firingPoint.rotation);
         laser.GetComponent<Laser>().SetShooterTag(gameObject.tag);
+        laser.GetComponent<Laser>().damage = PlayerStatsManager.Instance.damage.currentValue;
+        laser.GetComponent<Laser>().range = PlayerStatsManager.Instance.fireRange.currentValue;
     }
 
     private void OnDestroy()

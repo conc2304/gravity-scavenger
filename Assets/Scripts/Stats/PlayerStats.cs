@@ -1,23 +1,18 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using System.Collections;
 
 // Derive Player Stats from entity Stats
 public class PlayerStats : EntityStats
 {
-
-    // Singleton instance
-    private static PlayerStats instance;
-    public static PlayerStats Instance { get { return instance; } }
-
     // Player stats
-    public float maxFuel = 100f;
-
-    public float fuelRate = 0.01f;
-    public float parts = 0f;
-    public float points = 0f;
-
-    // Current player stats
-    public float currentFuel;
+    private float maxFuel;
+    private float currentFuel;
+    private float fuelRate;
+    private float parts;
+    private float points;
+    private float lives;
 
     // UI References
     [SerializeField] private StatusBar healthBar;
@@ -25,28 +20,28 @@ public class PlayerStats : EntityStats
     [SerializeField] private Text partsText;
     [SerializeField] private Text pointsText;
 
-    // Unity MonoBehaviour Methods
-    private void Awake()
-    {
-        // Ensure there's only one instance of PlayerStats
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject); // Keep PlayerStats alive between scenes
-        }
-        else
-        {
-            Destroy(gameObject); // Destroy duplicate PlayerStats instances
-        }
+    // Animation Reference
+    [SerializeField] private GameObject DeathAnimation;
 
-        Debug.Log("PLayer Health: " + currentHealth);
-    }
 
     private void Start()
     {
-        // Initialize Stats
-        currentFuel = maxFuel;
-        currentHealth = maxHealth;
+        // Initialize Stats from the Persistent Stats Manager
+        // Upgradeable status have currentValue
+        currentFuel = PlayerStatsManager.Instance.maxFuel.currentValue;
+        currentHealth = PlayerStatsManager.Instance.maxHealth.currentValue;
+        maxFuel = PlayerStatsManager.Instance.maxFuel.currentValue;
+        maxHealth = PlayerStatsManager.Instance.maxHealth.currentValue;
+        damage = PlayerStatsManager.Instance.damage.currentValue;
+        armor = PlayerStatsManager.Instance.armor.currentValue;
+        thrust = PlayerStatsManager.Instance.thrust.currentValue;
+
+
+        fuelRate = PlayerStatsManager.Instance.fuelRate;
+        parts = PlayerStatsManager.Instance.parts;
+        points = PlayerStatsManager.Instance.points;
+
+        // Initialize the UI
         healthBar.SetSliderMax(maxHealth);
         fuelBar.SetSliderMax(maxFuel);
     }
@@ -57,6 +52,12 @@ public class PlayerStats : EntityStats
     {
         currentFuel -= fuelRate;
         UpdateUI();
+        PlayerStatsManager.Instance.currentFuel = currentFuel;
+
+        if (currentFuel <= 0)
+        {
+            Die();
+        }
     }
 
     public void AddFuel(float amount)
@@ -64,6 +65,7 @@ public class PlayerStats : EntityStats
         currentFuel += amount;
         currentFuel = Mathf.Clamp(currentFuel, 0, maxFuel);
         UpdateUI();
+        PlayerStatsManager.Instance.currentFuel = currentFuel;
     }
 
     public void AddHealth(float amount)
@@ -71,13 +73,14 @@ public class PlayerStats : EntityStats
         currentHealth += amount;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
         UpdateUI();
-
+        PlayerStatsManager.Instance.currentHealth = currentHealth;
     }
 
     public void AddParts(float amount)
     {
         parts += amount;
         UpdateUI();
+        PlayerStatsManager.Instance.parts = parts;
     }
 
     public void StealParts(float amount)
@@ -85,12 +88,14 @@ public class PlayerStats : EntityStats
         parts -= amount;
         parts = Mathf.Clamp(parts, 0, Mathf.Infinity); // Can't steal what they don't have
         UpdateUI();
+        PlayerStatsManager.Instance.parts = parts;
     }
 
     public void AddPoints(float amount)
     {
         points += amount;
         UpdateUI();
+        PlayerStatsManager.Instance.points = points;
     }
 
     public void UpdateUI()
@@ -106,5 +111,36 @@ public class PlayerStats : EntityStats
 
         if (pointsText != null)
             pointsText.text = Mathf.Round(points).ToString() + " XP";
+    }
+
+    public new void TakeDamage(float damage)
+    {
+        Debug.Log("Take Damage PLayer Stats");
+        GetComponent<EnemyStats>().TakeDamage(damage);
+        PlayerStatsManager.Instance.currentHealth = currentHealth;
+    }
+
+    public override void Die()
+    {
+        // Play die animation
+        GameObject anim = Instantiate(DeathAnimation, transform.position, DeathAnimation.transform.rotation);
+        Destroy(anim, 1.75f); // destory animation of short time
+
+        // Lose a life
+        lives -= 1;
+        if (lives <= 0)
+        {
+            StartCoroutine(GameOver());
+        }
+
+        // Lose some parts if we have any
+        StealParts(Random.Range(1, 3));
+    }
+
+    IEnumerator GameOver()
+    {
+        // Pause 2 seconds and then load game over screen
+        yield return new WaitForSeconds(2);
+        SceneManager.LoadScene("Game Over");
     }
 }

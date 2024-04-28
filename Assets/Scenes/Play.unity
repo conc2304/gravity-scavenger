@@ -936,6 +936,63 @@ Transform:
   - {fileID: 700283794}
   m_Father: {fileID: 963194228}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &871193746
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 871193748}
+  - component: {fileID: 871193747}
+  m_Layer: 0
+  m_Name: PlayerStatsManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &871193747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 871193746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96cc1b9d2d02f4bfd9ebbb995cd78afb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lives: 3
+  maxFuel: 100
+  currentFuel: 0
+  fuelRate: 0.01
+  parts: 0
+  points: 0
+  maxHealth: 100
+  currentHealth: 0
+  armor: 10
+  damage: 10
+  fireRate: 1
+  firingRange: 3
+  thrust: 100
+--- !u!4 &871193748
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 871193746}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 72.5, y: 92, z: -0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &925933985
 GameObject:
   m_ObjectHideFlags: 0
@@ -2747,11 +2804,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   laserPrefab: {fileID: 3052431056016438781, guid: 5445fde96bd4b485a8de644fbe34b11d, type: 3}
   firingPoint: {fileID: 1869768056}
-  fireRate: 0.5
   cam: {fileID: 963194227}
   player: {fileID: 1450463661}
   rigidBody: {fileID: 1450463662}
-  thrust: 1000
 --- !u!4 &1450463661
 Transform:
   m_ObjectHideFlags: 0
@@ -2776,7 +2831,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1450463658}
   serializedVersion: 4
-  m_Mass: 5
+  m_Mass: 2.5
   m_Drag: 0.1
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -2830,21 +2885,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e65e3603feed647f99ddcdd5c9216f7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentHealth: 0
   maxHealth: 100
+  currentHealth: 0
   armor: 10
   damage: 10
   fireRate: 1
   firingRange: 3
-  maxFuel: 100
-  fuelRate: 0.01
-  parts: 0
-  points: 0
-  currentFuel: 0
+  thrust: 0
   healthBar: {fileID: 1399036548}
   fuelBar: {fileID: 1057650290}
   partsText: {fileID: 1941896075}
   pointsText: {fileID: 311420604}
+  DeathAnimation: {fileID: 8829934830357975777, guid: ff4b0c2caab8740a0ae759166826dbc9, type: 3}
 --- !u!1 &1605694026
 GameObject:
   m_ObjectHideFlags: 0
@@ -3801,6 +3853,7 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 871193748}
   - {fileID: 1450463661}
   - {fileID: 963194228}
   - {fileID: 705507995}

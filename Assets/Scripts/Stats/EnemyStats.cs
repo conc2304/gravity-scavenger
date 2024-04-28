@@ -10,7 +10,6 @@ public class EnemyStats : EntityStats
     private GameObject Player;
     [SerializeField] private GameObject DeathAnimation;
 
-
     // Pickups
     public List<GameObject> PickupPrefabs = new();
     private readonly Dictionary<int, int> pickUpProbability = new()
@@ -30,6 +29,8 @@ public class EnemyStats : EntityStats
         if (!Player) Player = GameObject.FindGameObjectWithTag("Player");
         maxHealth = 30f;
         currentHealth = maxHealth;
+        firingRange = 5f;
+        fireRate = 4f;
     }
 
     // Class Methods
