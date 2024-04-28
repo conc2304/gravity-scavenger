@@ -13,7 +13,7 @@ public class PlayerStatsManager : MonoBehaviour
     // public float maxFuel = 100f;
     public float currentFuel;
     public float fuelRate = 0.01f;
-    public float parts = 0f;
+    public float parts = 15f;
     public float points = 0f;
     // public float maxHealth = 100f;
     public float currentHealth;

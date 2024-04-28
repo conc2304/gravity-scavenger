@@ -22,7 +22,6 @@
         </ui:VisualElement>
         <ui:VisualElement name="modalActions" style="flex-grow: 0; justify-content: center; flex-shrink: 1; margin-bottom: 20px;">
             <ui:VisualElement name="btnWrapper" style="flex-grow: 0; flex-direction: row; -unity-text-align: upper-center; align-items: center; justify-content: center; align-self: auto; margin-top: 16px; margin-right: 16px; margin-bottom: 16px; margin-left: 16px; flex-shrink: 0;">
-                <ui:Button text="CANCEL" parse-escape-sequences="true" display-tooltip-when-elided="true" name="cancelBtn" class="menuBtn destructiveBtn" />
                 <ui:Button text="UPGRADE" parse-escape-sequences="true" display-tooltip-when-elided="true" name="confirmButton" class="menuBtn" style="font-size: 16px; opacity: 1;" />
             </ui:VisualElement>
         </ui:VisualElement>

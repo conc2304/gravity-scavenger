@@ -10,10 +10,11 @@ public class UpgradableStat
     public float upgradeIncrement;
     public float currentValue;
     public int upgradesUsed;
-    public float upgradeCostScale;
+    public float upgradeCost;
+    public float downgradeCost;
     public bool isUpgradable = true;
     public bool isDowngradable = false;
-    private readonly float costScale = 1f; // how much the cost goes up between upgrades
+    private readonly float costScale = 1.75f; // how much the cost goes up between upgrades
 
     public UpgradableStat(string name, float baseVal, float maxVal, int maxUpgrades, float initialUpgradeCost)
     {
@@ -24,53 +25,49 @@ public class UpgradableStat
         upgradeIncrement = (maxVal - baseVal) / maxUpgrades;
         currentValue = baseVal;
         upgradesUsed = 0;
-        upgradeCostScale = initialUpgradeCost;
+        downgradeCost = 0;
+        upgradeCost = initialUpgradeCost;
     }
 
     public bool Upgrade()
     {
-        if (upgradesUsed < maxUpgrades)
+        if (isUpgradable)
         {
+            downgradeCost = upgradeCost;
             upgradesUsed++;
             currentValue += upgradeIncrement;
-            upgradeCostScale += costScale;
+            upgradeCost = Mathf.RoundToInt(upgradeCost * costScale);
             isUpgradable = upgradesUsed < maxUpgrades;
+            isDowngradable = upgradesUsed > 0;
+
             return true;
         }
         else
         {
-            isUpgradable = false;
             Debug.LogWarning("Maximum upgrades reached for " + statName);
             return false;
-
         }
     }
 
     public bool Downgrade()
     {
-        if (upgradesUsed > 0)
+        if (isDowngradable)
         {
+            upgradeCost = downgradeCost;
             upgradesUsed--;
             currentValue -= upgradeIncrement;
-            upgradeCostScale -= costScale;
+            downgradeCost = Mathf.RoundToInt(upgradeCost / costScale);
             isDowngradable = upgradesUsed > 0;
+            isUpgradable = upgradesUsed < maxUpgrades;
+
             return true;
         }
         else
         {
             Debug.LogWarning("Minimum upgrades reached for " + statName);
-            isDowngradable = false;
             return false;
         }
     }
 
-    public float GetUpgradeCost()
-    {
-        return Mathf.Round(upgradeCostScale * (1 + upgradesUsed));
-    }
 
-    public float GetDowngradCost()
-    {
-        return Mathf.Round(upgradeCostScale / (1 + upgradesUsed));
-    }
 }

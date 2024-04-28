@@ -27,7 +27,7 @@ public class PlayerStats : EntityStats
     private void Start()
     {
         // Initialize Stats from the Persistent Stats Manager
-        // Upgradeable status have currentValue
+        // Upgradeable stats have currentValue
         currentFuel = PlayerStatsManager.Instance.maxFuel.currentValue;
         currentHealth = PlayerStatsManager.Instance.maxHealth.currentValue;
         maxFuel = PlayerStatsManager.Instance.maxFuel.currentValue;
@@ -36,7 +36,7 @@ public class PlayerStats : EntityStats
         armor = PlayerStatsManager.Instance.armor.currentValue;
         thrust = PlayerStatsManager.Instance.thrust.currentValue;
 
-
+        // Non-upgradable stats
         fuelRate = PlayerStatsManager.Instance.fuelRate;
         parts = PlayerStatsManager.Instance.parts;
         points = PlayerStatsManager.Instance.points;
