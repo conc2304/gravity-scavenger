@@ -15,9 +15,10 @@ GameObject:
   - component: {fileID: 520902259169191590}
   - component: {fileID: 8405053642142210331}
   - component: {fileID: 2520571725497684750}
+  - component: {fileID: 4135849683936481619}
   m_Layer: 0
   m_Name: Moon1
-  m_TagString: Untagged
+  m_TagString: Planet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -165,3 +166,15 @@ MonoBehaviour:
   rotationSpeedX: 16
   rotationSpeedY: 9
   rotationSpeedZ: 3
+--- !u!114 &4135849683936481619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3494316293173810816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 387b64fcbd8b44341a95b0c4272d7692, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

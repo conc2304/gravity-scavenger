@@ -14,7 +14,7 @@ public class GravityField : MonoBehaviour
     {
         // All gravity fields should at a minumun attract the player
         GameObject player = GameObject.FindWithTag("Player");
-        rb = this.GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
 
         // Check if a player GameObject
         if (player != null)
@@ -33,6 +33,8 @@ public class GravityField : MonoBehaviour
         // Loop through all attractees in the list
         foreach (GameObject attractee in attractees)
         {
+            if (attractee == null || attractee.GetComponent<Rigidbody>() == null) return;
+
             Attract(attractee);
         }
     }
@@ -61,6 +63,12 @@ public class GravityField : MonoBehaviour
         {
             float forceMagnitude = rb.mass * rbToAttract.mass / Mathf.Pow(distance, 2);
             force = direction.normalized * forceMagnitude;
+
+            // Defense
+            if (!isValidVector(force))
+            {
+                force = new Vector3(0, 0, 0);
+            }
         }
 
         return force;
@@ -76,5 +84,10 @@ public class GravityField : MonoBehaviour
     public void RemoveAttractee(GameObject attracteeToRemove)
     {
         attractees.Remove(attracteeToRemove);
+    }
+
+    private bool isValidVector(Vector3 v)
+    {
+        return !(float.IsNaN(v.x) || float.IsNaN(v.y) || float.IsNaN(v.z));
     }
 }

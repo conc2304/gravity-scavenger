@@ -162,3 +162,15 @@
     border-left-width: 2px;
     margin-right: 8px;
 }
+
+.gameOverTxt {
+    align-items: center;
+    justify-content: center;
+    -unity-font: url("project://database/Assets/Fonts/hyperion.ttf?fileID=12800000&guid=b654d1d48aff04cd2b2285f075af219f&type=3#hyperion");
+    -unity-font-definition: url("project://database/Assets/Fonts/hyperion%20SDF.asset?fileID=11400000&guid=50543802f07ba4555bd25469873a92ae&type=2#hyperion SDF");
+    color: rgb(200, 73, 0);
+    -unity-text-align: middle-center;
+    font-size: 68px;
+    padding-top: 16px;
+    height: 25%;
+}

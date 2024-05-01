@@ -7,12 +7,12 @@ using UnityEngine.UIElements;
 public class MainMenu : MonoBehaviour
 {
     private UIDocument mainMenuDocument;
+    [SerializeField] private AudioSource confirmAudio; // UI Audio
 
     private Button startBtn;
     private Button homeBtn;
     private Button helpBtn;
     private Button quitBtn;
-
 
     private void OnEnable()
     {
@@ -39,24 +39,35 @@ public class MainMenu : MonoBehaviour
     public void OnStartClick(ClickEvent evt)
     {
         Debug.Log("Start Clicked");
-        SceneManager.LoadScene("Play");
+        StartCoroutine(LoadScene("Play"));
     }
 
     public void OnHomeClick(ClickEvent evt)
     {
         Debug.Log("Home Clicked");
-        SceneManager.LoadScene("Home");
+        StartCoroutine(LoadScene("Home"));
     }
 
     public void OnHelpClick(ClickEvent evt)
     {
         Debug.Log("Help Clicked");
+        StartCoroutine(LoadScene("Help"));
     }
 
     public void OnQuitClick(ClickEvent evt)
     {
         Debug.Log("Quit Clicked");
         Application.Quit();
+    }
+
+
+    IEnumerator LoadScene(string scene)
+    {
+        confirmAudio.Play();
+
+        // Pause 1 second and then load scene
+        yield return new WaitForSeconds(confirmAudio.clip.length + 0.1f);
+        SceneManager.LoadScene(scene);
     }
 
 }

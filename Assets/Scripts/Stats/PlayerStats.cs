@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
@@ -14,15 +13,8 @@ public class PlayerStats : EntityStats
     private float points;
     private float lives;
 
-    // UI References
-    [SerializeField] private StatusBar healthBar;
-    [SerializeField] private StatusBar fuelBar;
-    [SerializeField] private Text partsText;
-    [SerializeField] private Text pointsText;
-
     // Animation Reference
     [SerializeField] private GameObject DeathAnimation;
-
 
     private void Start()
     {
@@ -40,10 +32,7 @@ public class PlayerStats : EntityStats
         fuelRate = PlayerStatsManager.Instance.fuelRate;
         parts = PlayerStatsManager.Instance.parts;
         points = PlayerStatsManager.Instance.points;
-
-        // Initialize the UI
-        healthBar.SetSliderMax(maxHealth);
-        fuelBar.SetSliderMax(maxFuel);
+        lives = PlayerStatsManager.Instance.lives;
     }
 
     // Class Methods
@@ -51,8 +40,8 @@ public class PlayerStats : EntityStats
     public void DepleteFuel()
     {
         currentFuel -= fuelRate;
-        UpdateUI();
         PlayerStatsManager.Instance.currentFuel = currentFuel;
+        UpdateUI();
 
         if (currentFuel <= 0)
         {
@@ -64,83 +53,105 @@ public class PlayerStats : EntityStats
     {
         currentFuel += amount;
         currentFuel = Mathf.Clamp(currentFuel, 0, maxFuel);
-        UpdateUI();
         PlayerStatsManager.Instance.currentFuel = currentFuel;
+        UpdateUI();
     }
 
     public void AddHealth(float amount)
     {
         currentHealth += amount;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-        UpdateUI();
         PlayerStatsManager.Instance.currentHealth = currentHealth;
+        UpdateUI();
     }
 
     public void AddParts(float amount)
     {
         parts += amount;
-        UpdateUI();
         PlayerStatsManager.Instance.parts = parts;
+        UpdateUI();
     }
 
     public void StealParts(float amount)
     {
         parts -= amount;
         parts = Mathf.Clamp(parts, 0, Mathf.Infinity); // Can't steal what they don't have
-        UpdateUI();
         PlayerStatsManager.Instance.parts = parts;
+        UpdateUI();
     }
 
     public void AddPoints(float amount)
     {
         points += amount;
-        UpdateUI();
         PlayerStatsManager.Instance.points = points;
+        UpdateUI();
     }
 
     public void UpdateUI()
     {
-        if (healthBar != null)
-            healthBar.SetSlider(currentHealth);
-
-        if (fuelBar != null)
-            fuelBar.SetSlider(currentFuel);
-
-        if (partsText != null)
-            partsText.text = Mathf.Round(parts).ToString();
-
-        if (pointsText != null)
-            pointsText.text = Mathf.Round(points).ToString() + " XP";
+        GetComponent<GamePlayStatsBar>().UpdateUI();
     }
 
     public new void TakeDamage(float damage)
     {
-        Debug.Log("Take Damage PLayer Stats");
-        GetComponent<EnemyStats>().TakeDamage(damage);
+        Debug.Log("Take Damage Player Stats");
+        GetComponent<EntityStats>().TakeDamage(damage); // Use parent method, and update stats/ui
         PlayerStatsManager.Instance.currentHealth = currentHealth;
+        UpdateUI();
     }
 
     public override void Die()
     {
-        // Play die animation
-        GameObject anim = Instantiate(DeathAnimation, transform.position, DeathAnimation.transform.rotation);
-        Destroy(anim, 1.75f); // destory animation of short time
+        // Prevent multiple collisions causing multiple deaths
+        if (isDead) return;
+        isDead = true;
 
-        // Lose a life
-        lives -= 1;
-        if (lives <= 0)
-        {
-            StartCoroutine(GameOver());
-        }
+        // Play die animation
+        dieSoundSource.Play();
+        GameObject anim = Instantiate(DeathAnimation, transform.position, DeathAnimation.transform.rotation);
+        Destroy(anim, 2f); // Destory object after short time
+
+        // Make the ship disappear during die animation
+        // Destorying the main player game object causes errors with rigid body physics
+        // So are hiding the childe
+        Transform childTransform = transform.Find("Ship Wrapper");
+        childTransform.gameObject.SetActive(false);
 
         // Lose some parts if we have any
-        StealParts(Random.Range(1, 3));
+        StealParts(Random.Range(0, 3));
+        // Lose a life
+        float delay = Mathf.Max(dieSoundSource.clip.length, 2f) + 0.1f;
+        lives -= 1;
+        PlayerStatsManager.Instance.lives = lives;
+        if (lives <= 0)
+        {
+            StartCoroutine(LoadSceneAfter("Game Over", delay));
+        }
+        else
+        {
+            StartCoroutine(LoadSceneAfter("Play", delay));
+        }
     }
 
-    IEnumerator GameOver()
+
+    // Reset physics for a single Rigidbody
+    public void ResetPhysics(Rigidbody rb)
     {
-        // Pause 2 seconds and then load game over screen
-        yield return new WaitForSeconds(2);
-        SceneManager.LoadScene("Game Over");
+        if (rb != null)
+        {
+            rb.ResetCenterOfMass();
+            rb.ResetInertiaTensor();
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
+    }
+
+
+
+    IEnumerator LoadSceneAfter(string scene, float delay)
+    {
+        // Pause x seconds and then load scene
+        yield return new WaitForSeconds(delay);
+        SceneManager.LoadScene(scene);
     }
 }

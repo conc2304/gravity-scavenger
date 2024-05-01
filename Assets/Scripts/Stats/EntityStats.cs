@@ -2,14 +2,18 @@ using UnityEngine;
 
 public class EntityStats : MonoBehaviour
 {
+
     // Base Entity Stats
     public float maxHealth = 100f;
     public float currentHealth;
     public float armor = 10f;
     public float damage = 10f;
-    public float fireRate = 1f;
-    public float firingRange = 3f;
+    public float fireRate = 2.5f;    // Interval of seconds between each available shot
+    public float firingRange = 3f;   // How long the shot is alive for in seconds, with speed determines range
     public float thrust;
+    public bool isDead = false;
+
+    public AudioSource dieSoundSource;
 
     // Unity MonoBehaviour Methods
     private void Start()
@@ -30,15 +34,6 @@ public class EntityStats : MonoBehaviour
         {
             Die();
         }
-
-        // Update Player UI
-        if (this is PlayerStats stats)
-        {
-            stats.UpdateUI();
-        }
-
-        Debug.Log("Take Damage Entity Stats");
-
     }
 
     public virtual void Die()

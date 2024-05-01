@@ -15,9 +15,10 @@ GameObject:
   - component: {fileID: 2796243018280500559}
   - component: {fileID: 1844264446563529095}
   - component: {fileID: -8747061553276150807}
+  - component: {fileID: 2454764942595985461}
   m_Layer: 0
   m_Name: Alien_Design1
-  m_TagString: Untagged
+  m_TagString: Planet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -167,3 +168,15 @@ MonoBehaviour:
   rotationSpeedX: 20
   rotationSpeedY: 15
   rotationSpeedZ: 0
+--- !u!114 &2454764942595985461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8489013374749508764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 387b64fcbd8b44341a95b0c4272d7692, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

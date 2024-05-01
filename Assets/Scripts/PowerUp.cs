@@ -1,10 +1,12 @@
+using System.Collections;
 using UnityEngine;
 
 public class PowerUp : MonoBehaviour
 {
-    public GameObject pickupEffect;
-    public float pickupValue = 10f;
+    public float pickupValue = 10f; // value of pickup in terms of fuel/parts/health ...
     public float gamePoints = 10f; // points to award the player to accumulate points
+    [SerializeField] private GameObject pickupEffect;
+    [SerializeField] private AudioSource pickupSoundSource;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -15,6 +17,7 @@ public class PowerUp : MonoBehaviour
 
     private void Pickup(Collider player, bool applyPowerUp)
     {
+        // Game Object tags used to differentiate different pickup types
         string pickupType = gameObject.tag;
         Debug.Log("Power up Picked up: " + pickupType);
 
@@ -31,10 +34,27 @@ public class PowerUp : MonoBehaviour
             if (pickupType == "Health") playerStats.AddHealth(pickupValue);
             if (pickupType == "Parts") playerStats.AddParts(pickupValue);
 
+            // Play Pickup Sound
+            pickupSoundSource.Play();
+
+            // If we immediately destory the object then the sound gets destroyed too
+            StartCoroutine(DestoryAfterTime(pickupSoundSource.clip.length * 2));
+            gameObject.SetActive(false);
             playerStats.AddPoints(gamePoints);
         }
+        else
+        {
+            // Remove power up object
+            Destroy(gameObject);
+        }
+    }
 
-        // Remove power up object
+
+    IEnumerator DestoryAfterTime(float delay)
+    {
+        gameObject.transform.localScale *= 0;
+        yield return new WaitForSeconds(delay);
         Destroy(gameObject);
     }
+
 }

@@ -1,5 +1,3 @@
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class TrajectoryLine : MonoBehaviour
@@ -7,8 +5,8 @@ public class TrajectoryLine : MonoBehaviour
     [SerializeField] private Transform trajectoryStart;
 
     [Header("Trajectory Line Smoothnes/Length")]
-    [SerializeField] private int segmentCount = 10;
-    [SerializeField] private float curveLength = 0.5f;
+    [SerializeField] private int segmentCount = 30;
+    [SerializeField] private float curveLength = 0.35f;
     private float prevNumDashes = 1f;
 
     private Vector3[] segments;
@@ -23,9 +21,6 @@ public class TrajectoryLine : MonoBehaviour
     private GameObject player;
     private Rigidbody playerRb;
     private float playerMass;
-
-    [SerializeField] private bool canDisableLine = false;
-
 
     // Start is called before the first frame update
     void Start()
@@ -57,19 +52,19 @@ public class TrajectoryLine : MonoBehaviour
         lineRenderer.SetPosition(0, startPos);
 
         // Set the starting velocity based on player physics
-        Vector3 playerDirection = -player.transform.up;
         Vector3 startVelocity = playerRb.velocity;
 
         float totalLength = 0f; //  Accumulator for line length
 
+
         for (int i = 1; i < segmentCount; i++)
         {
-            // Debug.Log("Velocity: " + startVelocity);
 
-            // TODO
-            // To prevent really long segments, cut the timeOffset down when velocity is large
-
+            // To prevent really long segments that are flat, cut the timeOffset down when velocity is large
             float timeOffset = i * Time.fixedDeltaTime * curveLength;
+            float maxOffset = 1f;
+
+            if (timeOffset > maxOffset) timeOffset /= 2f;
 
             // Compute the gravity offset
             Vector3 gravityAcceleration = GetGravityOffset(segments[i - 1]) / playerMass;
@@ -94,15 +89,16 @@ public class TrajectoryLine : MonoBehaviour
             Vector3 worldBottomLeft = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, cameraDepth));
             bool pointOutOfBounds = segPt.x > Screen.width || segPt.y > Screen.height || segPt.x < worldBottomLeft.x || segPt.y < worldBottomLeft.y;
 
-            Debug.Log(pointOutOfBounds + " : " + lineCollidesWithPlanet);
             if (pointOutOfBounds || lineCollidesWithPlanet)
             {
                 // If new point is invalid just repeat the last one
                 // to fill the rest of the line segments
                 for (int j = i; j < segmentCount; j++)
                 {
-                    lineRenderer.SetPosition(i, segments[i - 1]);
+                    lineRenderer.SetPosition(j, segments[i - 1]);
                 }
+                lineRenderer.SetPosition(segmentCount - 1, segments[i - 1]);
+
                 break;
             }
             else
@@ -112,14 +108,7 @@ public class TrajectoryLine : MonoBehaviour
         }
 
         // Enable or disable the Line Renderer based on the total length, otherwise we have a weird blinking dot for a nose
-        if (canDisableLine)
-        {
-            lineRenderer.enabled = totalLength >= 0.25f && inGravityField;
-        }
-        else
-        {
-            lineRenderer.enabled = true;
-        }
+        lineRenderer.enabled = totalLength >= 0.1f && inGravityField;
 
         // When the line is long, render more dashes and vice versa
         // At its longest it should have 5 dashes, at its shortest half of a dash 

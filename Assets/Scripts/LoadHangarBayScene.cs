@@ -2,7 +2,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
 public class LoadHangarBayScene : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)

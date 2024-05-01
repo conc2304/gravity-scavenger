@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 
 public class ShipController : MonoBehaviour
@@ -8,19 +5,20 @@ public class ShipController : MonoBehaviour
     // Laser Gun Variabls
     [SerializeField] private GameObject laserPrefab;
     [SerializeField] private Transform firingPoint;
-    // [Range(0.1f, 1f)]
-    // // [SerializeField] private float fireRate = 0.5f;
-    private float fireRate;
+    [SerializeField] private AudioSource laserSoundSource;
+    [SerializeField] private AudioSource respawnSoundSource;
+    [SerializeField] private AudioSource thrustSoundSource;
+
+    private float fireRate;     // Throttles how often a user can shoot
     private float fireTimer;
+    private float thrust;
 
     private GravityField[] gravityFields; // Reference to the GravityField script
 
     // Controller Variables
-    public Camera cam;
-    public Transform player;
-    public Rigidbody rigidBody;
-    // public float thrust = 100f;
-    private float thrust;
+    [SerializeField] private Camera cam;
+    [SerializeField] private Transform player;
+    [SerializeField] private Rigidbody rigidBody;
 
     Vector2 mousePos;
     Vector3 playerPos;
@@ -34,7 +32,10 @@ public class ShipController : MonoBehaviour
 
         fireRate = PlayerStatsManager.Instance.fireRate.currentValue;
         thrust = PlayerStatsManager.Instance.thrust.currentValue;
-        Debug.Log("Thrust: " + thrust);
+
+        // Play Spawn sound and // TODO animation
+        respawnSoundSource.Play();
+
     }
 
     void Update()
@@ -46,8 +47,8 @@ public class ShipController : MonoBehaviour
         mousePos = Input.mousePosition;
         playerPos = cam.WorldToScreenPoint(player.position);
 
-        // left mouse button to fire lasers
-        if (Input.GetMouseButton(1) && fireTimer <= 0f)
+        // Left mouse button or Space to fire lasers 
+        if ((Input.GetMouseButton(1) || Input.GetKey(KeyCode.Space)) && fireTimer <= 0f)
         {
             Shoot();
             fireTimer = fireRate;
@@ -55,6 +56,19 @@ public class ShipController : MonoBehaviour
         else
         {
             fireTimer -= Time.deltaTime;
+        }
+
+        // Start the thurst audio on mouse down and stop it on mouse up
+        if (Input.GetMouseButtonDown(0))
+        {
+            Debug.Log("Play thrust");
+            thrustSoundSource.Play();
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            Debug.Log("Stop thrust");
+
+            thrustSoundSource.Pause();
         }
     }
 
@@ -73,28 +87,36 @@ public class ShipController : MonoBehaviour
         Quaternion newRotation = Quaternion.Euler(0, 0, angle);
         player.localRotation = newRotation;
 
+        // Left click mouse to add thrust - allows for mouse being held down
         if (Input.GetMouseButton(0))
         {
+
             // Add thrust in the forward direction
-            rigidBody.AddForce(thrust * Time.deltaTime * -transform.up);
+            if (rigidBody != null) rigidBody.AddForce(thrust * Time.deltaTime * -transform.up);
 
             // Deplete Fuel levels
             gameObject.GetComponent<PlayerStats>().DepleteFuel();
         }
+
+
     }
 
     private void Shoot()
     {
+        // Shoot Laser
         GameObject laser = Instantiate(laserPrefab, firingPoint.position, firingPoint.rotation);
+
+        // Update laser stats
         laser.GetComponent<Laser>().SetShooterTag(gameObject.tag);
         laser.GetComponent<Laser>().damage = PlayerStatsManager.Instance.damage.currentValue;
         laser.GetComponent<Laser>().range = PlayerStatsManager.Instance.fireRange.currentValue;
+
+        // Play Laser audio
+        laserSoundSource.Play();
     }
 
     private void OnDestroy()
     {
-        // TODO trigger an explosion animation thing
-
         gravityFields = FindObjectsOfType<GravityField>();
         foreach (GravityField gravityField in gravityFields)
         {
@@ -102,7 +124,7 @@ public class ShipController : MonoBehaviour
             if (gravityField != null && gravityField.GetComponent<Rigidbody>() != null)
             {
                 // Remove the attractee to the GravityField's list of attractees
-                gravityField.RemoveAttractee(this.gameObject);
+                gravityField.RemoveAttractee(gameObject);
             }
             else
             {

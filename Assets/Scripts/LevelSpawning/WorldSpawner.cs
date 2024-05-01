@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 
 public class WorldSpawner : MonoBehaviour
@@ -39,6 +40,7 @@ public class WorldSpawner : MonoBehaviour
     // Use the grid to selectively spawn planetary systems so that they are not too close together
     private void InitializeChunks()
     {
+
         Debug.Log("InitializeChunks");
         int gridPadding = 2; // Define padding to create a 5x5 grid around the center of the screen
         Vector2Int centerChunk = new Vector2Int(0, 0); // Center chunk position
@@ -49,21 +51,20 @@ public class WorldSpawner : MonoBehaviour
             for (int y = -gridPadding; y <= gridPadding; y++)
             {
 
-                // skip spawning stuff in our active viewport
-                if (x == centerChunk.x && y == centerChunk.y)
-                {
-                    continue; // Skip this iteration and move to the next one
-                }
-
                 // Create a variable representing the chunk's coordinates
                 Vector2Int chunkCoordinates = new Vector2Int(x, y);
-
                 // Create a new Chunk object at the specified coordinates with the given chunk size
-                Debug.Log(chunkCoordinates);
                 chunks[chunkCoordinates] = new Chunk(chunkCoordinates, chunkSize, EnemyPrefabs, PickupPrefabs, PlanetPrefabs, SpaceStationPrefab);
+
+                // If this is the first load and current chunk is center, then skip spawning entities
+                bool skipSpawning = isFirstLoad && x == centerChunk.x && y == centerChunk.y;
+                if (skipSpawning)
+                {
+                    // Set it to active before load so that we do not spawn anything on chunk.Load();
+                    chunks[chunkCoordinates].isActive = true;
+                }
             }
         }
-        Debug.Log(chunks);
     }
 
     // Update is called once per frame
@@ -132,7 +133,7 @@ public class WorldSpawner : MonoBehaviour
         Vector3 worldBottomLeft = mainCamera.ScreenToWorldPoint(new Vector3(0, 0, cameraDepth));
         Vector3 worldTopRight = mainCamera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, cameraDepth));
 
-        // Calculate width and height in world units
+        // Calculate width and height
         float worldWidth = worldTopRight.x - worldBottomLeft.x;
         float worldHeight = worldTopRight.y - worldBottomLeft.y;
 
@@ -149,7 +150,6 @@ public class WorldSpawner : MonoBehaviour
         int chunkY = Mathf.FloorToInt(playerPosition.y / chunkSize.y);
 
         // Return the chunk coordinates
-        // Debug.Log("GetCurrentChunk: " + new Vector2Int(chunkX, chunkY));
         return new Vector2Int(chunkX, chunkY);
     }
 }

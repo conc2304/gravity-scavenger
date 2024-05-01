@@ -15,9 +15,10 @@ GameObject:
   - component: {fileID: -7994981809679659884}
   - component: {fileID: -3513265279711527835}
   - component: {fileID: 9056007841836643535}
+  - component: {fileID: 4872716979727578227}
   m_Layer: 0
   m_Name: Frozen_Design5
-  m_TagString: Untagged
+  m_TagString: Planet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -167,3 +168,15 @@ MonoBehaviour:
   rotationSpeedX: 3
   rotationSpeedY: 15
   rotationSpeedZ: 0
+--- !u!114 &4872716979727578227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6341351593221859637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 387b64fcbd8b44341a95b0c4272d7692, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

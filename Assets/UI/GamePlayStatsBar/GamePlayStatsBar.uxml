@@ -1,0 +1,37 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/GamePlayStatsBar/GamePlayStatsBar.uss?fileID=7433441132597879392&amp;guid=6cf7f3cd7a57c4e8ab52959a0c8483dd&amp;type=3#GamePlayStatsBar" />
+    <ui:VisualElement name="container" style="flex-grow: 1; flex-direction: row; margin-top: 8px; margin-right: 8px; margin-bottom: 8px; margin-left: 8px;">
+        <ui:VisualElement name="leftStatsBox" style="flex-grow: 1; width: 33%; max-width: 33%;">
+            <ui:VisualElement name="wrapper" style="flex-grow: 0;">
+                <ui:VisualElement name="livesWrapper" class="row">
+                    <ui:VisualElement name="icon" class="icon" style="background-image: url(&quot;project://database/Assets/Textures/Heart-Icon.png?fileID=2800000&amp;guid=021b30fa373254a9d8acfc25d61f399e&amp;type=3#Heart-Icon&quot;);" />
+                    <ui:VisualElement name="livesStatus" style="flex-grow: 1; flex-direction: row; height: 16px;" />
+                </ui:VisualElement>
+                <ui:VisualElement name="healthWrapper" class="row">
+                    <ui:VisualElement name="icon" class="icon" style="background-image: url(&quot;project://database/Assets/Textures/Health-Icon.png?fileID=2800000&amp;guid=034e1ec03160b47f0be4fc584b11ddf9&amp;type=3#Health-Icon&quot;);" />
+                    <ui:VisualElement name="healthProgressWrapper" class="status" style="flex-grow: 1; width: auto; justify-content: flex-start; max-width: 50%;">
+                        <ui:ProgressBar value="100" name="healthProgressBar" style="border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 12px; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; flex-shrink: 1; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement name="fuelWrapper" class="row">
+                    <ui:VisualElement name="icon" class="icon" style="background-image: url(&quot;project://database/Assets/Textures/Fuel-Icon.png?fileID=2800000&amp;guid=8b1e0be91a6a449c0956921fdfd258ce&amp;type=3#Fuel-Icon&quot;);" />
+                    <ui:VisualElement name="fuelProgressWrapper" class="status" style="flex-grow: 1; width: auto; max-width: 50%;">
+                        <ui:ProgressBar value="100" name="fuelProgressBar" style="border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 12px; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; flex-shrink: 1; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement name="partsWrapper" class="row">
+                    <ui:VisualElement name="icon" class="icon" style="background-image: url(&quot;project://database/Assets/Textures/Parts-Icon.png?fileID=2800000&amp;guid=01f7916944e864feda6be55de9937e39&amp;type=3#Parts-Icon&quot;);" />
+                    <ui:VisualElement name="status" style="flex-grow: 1; -unity-text-align: lower-left; justify-content: flex-end;">
+                        <ui:Label tabindex="-1" text="0" parse-escape-sequences="false" display-tooltip-when-elided="true" name="partsValue" style="justify-content: center; -unity-font: url(&quot;project://database/Assets/Fonts/Expansiva%20bold.otf?fileID=12800000&amp;guid=30057a72c849448a19922707030c09dd&amp;type=3#Expansiva bold&quot;); -unity-font-definition: url(&quot;project://database/Assets/Fonts/Expansiva%20bold%20SDF.asset?fileID=11400000&amp;guid=45fa03ca27d014207bb638a44446daa7&amp;type=2#Expansiva bold SDF&quot;); color: rgb(0, 255, 255); -unity-text-align: lower-left; font-size: 22px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="rightStatsBox" style="flex-grow: 1;">
+            <ui:VisualElement name="xpWrapper" style="flex-grow: 0; flex-direction: row; align-items: center; justify-content: flex-end; margin-right: 0;">
+                <ui:Label tabindex="-1" text="0000" parse-escape-sequences="true" display-tooltip-when-elided="true" name="pointsValue" style="-unity-font: url(&quot;project://database/Assets/Fonts/Expansiva%20bold.otf?fileID=12800000&amp;guid=30057a72c849448a19922707030c09dd&amp;type=3#Expansiva bold&quot;); -unity-font-definition: url(&quot;project://database/Assets/Fonts/Expansiva%20bold%20SDF.asset?fileID=11400000&amp;guid=45fa03ca27d014207bb638a44446daa7&amp;type=2#Expansiva bold SDF&quot;); color: rgb(0, 255, 255); -unity-text-align: middle-right; font-size: 24px; -unity-font-style: normal;" />
+                <ui:Label tabindex="-1" text="XP" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Label" style="color: rgb(0, 255, 255); -unity-font: url(&quot;project://database/Assets/Fonts/Expansiva%20bold.otf?fileID=12800000&amp;guid=30057a72c849448a19922707030c09dd&amp;type=3#Expansiva bold&quot;); font-size: 28px; -unity-font-style: normal; -unity-text-align: middle-center;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

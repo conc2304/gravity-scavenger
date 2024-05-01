@@ -10,6 +10,7 @@ TagManager:
   - Fuel
   - Health
   - Parts
+  - Planet
   layers:
   - Default
   - TransparentFX

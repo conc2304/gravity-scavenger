@@ -1,12 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 // Derive Enemy Stats from entity Stats
 public class EnemyStats : EntityStats
 {
-    // todo add health bar for enemies
-    // public StatusBar healthBar;
     private GameObject Player;
     [SerializeField] private GameObject DeathAnimation;
 
@@ -25,12 +22,14 @@ public class EnemyStats : EntityStats
 
     private void Start()
     {
-        // healthBar.SetSliderMax(maxHealth);
         if (!Player) Player = GameObject.FindGameObjectWithTag("Player");
+
+        // TODO make these change based on player xp
         maxHealth = 30f;
         currentHealth = maxHealth;
-        firingRange = 5f;
-        fireRate = 4f;
+        firingRange = 0.3f;
+        fireRate = 5f;
+        damage = 7f;
     }
 
     // Class Methods
@@ -54,12 +53,14 @@ public class EnemyStats : EntityStats
         return pickUpProbability[pickUpProbability.Count];
     }
 
-
-
-
     public override void Die()
     {
+        // Prevent multiple deaths getting called
+        if (isDead) return;
+        isDead = true;
+
         // Play die animation
+        dieSoundSource.Play();
         GameObject anim = Instantiate(DeathAnimation, transform.position, DeathAnimation.transform.rotation);
         Destroy(anim, 1.75f); // destory animation of short time
 
@@ -76,12 +77,11 @@ public class EnemyStats : EntityStats
         }
         else if (selectedPickup.CompareTag("Health"))
         {
-
             pickupValue = Random.Range(10, 20); // TODO make points dynamic basic on level difficulty
         }
         else if (selectedPickup.CompareTag("Parts"))
         {
-            pickupValue = Random.Range(1, 3); // TODO make points dynamic basic on level difficulty
+            pickupValue = Random.Range(1, 5); // TODO make points dynamic basic on level difficulty
         }
         pickupObject.GetComponent<PowerUp>().pickupValue = pickupValue;
 
@@ -89,11 +89,8 @@ public class EnemyStats : EntityStats
         Player.GetComponent<PlayerStats>().AddPoints(10);   // TODO make points dynamic basic on level difficulty
 
         // Kill Enemy Entity
-        Destroy(gameObject);
+        // GetComponent<Renderer>().enabled = false;
+        Destroy(gameObject, dieSoundSource.clip.length + 0.3f);
     }
 
-    public void UpdateHealthBar()
-    {
-        // healthBar.SetSlider(currentHealth);
-    }
 }

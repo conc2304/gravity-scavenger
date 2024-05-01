@@ -2,31 +2,34 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
-using UnityEngine.SocialPlatforms;
+using System.Collections;
 
-
-// Persistence Layer of Player Stats
 public class PlayerUpgrade : MonoBehaviour
 {
 
-    public VisualTreeAsset rowTemplate;
-    public VisualTreeAsset upgradeSlotTemplate;
+    private UIDocument playerUpgradeDocument; // UI Document to update
+    // UI Templates
+    public VisualTreeAsset rowTemplate;  // UI component for upgradeable player stats
+    public VisualTreeAsset upgradeSlotTemplate; // UI component for the upgrade slots
 
-    private UIDocument playerUpgradeDocument;
-    private VisualElement parentContainer;
-
+    // UI Elements
+    private VisualElement parentContainer; // UI parent element for where to put player stat rows
     private TextElement availablePartsElem;
     private TextElement totalQtyElem;
-
-    private float totalParts;
-
-    private int totalUpgrades;
     private Button upgradeBtn;
+
+    // UI Audio
+    [SerializeField] private AudioSource confirmAudio;
+    [SerializeField] private AudioSource upgradeAudio;
+    [SerializeField] private AudioSource downgradeAudio;
+    [SerializeField] private AudioSource disabledeAudio;
+
+    private float totalPartsSpent;
     readonly Dictionary<string, VisualElement> rows = new();
 
-    private void Start()
+    private void OnEnable()
     {
-        totalUpgrades = PlayerStatsManager.MaxUpgrades;
+        int maxUpgrades = PlayerStatsManager.MaxUpgrades;
 
         playerUpgradeDocument = GetComponent<UIDocument>();
         parentContainer = playerUpgradeDocument.rootVisualElement.Q("content");
@@ -35,7 +38,7 @@ public class PlayerUpgrade : MonoBehaviour
         availablePartsElem = playerUpgradeDocument.rootVisualElement.Q<TextElement>("availableQty");
         availablePartsElem.text = PlayerStatsManager.Instance.parts.ToString();
         totalQtyElem = playerUpgradeDocument.rootVisualElement.Q<TextElement>("totalQty");
-        totalQtyElem.text = totalParts.ToString();
+        totalQtyElem.text = totalPartsSpent.ToString();
 
         // Loop through each upgradable stat
         // Add a upgradeRow template for each stat
@@ -45,23 +48,14 @@ public class PlayerUpgrade : MonoBehaviour
             rows[stat.statName] = rowTemplate.CloneTree();
             VisualElement upgradeStatusContainer = rows[stat.statName].Q<VisualElement>("statusBar");
 
-            // Populate the row with data from the upgradable stat
-            rows[stat.statName].Q<TextElement>("statName").text = stat.statName;
-            rows[stat.statName].Q<TextElement>("downgradeCost").text = stat.upgradeCost.ToString();
-            rows[stat.statName].Q<TextElement>("upgradeCost").text = stat.downgradeCost.ToString();
-
-            // Set click callbacks
-            rows[stat.statName].Q<Button>("downgradeBtn").clicked += () => OnDowngradeStat(stat, rows[stat.statName]);
-            rows[stat.statName].Q<Button>("upgradeBtn").clicked += () => OnUpgradeStat(stat, rows[stat.statName]);
-
             //  Add upgrade slots to UI
-            for (int i = 0; i < totalUpgrades; i++)
+            for (int i = 0; i < maxUpgrades; i++)
             {
                 // Clone the template
                 VisualElement upgradeSlot = upgradeSlotTemplate.CloneTree();
                 upgradeSlot.style.flexGrow = 1; // Hack to fix template containeer not respecting child styles
 
-                // If upgrade has ben used mark it by add the slotUsed class
+                // If upgrade has ben used mark it by adding the slotUsed class
                 if (stat.upgradesUsed > i)
                 {
                     upgradeSlot.AddToClassList("slotUsed");
@@ -71,48 +65,53 @@ public class PlayerUpgrade : MonoBehaviour
                 upgradeStatusContainer.Add(upgradeSlot);
             }
 
+            // Populate the row with data from the upgradable stat
+            rows[stat.statName].Q<TextElement>("statName").text = stat.statName;
+
+            // Set click callbacks
+            rows[stat.statName].Q<Button>("downgradeBtn").clicked += () => OnDowngradeStat(stat);
+            rows[stat.statName].Q<Button>("upgradeBtn").clicked += () => OnUpgradeStat(stat);
 
             // Add the row to the parent container
             parentContainer.Add(rows[stat.statName]);
+
+            // Populate/Update player stat based UI elements
             UpdateRowUI(stat, rows[stat.statName]);
         }
 
+        // Set the callback for the Confirm button
         upgradeBtn = playerUpgradeDocument.rootVisualElement.Q("confirmButton") as Button;
         upgradeBtn.clicked += () => OnFinish();
     }
 
-    private void OnUpgradeStat(UpgradableStat stat, VisualElement statRow)
+    private void OnUpgradeStat(UpgradableStat stat)
     {
 
         Debug.Log("Upgrade: " + stat.statName);
         float cost = stat.upgradeCost;
 
         // Only allow upgrade if player has enoug to cover cost
-        if (cost < PlayerStatsManager.Instance.parts)
+        if (cost < PlayerStatsManager.Instance.parts && stat.Upgrade())
         {
-            bool success = stat.Upgrade();
-
             // If we successfully upgraded the stat, then update the UI
-            if (success)
-            {
-                // Update points total
-                totalParts += cost;
-                PlayerStatsManager.Instance.parts -= cost;
+            // Update points total
+            totalPartsSpent += cost;
+            PlayerStatsManager.Instance.parts -= cost;
 
-                foreach (UpgradableStat uStat in PlayerStatsManager.Instance.GetAllUpgradableStats())
-                {
-                    UpdateRowUI(uStat, rows[uStat.statName]);
-                }
-            }
+            // We update all rows so that if upgrades are out of the price range the UI reflects that
+            UpdateUI();
+            upgradeAudio.Play();
         }
         else
         {
+            // Play disabled audio button sound
+            disabledeAudio.Play();
             Debug.Log("Too expensive: " + cost + " vs " + PlayerStatsManager.Instance.parts);
         }
 
     }
 
-    private void OnDowngradeStat(UpgradableStat stat, VisualElement statRow)
+    private void OnDowngradeStat(UpgradableStat stat)
     {
         Debug.Log("Downgrade: " + stat.statName);
 
@@ -123,16 +122,27 @@ public class PlayerUpgrade : MonoBehaviour
         if (success)
         {
             // Update points total
-            totalParts -= cost;
-            totalQtyElem.text = totalParts.ToString();
+            totalPartsSpent -= cost;
+            totalQtyElem.text = totalPartsSpent.ToString();
             PlayerStatsManager.Instance.parts += cost;
             availablePartsElem.text = PlayerStatsManager.Instance.parts.ToString();
 
-            // We update all rows so that if upgrads are out of the price range the UI reflects that
-            foreach (UpgradableStat uStat in PlayerStatsManager.Instance.GetAllUpgradableStats())
-            {
-                UpdateRowUI(uStat, rows[uStat.statName]);
-            }
+            // We update all rows so that if upgrades are out of the price range the UI reflects that
+            UpdateUI();
+            downgradeAudio.Play();
+        }
+        else
+        {
+            // play disabled button sound
+            disabledeAudio.Play();
+        }
+    }
+
+    private void UpdateUI()
+    {
+        foreach (UpgradableStat uStat in PlayerStatsManager.Instance.GetAllUpgradableStats())
+        {
+            UpdateRowUI(uStat, rows[uStat.statName]);
         }
     }
 
@@ -141,7 +151,7 @@ public class PlayerUpgrade : MonoBehaviour
         Debug.Log("Update UI Row: " + stat.statName);
         // Update the "shoping cart" totals
         availablePartsElem.text = PlayerStatsManager.Instance.parts.ToString();
-        totalQtyElem.text = totalParts.ToString();
+        totalQtyElem.text = totalPartsSpent.ToString();
 
         bool upgradeTooExpensive = stat.upgradeCost > PlayerStatsManager.Instance.parts;
 
@@ -157,7 +167,6 @@ public class PlayerUpgrade : MonoBehaviour
             row.Q<TextElement>("downgradeCost").text = "X";
         }
 
-
         if (stat.isUpgradable && !upgradeTooExpensive)
         {
             row.Q<Button>("upgradeBtn").RemoveFromClassList("disabled");
@@ -166,12 +175,12 @@ public class PlayerUpgrade : MonoBehaviour
         else
         {
             row.Q<Button>("upgradeBtn").AddToClassList("disabled");
-            row.Q<TextElement>("upgradeCost").text = "X";
+            row.Q<TextElement>("upgradeCost").text = stat.upgradeCost.ToString();
+
         }
 
         // Update the upgrade slots
         List<VisualElement> upgradeSlots = row.Query<VisualElement>(className: "upgradeSlot").ToList();
-
         int i = 0;
         foreach (VisualElement slot in upgradeSlots)
         {
@@ -196,6 +205,15 @@ public class PlayerUpgrade : MonoBehaviour
 
     private void OnFinish()
     {
+        // Go Back to the Play state
+        confirmAudio.Play();
+        StartCoroutine(LoadPlayScene());
+    }
+
+    IEnumerator LoadPlayScene()
+    {
+        // Pause 1 second and then load scene
+        yield return new WaitForSeconds(confirmAudio.clip.length + 0.5f);
         SceneManager.LoadScene("Play");
     }
 }

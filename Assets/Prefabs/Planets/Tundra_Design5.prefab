@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 5595986196556453463}
   - component: {fileID: 6753652043784361528}
   - component: {fileID: -7774549826659726726}
+  - component: {fileID: 8530550265522120254}
   m_Layer: 0
   m_Name: Tundra_Design5
   m_TagString: Untagged
@@ -167,3 +168,15 @@ MonoBehaviour:
   rotationSpeedX: 20
   rotationSpeedY: 0
   rotationSpeedZ: 0
+--- !u!114 &8530550265522120254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6480480981174803085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 387b64fcbd8b44341a95b0c4272d7692, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -5,9 +5,9 @@ public class EnemyController : MonoBehaviour
 {
 
     public Transform target;
-    private float thrust;
-    // public float thrust = 3f;
     private Rigidbody rb;
+
+    private float thrust;
     public float rotateSpeed = 0.05f;
 
     private bool targetIsInFront = false;
@@ -16,11 +16,12 @@ public class EnemyController : MonoBehaviour
     // Laser Gun Variabls
     [SerializeField] private GameObject laserPrefab;
     [SerializeField] private Transform firingPoint;
+    [SerializeField] private AudioSource laserSoundSource;
     private float fireTimer;
     private bool targetIsInFiringRange = false;
     private float firingRange;
     private float fireRate;
-    // public float firingRange = 5f;
+    private float damage;
 
     private void Awake()
     {
@@ -28,6 +29,8 @@ public class EnemyController : MonoBehaviour
         // Initialize stats
         fireRate = GetComponent<EnemyStats>().fireRate;
         firingRange = GetComponent<EnemyStats>().firingRange;
+        thrust = GetComponent<EnemyStats>().thrust;
+        damage = GetComponent<EnemyStats>().damage;
     }
 
     private void Update()
@@ -59,7 +62,7 @@ public class EnemyController : MonoBehaviour
     private void FixedUpdate()
     {
 
-        if (targetIsInFront)
+        if (targetIsInFront && rb.velocity.magnitude < 3) // prevent ship from going too fast
         {
             // only turn on thrusters if our intended target is infront of us
             rb.AddForce(thrust * -transform.up);
@@ -72,14 +75,16 @@ public class EnemyController : MonoBehaviour
         GameObject laser = Instantiate(laserPrefab, firingPoint.position, firingPoint.rotation);
         laser.GetComponent<Laser>().SetShooterTag(gameObject.tag);
 
-        gameObject.TryGetComponent<EntityStats>(out var stats); // if game object has entity stats then take damage
+        gameObject.TryGetComponent<EnemyStats>(out var stats); // if game object has entity stats then take damage
         if (stats)
         {
             Laser laserStats = laser.GetComponent<Laser>();
-
             laserStats.damage = stats.damage;
             laserStats.range = stats.firingRange;
         }
+
+        // Play Laser audio
+        laserSoundSource.Play();
     }
 
     private void GetTarget()
@@ -97,7 +102,7 @@ public class EnemyController : MonoBehaviour
         float angle2 = Vector3.Angle(transform.up, targetDirection);
 
         targetIsInFront = angle2 >= 180 - angleRange || angle2 <= 180 + angleRange;
-        targetIsInFiringRange = targetDirection.magnitude <= firingRange;
+        targetIsInFiringRange = targetDirection.magnitude <= firingRange * 2; // let them start shooting even out of range
 
         Quaternion newRotation = Quaternion.Euler(0, 0, angle);
         // slowly interpolate to that rotation
@@ -110,15 +115,11 @@ public class EnemyController : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             // Scavenge the player's parts
-            other.gameObject.GetComponent<PlayerStats>().StealParts(Random.Range(1, 3));
+            other.gameObject.GetComponent<PlayerStats>().StealParts(Random.Range(0, 3));
 
             // Destroy the player
             other.gameObject.GetComponent<PlayerStats>().Die();
             target = null;
-
-            // Restart scene after a few seconds
-            // todo add delay
-            SceneManager.LoadScene("Play");
         }
     }
 }

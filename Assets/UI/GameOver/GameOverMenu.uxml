@@ -1,0 +1,22 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/MainMenu/MainMenu.uss?fileID=7433441132597879392&amp;guid=1ffe205ab8a3d4895b2204824a780781&amp;type=3#MainMenu" />
+    <ui:VisualElement name="container" style="flex-grow: 1; background-color: rgba(255, 255, 255, 0); flex-direction: column; justify-content: center; align-items: center;">
+        <ui:VisualElement name="modal" class="modal" style="justify-content: center; align-items: center;">
+            <ui:VisualElement name="content" style="flex-grow: 1; justify-content: space-around; flex-shrink: 0; height: 100px;">
+                <ui:VisualElement name="textWrapper" style="flex-grow: 0; justify-content: space-around;">
+                    <ui:Label tabindex="-1" text="GAME" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Label" class="gameOverTxt" />
+                    <ui:Label tabindex="-1" text="OVER" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Label" class="gameOverTxt" />
+                </ui:VisualElement>
+                <ui:VisualElement name="scoreWrapper" style="flex-grow: 0; flex-direction: row; align-items: center; justify-content: center;">
+                    <ui:Label tabindex="-1" text="Score:" parse-escape-sequences="true" display-tooltip-when-elided="true" style="color: rgb(255, 255, 255); -unity-font: url(&quot;project://database/Assets/Fonts/Expansiva%20bold.otf?fileID=12800000&amp;guid=30057a72c849448a19922707030c09dd&amp;type=3#Expansiva bold&quot;); -unity-font-definition: url(&quot;project://database/Assets/Fonts/Expansiva%20bold%20SDF.asset?fileID=11400000&amp;guid=45fa03ca27d014207bb638a44446daa7&amp;type=2#Expansiva bold SDF&quot;); font-size: 36px; margin-right: 24px;" />
+                    <ui:Label tabindex="-1" text="333" parse-escape-sequences="true" display-tooltip-when-elided="true" name="finalScore" style="-unity-font: url(&quot;project://database/Assets/Fonts/Expansiva.otf?fileID=12800000&amp;guid=10183f33d6bd84ea8a576b5b67e265af&amp;type=3#Expansiva&quot;); -unity-font-definition: url(&quot;project://database/Assets/Fonts/Expansiva%20SDF.asset?fileID=11400000&amp;guid=308d0d82977f44cf0a7c93829c7994db&amp;type=2#Expansiva SDF&quot;); color: rgb(255, 255, 255); font-size: 36px; -unity-text-align: middle-left;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="btnWrapper" style="flex-grow: 1; justify-content: space-around; width: 50%; align-self: center; margin-top: 24px; transition-duration: 0.3s; height: 100px;">
+                <ui:Button text="START" parse-escape-sequences="true" display-tooltip-when-elided="true" name="startBtn" class="menuBtn" />
+                <ui:Button text="HELP" parse-escape-sequences="true" display-tooltip-when-elided="true" name="helpBtn" class="menuBtn" />
+                <ui:Button text="QUIT" parse-escape-sequences="true" display-tooltip-when-elided="true" name="quitBtn" class="menuBtn" style="margin-bottom: 16px;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

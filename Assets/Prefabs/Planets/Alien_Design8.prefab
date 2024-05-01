@@ -15,9 +15,10 @@ GameObject:
   - component: {fileID: 2943316308399331864}
   - component: {fileID: 7038470135056690236}
   - component: {fileID: 3745015237617825873}
+  - component: {fileID: 6832649548050063546}
   m_Layer: 0
   m_Name: Alien_Design8
-  m_TagString: Untagged
+  m_TagString: Planet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -167,3 +168,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attractees: []
   maxDistance: 15
+--- !u!114 &6832649548050063546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5891888103618403323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 387b64fcbd8b44341a95b0c4272d7692, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
