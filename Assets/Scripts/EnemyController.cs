@@ -1,5 +1,5 @@
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class EnemyController : MonoBehaviour
 {
@@ -8,7 +8,7 @@ public class EnemyController : MonoBehaviour
     private Rigidbody rb;
 
     private float thrust;
-    public float rotateSpeed = 0.05f;
+    public float rotateSpeed = 0.1f;
 
     private bool targetIsInFront = false;
     private readonly float angleRange = 30f; // used to calculate if target is in front
@@ -23,9 +23,20 @@ public class EnemyController : MonoBehaviour
     private float fireRate;
     private float damage;
 
+    private float playerXp;
+    private float aggressionLevel = 0f;
+    private float anxiousLevel = 0f;
+    private float maxAnxiousLevel = 10f;
+    private readonly float maxAggressionLevel = 10f;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+
+        playerXp = PlayerStatsManager.Instance.points;
+        aggressionLevel = Random.Range(0, maxAggressionLevel);
+        anxiousLevel = Random.Range(0, maxAnxiousLevel);
+
         // Initialize stats
         fireRate = GetComponent<EnemyStats>().fireRate;
         firingRange = GetComponent<EnemyStats>().firingRange;
@@ -62,7 +73,17 @@ public class EnemyController : MonoBehaviour
     private void FixedUpdate()
     {
 
-        if (targetIsInFront && rb.velocity.magnitude < 3) // prevent ship from going too fast
+        // If target is not in the non-aggression distance add force toward target
+        float distance = target != null ? Vector3.Distance(transform.position, target.transform.position) : 1;
+        // High aggression maps to enemies pursuing from farther away, and vice versa,
+        float aggressionRange = Map(aggressionLevel, 0f, maxAggressionLevel, 5f, 200f);
+        bool inAggressionZone = distance < aggressionRange;
+        // High anxiety map to enemies staying further away, and vice versa
+        float anxietyZone = Map(anxiousLevel, 0f, maxAnxiousLevel, 5f, 0f);
+        bool inAnxietyZone = distance < anxietyZone;
+
+        bool isBelowMaxSpeed = rb.velocity.magnitude < 3; // prevent ship from going too fast
+        if (targetIsInFront && isBelowMaxSpeed && inAggressionZone && !inAnxietyZone)
         {
             // only turn on thrusters if our intended target is infront of us
             rb.AddForce(thrust * -transform.up);
@@ -79,8 +100,8 @@ public class EnemyController : MonoBehaviour
         if (stats)
         {
             Laser laserStats = laser.GetComponent<Laser>();
-            laserStats.damage = stats.damage;
-            laserStats.range = stats.firingRange;
+            laserStats.damage = damage;
+            laserStats.range = firingRange;
         }
 
         // Play Laser audio
@@ -97,6 +118,8 @@ public class EnemyController : MonoBehaviour
 
     private void RotateTowardsTarget()
     {
+        if (target == null) return;
+
         Vector3 targetDirection = target.position - transform.position;
         float angle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg + 90f;
         float angle2 = Vector3.Angle(transform.up, targetDirection);
@@ -111,7 +134,9 @@ public class EnemyController : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        // if they crash the enemy destroys the player
+        if (GetComponent<EnemyStats>().isDead) return;
+
+        // If they crash the enemy destroys the player
         if (other.gameObject.CompareTag("Player"))
         {
             // Scavenge the player's parts
@@ -121,6 +146,15 @@ public class EnemyController : MonoBehaviour
             other.gameObject.GetComponent<PlayerStats>().Die();
             target = null;
         }
+    }
+
+    private float Map(float value, float inputMin, float inputMax, float outputMin, float outputMax)
+    {
+        // normalize the value within the input range
+        float normalizedValue = (value - inputMin) / (inputMax - inputMin);
+
+        // scale the normalized value to the output range
+        return outputMin + (normalizedValue * (outputMax - outputMin));
     }
 }
 

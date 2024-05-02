@@ -6,7 +6,7 @@ public class EntityStats : MonoBehaviour
     // Base Entity Stats
     public float maxHealth = 100f;
     public float currentHealth;
-    public float armor = 10f;
+    public float armor = 5f;
     public float damage = 10f;
     public float fireRate = 2.5f;    // Interval of seconds between each available shot
     public float firingRange = 3f;   // How long the shot is alive for in seconds, with speed determines range
@@ -23,7 +23,7 @@ public class EntityStats : MonoBehaviour
 
     // Class Methods
 
-    public void TakeDamage(float damage)
+    public virtual void TakeDamage(float damage)
     {
         // Armor reduces damage
         damage -= armor;

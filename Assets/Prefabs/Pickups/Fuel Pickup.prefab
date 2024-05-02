@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 1619967211708743096}
   - component: {fileID: 4127043299784373105}
   - component: {fileID: 8669558173970097744}
+  - component: {fileID: 7683433881356945765}
   m_Layer: 0
   m_Name: Fuel Pickup
   m_TagString: Fuel
@@ -737,7 +738,6 @@ MonoBehaviour:
   pickupValue: 10
   gamePoints: 10
   pickupEffect: {fileID: 1120874637919155096, guid: ca020fbfa9fa64be6a0e99e3b15fe756, type: 3}
-  pickupSoundSource: {fileID: 8669558173970097744}
 --- !u!82 &8669558173970097744
 AudioSource:
   m_ObjectHideFlags: 0
@@ -834,6 +834,23 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &7683433881356945765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7774372439403873602}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97df42c5f18034df99038ed23bbb1f8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  angle: 0
+  radius: 0
+  centerPosition: {x: 0, y: 0, z: 0}
+  rotationSpeed: 0
+  time: 0
 --- !u!1001 &7826431316177338866
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -6,12 +6,16 @@ public class PowerUp : MonoBehaviour
     public float pickupValue = 10f; // value of pickup in terms of fuel/parts/health ...
     public float gamePoints = 10f; // points to award the player to accumulate points
     [SerializeField] private GameObject pickupEffect;
-    [SerializeField] private AudioSource pickupSoundSource;
 
     private void OnTriggerEnter(Collider other)
     {
-        bool applyPowerUp = other.CompareTag("Player");
+
+        // Ignore these collisions
         if (other.CompareTag("Laser")) return;
+        if (other.TryGetComponent(out
+        EntityStats stats) && stats.isDead) return;
+
+        bool applyPowerUp = other.CompareTag("Player");
         Pickup(other, applyPowerUp);
     }
 
@@ -34,17 +38,16 @@ public class PowerUp : MonoBehaviour
             if (pickupType == "Health") playerStats.AddHealth(pickupValue);
             if (pickupType == "Parts") playerStats.AddParts(pickupValue);
 
-            // Play Pickup Sound
-            pickupSoundSource.Play();
 
-            // If we immediately destory the object then the sound gets destroyed too
-            StartCoroutine(DestoryAfterTime(pickupSoundSource.clip.length * 2));
+            // If object is destory immediately then the sound gets destroyed too
+            StartCoroutine(DestoryAfterTime(2));
             gameObject.SetActive(false);
             playerStats.AddPoints(gamePoints);
         }
         else
         {
-            // Remove power up object
+            // Remove power up object and prevent pickup sound from playing
+            pickupEffectInstance.GetComponent<AudioSource>().enabled = false;
             Destroy(gameObject);
         }
     }

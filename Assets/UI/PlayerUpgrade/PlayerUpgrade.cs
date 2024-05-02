@@ -18,13 +18,18 @@ public class PlayerUpgrade : MonoBehaviour
     private TextElement totalQtyElem;
     private Button upgradeBtn;
 
+
     // UI Audio
     [SerializeField] private AudioSource confirmAudio;
     [SerializeField] private AudioSource upgradeAudio;
     [SerializeField] private AudioSource downgradeAudio;
     [SerializeField] private AudioSource disabledeAudio;
 
+    private float totalUpgradesMade = 0f;    // give players xp for upgrading their stats
+    private float xpPerUpergrade = 15f;
+
     private float totalPartsSpent;
+
     readonly Dictionary<string, VisualElement> rows = new();
 
     private void OnEnable()
@@ -91,8 +96,10 @@ public class PlayerUpgrade : MonoBehaviour
         float cost = stat.upgradeCost;
 
         // Only allow upgrade if player has enoug to cover cost
-        if (cost < PlayerStatsManager.Instance.parts && stat.Upgrade())
+        if (cost <= PlayerStatsManager.Instance.parts && stat.Upgrade())
         {
+            totalUpgradesMade++;
+
             // If we successfully upgraded the stat, then update the UI
             // Update points total
             totalPartsSpent += cost;
@@ -121,6 +128,7 @@ public class PlayerUpgrade : MonoBehaviour
         // If we successfully upgraded the stat, then update the UI
         if (success)
         {
+            totalUpgradesMade--;
             // Update points total
             totalPartsSpent -= cost;
             totalQtyElem.text = totalPartsSpent.ToString();
@@ -130,6 +138,7 @@ public class PlayerUpgrade : MonoBehaviour
             // We update all rows so that if upgrades are out of the price range the UI reflects that
             UpdateUI();
             downgradeAudio.Play();
+
         }
         else
         {
@@ -206,6 +215,7 @@ public class PlayerUpgrade : MonoBehaviour
     private void OnFinish()
     {
         // Go Back to the Play state
+        PlayerStatsManager.Instance.points += totalUpgradesMade * xpPerUpergrade;
         confirmAudio.Play();
         StartCoroutine(LoadPlayScene());
     }

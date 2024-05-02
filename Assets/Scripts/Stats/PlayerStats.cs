@@ -2,13 +2,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-// Derive Player Stats from entity Stats
+// Inherit Player Stats from Entity Stats
 public class PlayerStats : EntityStats
 {
     // Player stats
     private float maxFuel;
     private float currentFuel;
-    private float fuelRate;
+    public float fuelRate;
     private float parts;
     private float points;
     private float lives;
@@ -39,14 +39,12 @@ public class PlayerStats : EntityStats
 
     public void DepleteFuel()
     {
+        Debug.Log(fuelRate);
         currentFuel -= fuelRate;
         PlayerStatsManager.Instance.currentFuel = currentFuel;
         UpdateUI();
 
-        if (currentFuel <= 0)
-        {
-            Die();
-        }
+        if (currentFuel <= 0) Die();
     }
 
     public void AddFuel(float amount)
@@ -92,10 +90,11 @@ public class PlayerStats : EntityStats
         GetComponent<GamePlayStatsBar>().UpdateUI();
     }
 
-    public new void TakeDamage(float damage)
+    public override void TakeDamage(float damage)
     {
         Debug.Log("Take Damage Player Stats");
-        GetComponent<EntityStats>().TakeDamage(damage); // Use parent method, and update stats/ui
+        // Use base entity method then update stats/ui
+        base.TakeDamage(damage);
         PlayerStatsManager.Instance.currentHealth = currentHealth;
         UpdateUI();
     }
@@ -125,33 +124,24 @@ public class PlayerStats : EntityStats
         PlayerStatsManager.Instance.lives = lives;
         if (lives <= 0)
         {
-            StartCoroutine(LoadSceneAfter("Game Over", delay));
+            StartCoroutine(DoAfter(() =>
+            {
+                SceneManager.LoadScene("Game Over");
+            }, delay));
         }
         else
         {
-            StartCoroutine(LoadSceneAfter("Play", delay));
+            StartCoroutine(DoAfter(() =>
+            {
+                SceneManager.LoadScene("Play");
+            }, delay));
         }
     }
 
-
-    // Reset physics for a single Rigidbody
-    public void ResetPhysics(Rigidbody rb)
+    IEnumerator DoAfter(System.Action callback, float delay)
     {
-        if (rb != null)
-        {
-            rb.ResetCenterOfMass();
-            rb.ResetInertiaTensor();
-            rb.velocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
-        }
-    }
-
-
-
-    IEnumerator LoadSceneAfter(string scene, float delay)
-    {
-        // Pause x seconds and then load scene
+        // Pause x seconds and then do callback
         yield return new WaitForSeconds(delay);
-        SceneManager.LoadScene(scene);
+        callback();
     }
 }

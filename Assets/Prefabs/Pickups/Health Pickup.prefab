@@ -4528,6 +4528,7 @@ GameObject:
   - component: {fileID: 3994137805025651967}
   - component: {fileID: 3454627352423500932}
   - component: {fileID: 3333227977336874911}
+  - component: {fileID: -8376092432758019866}
   m_Layer: 0
   m_Name: Health Pickup
   m_TagString: Health
@@ -5181,7 +5182,6 @@ MonoBehaviour:
   pickupValue: 10
   gamePoints: 10
   pickupEffect: {fileID: 4826092199503839577, guid: 209f4a57b5a064631b2a0d1b40017bc0, type: 3}
-  pickupSoundSource: {fileID: 3333227977336874911}
 --- !u!82 &3333227977336874911
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5278,6 +5278,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-8376092432758019866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2978703879657906298}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97df42c5f18034df99038ed23bbb1f8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5412488242112769065
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class UpgradableStat
@@ -69,5 +68,13 @@ public class UpgradableStat
         }
     }
 
-
+    public void Reset()
+    {
+        currentValue = baseValue;
+        upgradesUsed = 0;
+        upgradeCost = Mathf.RoundToInt(upgradeCost / Mathf.Pow(costScale, upgradesUsed));
+        downgradeCost = 0;
+        isUpgradable = true;
+        isDowngradable = false;
+    }
 }

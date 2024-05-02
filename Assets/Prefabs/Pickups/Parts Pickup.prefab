@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 1066728792608546037}
   - component: {fileID: 4603867278588620262}
   - component: {fileID: 1604525611820644357}
+  - component: {fileID: 2566388884782118534}
   m_Layer: 0
   m_Name: Parts Pickup
   m_TagString: Parts
@@ -1110,7 +1111,6 @@ MonoBehaviour:
   pickupValue: 2
   gamePoints: 10
   pickupEffect: {fileID: 2317407974374184993, guid: 36fb062b74e2f400ba7842f0f84c0785, type: 3}
-  pickupSoundSource: {fileID: 1604525611820644357}
 --- !u!82 &1604525611820644357
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1207,6 +1207,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &2566388884782118534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6582964569847830573}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97df42c5f18034df99038ed23bbb1f8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &9052067498077167514
 PrefabInstance:
   m_ObjectHideFlags: 0

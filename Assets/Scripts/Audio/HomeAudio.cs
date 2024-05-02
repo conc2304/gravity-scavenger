@@ -4,6 +4,10 @@ public class HomeAudio : MonoBehaviour
 {
     private void Start()
     {
-        AudioManager.Play(AudioManager.Instance.mainMenuAudio, true);
+        if (AudioManager.Instance && AudioManager.Instance.mainMenuAudio)
+        {
+            if (AudioManager.Instance.mainMenuAudio.isPlaying) return;
+            AudioManager.Play(AudioManager.Instance.mainMenuAudio, true);
+        }
     }
 }

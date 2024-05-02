@@ -25,7 +25,7 @@ public class EnemyStats : EntityStats
         if (!Player) Player = GameObject.FindGameObjectWithTag("Player");
 
         // TODO make these change based on player xp
-        maxHealth = 30f;
+        maxHealth = 20f;
         currentHealth = maxHealth;
         firingRange = 0.3f;
         fireRate = 5f;
@@ -89,7 +89,7 @@ public class EnemyStats : EntityStats
         Player.GetComponent<PlayerStats>().AddPoints(10);   // TODO make points dynamic basic on level difficulty
 
         // Kill Enemy Entity
-        // GetComponent<Renderer>().enabled = false;
+        GetComponent<MeshRenderer>().enabled = false; // hide the ship 
         Destroy(gameObject, dieSoundSource.clip.length + 0.3f);
     }
 

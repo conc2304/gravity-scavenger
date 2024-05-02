@@ -40,6 +40,8 @@ public class MainMenu : MonoBehaviour
     {
         Debug.Log("Start Clicked");
         StartCoroutine(LoadScene("Play"));
+        // Make sure player stats are initialized when we start
+        PlayerStatsManager.Instance.Reset();
     }
 
     public void OnHomeClick(ClickEvent evt)

@@ -23,6 +23,8 @@ public class GamePlayStatsBar : MonoBehaviour
     private readonly float progressBaseMaxWidth = 50f;
     private readonly float progressFinalMaxWidth = 100f;
 
+    private bool updatedOnce = false;
+
     private void Start()
     {
         Debug.Log("Enable GamePlayStatsBar");
@@ -37,11 +39,19 @@ public class GamePlayStatsBar : MonoBehaviour
         fuelProgressWrapper = gamePlayStatsRoot.Q<VisualElement>("fuelProgressWrapper");
         livesStatusContainer = gamePlayStatsRoot.Q<VisualElement>("livesStatus");
 
-        if (PlayerStatsManager.Instance != null)
-        {
+        if (PlayerStatsManager.Instance != null) UpdateUI();
 
+    }
+
+    private void Update()
+    {
+        // Update the UI immediately once Stats Manager is available
+        if (PlayerStatsManager.Instance != null && !updatedOnce)
+        {
             UpdateUI();
+            updatedOnce = true;
         }
+
     }
 
     public void UpdateUI()
@@ -108,7 +118,7 @@ public class GamePlayStatsBar : MonoBehaviour
         if (upgradeSlots == null || upgradeSlots.Count == 0)
         {
             // Add lives to the lives status container
-            for (int i = 0; i < PlayerStatsManager.Instance.baseLives; i++)
+            for (int i = 0; i < PlayerStatsManager.Instance.maxLives; i++)
             {
                 VisualElement upgradeSlot = lifeTemplate.CloneTree();
 

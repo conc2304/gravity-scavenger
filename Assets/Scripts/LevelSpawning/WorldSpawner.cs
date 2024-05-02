@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.Burst.CompilerServices;
 using UnityEngine;
 
 public class WorldSpawner : MonoBehaviour
@@ -50,7 +48,6 @@ public class WorldSpawner : MonoBehaviour
         {
             for (int y = -gridPadding; y <= gridPadding; y++)
             {
-
                 // Create a variable representing the chunk's coordinates
                 Vector2Int chunkCoordinates = new Vector2Int(x, y);
                 // Create a new Chunk object at the specified coordinates with the given chunk size
@@ -126,7 +123,7 @@ public class WorldSpawner : MonoBehaviour
     private Vector2 GetChunkSize()
     {
         // We are defining the space of a chunk to be the size of the game screen times the multiplier
-        float multiplier = 1.25f;
+        float multiplier = 1.5f;
         float cameraDepth = Mathf.Abs(mainCamera.transform.position.z); // Assumes our game happens at z = 0
 
         // Use the bottom-left and top-right corners in world coordinates

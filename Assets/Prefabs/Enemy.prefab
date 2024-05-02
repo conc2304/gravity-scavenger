@@ -1107,6 +1107,7 @@ MonoBehaviour:
   fireRate: 1
   firingRange: 3
   thrust: 3
+  isDead: 0
   dieSoundSource: {fileID: 2611870040280482766}
   DeathAnimation: {fileID: 8829934830357975777, guid: ff4b0c2caab8740a0ae759166826dbc9, type: 3}
   PickupPrefabs:

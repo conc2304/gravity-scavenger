@@ -19,6 +19,7 @@ public class ShipController : MonoBehaviour
     [SerializeField] private Camera cam;
     [SerializeField] private Transform player;
     [SerializeField] private Rigidbody rigidBody;
+    [SerializeField] private GameObject respawnAnimation;
 
     Vector2 mousePos;
     Vector3 playerPos;
@@ -33,10 +34,12 @@ public class ShipController : MonoBehaviour
         fireRate = PlayerStatsManager.Instance.fireRate.currentValue;
         thrust = PlayerStatsManager.Instance.thrust.currentValue;
 
-        // Play Spawn sound and // TODO animation
+        // Play Spawn sound and 
         respawnSoundSource.Play();
-
+        GameObject anim = Instantiate(respawnAnimation, transform.position, respawnAnimation.transform.rotation);
+        Destroy(anim, 2f);
     }
+
 
     void Update()
     {
@@ -59,17 +62,9 @@ public class ShipController : MonoBehaviour
         }
 
         // Start the thurst audio on mouse down and stop it on mouse up
-        if (Input.GetMouseButtonDown(0))
-        {
-            Debug.Log("Play thrust");
-            thrustSoundSource.Play();
-        }
-        if (Input.GetMouseButtonUp(0))
-        {
-            Debug.Log("Stop thrust");
+        if (Input.GetMouseButtonDown(0)) thrustSoundSource.Play();
+        else if (Input.GetMouseButtonUp(0)) thrustSoundSource.Pause();
 
-            thrustSoundSource.Pause();
-        }
     }
 
     // FixedUpdate is called fixed intervals determined by the physics system
