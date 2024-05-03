@@ -14,6 +14,7 @@ public class WorldSpawner : MonoBehaviour
     public List<GameObject> PlanetPrefabs = new();
     public List<GameObject> EnemyPrefabs = new();
     public List<GameObject> PickupPrefabs = new();
+    public List<GameObject> AsteroidPrefabs = new();
     public GameObject SpaceStationPrefab;
 
     private bool isFirstLoad = true;
@@ -51,7 +52,7 @@ public class WorldSpawner : MonoBehaviour
                 // Create a variable representing the chunk's coordinates
                 Vector2Int chunkCoordinates = new Vector2Int(x, y);
                 // Create a new Chunk object at the specified coordinates with the given chunk size
-                chunks[chunkCoordinates] = new Chunk(chunkCoordinates, chunkSize, EnemyPrefabs, PickupPrefabs, PlanetPrefabs, SpaceStationPrefab);
+                chunks[chunkCoordinates] = new Chunk(chunkCoordinates, chunkSize, EnemyPrefabs, PickupPrefabs, PlanetPrefabs, AsteroidPrefabs, SpaceStationPrefab);
 
                 // If this is the first load and current chunk is center, then skip spawning entities
                 bool skipSpawning = isFirstLoad && x == centerChunk.x && y == centerChunk.y;
@@ -101,7 +102,7 @@ public class WorldSpawner : MonoBehaviour
                 {
                     if (!chunks.ContainsKey(nearbyChunk))
                     {
-                        chunks[nearbyChunk] = new Chunk(nearbyChunk, chunkSize, EnemyPrefabs, PickupPrefabs, PlanetPrefabs, SpaceStationPrefab);
+                        chunks[nearbyChunk] = new Chunk(nearbyChunk, chunkSize, EnemyPrefabs, PickupPrefabs, PlanetPrefabs, AsteroidPrefabs, SpaceStationPrefab);
                     }
                     chunks[nearbyChunk].Load();
                 }

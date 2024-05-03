@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 4127043299784373105}
   - component: {fileID: 8669558173970097744}
   - component: {fileID: 7683433881356945765}
+  - component: {fileID: 3384041647191262494}
   m_Layer: 0
   m_Name: Fuel Pickup
   m_TagString: Fuel
@@ -671,7 +672,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 76720a232d8d44d34874b1215cd86e69, type: 2}
+  - {fileID: 2100000, guid: e3e9c6181914443c4a610ee20220d6a6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -850,7 +851,19 @@ MonoBehaviour:
   radius: 0
   centerPosition: {x: 0, y: 0, z: 0}
   rotationSpeed: 0
-  time: 0
+--- !u!114 &3384041647191262494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7774372439403873602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7793460d7b7474588be442684449cb53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parralax: 5
 --- !u!1001 &7826431316177338866
 PrefabInstance:
   m_ObjectHideFlags: 0

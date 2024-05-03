@@ -9,9 +9,8 @@ public class PowerUp : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-
-        // Ignore these collisions
-        if (other.CompareTag("Laser")) return;
+        // Ignore collision with lasers, asteroids, and dead entities
+        if (other.CompareTag("Laser") || other.CompareTag("Asteroid")) return;
         if (other.TryGetComponent(out
         EntityStats stats) && stats.isDead) return;
 
@@ -37,7 +36,6 @@ public class PowerUp : MonoBehaviour
             if (pickupType == "Fuel") playerStats.AddFuel(pickupValue);
             if (pickupType == "Health") playerStats.AddHealth(pickupValue);
             if (pickupType == "Parts") playerStats.AddParts(pickupValue);
-
 
             // If object is destory immediately then the sound gets destroyed too
             StartCoroutine(DestoryAfterTime(2));

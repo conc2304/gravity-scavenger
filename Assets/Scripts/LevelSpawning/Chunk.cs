@@ -9,7 +9,6 @@ public class Chunk
     private Vector2 size;
     private Rect boundary;
 
-
     // Mass dictates gravity pull, higher mass = more gravity
     private readonly int minMass = 20;
     private int maxMass = 30;
@@ -21,13 +20,14 @@ public class Chunk
     private readonly List<GameObject> PlanetPrefabs = new();
     private readonly List<GameObject> EnemyPrefabs = new();
     private readonly List<GameObject> PickupPrefabs = new();
+    private readonly List<GameObject> AsteroidPrefabs = new();
     private readonly GameObject SpaceStationPrefab;
 
     private readonly float Spawn_Z = -0.5f;
     private float playerXp = 0f;
     private float minXPForEnemies = 200f;
 
-    public Chunk(Vector2Int coordinates, Vector2 chunkSize, List<GameObject> enemyPrefabs, List<GameObject> pickupPrefabs, List<GameObject> planetPrefabs, GameObject spaceStationPrefab)
+    public Chunk(Vector2Int coordinates, Vector2 chunkSize, List<GameObject> enemyPrefabs, List<GameObject> pickupPrefabs, List<GameObject> planetPrefabs, List<GameObject> asteroidPrefabs, GameObject spaceStationPrefab)
     {
         this.coordinates = coordinates;
         size = chunkSize;
@@ -35,6 +35,7 @@ public class Chunk
         PlanetPrefabs = planetPrefabs;
         EnemyPrefabs = enemyPrefabs;
         PickupPrefabs = pickupPrefabs;
+        AsteroidPrefabs = asteroidPrefabs;
         SpaceStationPrefab = spaceStationPrefab;
 
         // Calculate the boundary of the chunk based on its size and position
@@ -63,6 +64,7 @@ public class Chunk
         float chanceOfEmptiness = 50f;
         float r = Random.Range(0, 100);
         float r2 = Random.Range(0, 100);
+        float r3 = Random.Range(0, 100);
         if (r < chanceOfEmptiness)
         {
             SpawnItems();
@@ -71,6 +73,11 @@ public class Chunk
         {
             // Percent chance that empty zone has a space station
             SpawnSpaceStation();
+        }
+        else if (r3 < 50)
+        {
+            // Spawn Asteroids in empty spaces
+            SpawnAsteroids();
         }
     }
 
@@ -87,6 +94,7 @@ public class Chunk
         float r0 = Random.Range(0, 100);
         float r1 = Random.Range(0, 100);
         float r2 = Random.Range(0, 100);
+        float r3 = Random.Range(0, 100);
 
         float playerXP = PlayerStatsManager.Instance.points;
         //  TODO - Update the chance of enemies depending on level/gamepoints
@@ -94,6 +102,7 @@ public class Chunk
         if ((float)playerXP > minXPForEnemies && r0 < 20) SpawnEnemies();
         if (r1 < 70) SpawnPickups();
         if (r2 < 60) SpawnPlanets();
+        if (r3 < 25) SpawnAsteroids();
     }
 
     private void SpawnDebugger()
@@ -136,6 +145,26 @@ public class Chunk
         }
     }
 
+    private void SpawnAsteroids()
+    {
+
+        int asteroidCount = Random.Range(1, 3);
+        bool sameDirection = Random.Range(0f, 100f) < 45F;
+        Vector3 GetRandomDirection() => new Vector3(Random.Range(0.5f, 10f), Random.Range(0.5f, 15f), 0);
+        Vector3 direction = GetRandomDirection();
+
+        for (int i = 0; i < asteroidCount; i++)
+        {
+            // directi
+            GameObject asteroid = SpawnObject(AsteroidPrefabs[Mathf.RoundToInt(Random.Range(0, PickupPrefabs.Count))]);
+            if (!sameDirection) direction = GetRandomDirection();
+
+            asteroid.GetComponent<Rigidbody>().AddForce(direction);
+
+            items.Add(asteroid);
+        }
+    }
+
     private void SpawnPickups()
     {
         int pickupCount = Random.Range(1, 3);
@@ -174,8 +203,8 @@ public class Chunk
         float pickupSize = 1f;
         float radius = (planetScale * Random.Range(1.5f, 3.5f)) + pickupSize;
 
-        float chanceOfOrbiting = playerXp > 200 ? 20 : 0;
-        bool enableOrbit = chanceOfOrbiting <= Random.Range(1f, 100f);
+        float chanceOfOrbiting = playerXp > 200f ? 20f : 0f;
+        bool enableOrbit = Random.Range(1f, 100f) < chanceOfOrbiting;
 
         for (int j = 0; j < pickupCount; j++)
         {

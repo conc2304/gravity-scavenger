@@ -68,8 +68,21 @@ public class EnemyStats : EntityStats
         int itemIndex = SelectItemIndex(Random.Range(0, 100));
         GameObject selectedPickup = PickupPrefabs[itemIndex];
         GameObject pickupObject = Instantiate(selectedPickup, transform.position, selectedPickup.transform.rotation);
+        pickupObject.GetComponent<PowerUp>().pickupValue = GetPickupValue(selectedPickup);
 
-        // Set different pickup values for different items
+
+        // Give the player game points for killing an enemy
+        Player.GetComponent<PlayerStats>().AddPoints(10);   // TODO make points dynamic basic on level difficulty
+
+        // Kill Enemy Entity
+        GetComponent<MeshRenderer>().enabled = false; // hide the ship 
+        Destroy(gameObject, dieSoundSource.clip.length + 0.3f);
+    }
+
+
+    // Give different items different pickup values
+    private float GetPickupValue(GameObject selectedPickup)
+    {
         float pickupValue = 5;
         if (selectedPickup.CompareTag("Fuel"))
         {
@@ -81,16 +94,9 @@ public class EnemyStats : EntityStats
         }
         else if (selectedPickup.CompareTag("Parts"))
         {
-            pickupValue = Random.Range(1, 5); // TODO make points dynamic basic on level difficulty
+            pickupValue = Random.Range(3, 7); // TODO make points dynamic basic on level difficulty
         }
-        pickupObject.GetComponent<PowerUp>().pickupValue = pickupValue;
-
-        // Give the player game points for killing an enemy
-        Player.GetComponent<PlayerStats>().AddPoints(10);   // TODO make points dynamic basic on level difficulty
-
-        // Kill Enemy Entity
-        GetComponent<MeshRenderer>().enabled = false; // hide the ship 
-        Destroy(gameObject, dieSoundSource.clip.length + 0.3f);
+        return pickupValue;
     }
 
 }

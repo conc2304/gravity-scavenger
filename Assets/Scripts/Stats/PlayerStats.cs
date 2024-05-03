@@ -39,7 +39,6 @@ public class PlayerStats : EntityStats
 
     public void DepleteFuel()
     {
-        Debug.Log(fuelRate);
         currentFuel -= fuelRate;
         PlayerStatsManager.Instance.currentFuel = currentFuel;
         UpdateUI();
