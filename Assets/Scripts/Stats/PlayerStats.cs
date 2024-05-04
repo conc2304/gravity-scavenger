@@ -33,6 +33,7 @@ public class PlayerStats : EntityStats
         parts = PlayerStatsManager.Instance.parts;
         points = PlayerStatsManager.Instance.points;
         lives = PlayerStatsManager.Instance.lives;
+
     }
 
     // Class Methods
@@ -111,12 +112,13 @@ public class PlayerStats : EntityStats
 
         // Make the ship disappear during die animation
         // Destorying the main player game object causes errors with rigid body physics
-        // So are hiding the childe
+        // So are hiding the child
         Transform childTransform = transform.Find("Ship Wrapper");
         childTransform.gameObject.SetActive(false);
 
         // Lose some parts if we have any
         StealParts(Random.Range(0, 3));
+
         // Lose a life
         float delay = Mathf.Max(dieSoundSource.clip.length, 2f) + 0.1f;
         lives -= 1;

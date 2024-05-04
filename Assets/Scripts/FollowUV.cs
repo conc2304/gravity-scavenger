@@ -11,7 +11,6 @@ public class FollowUV : MonoBehaviour
         // Scroll the background UV by updateing the offsets for x and y
         MeshRenderer mr = GetComponent<MeshRenderer>();
         Material mat = mr.material;
-        // mat.GetTextureOffset("_MainTex");
         Vector2 offset = mat.mainTextureOffset;
 
         offset.x = transform.position.x / transform.localScale.x / parralax;

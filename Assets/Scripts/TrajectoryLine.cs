@@ -14,8 +14,8 @@ public class TrajectoryLine : MonoBehaviour
     private Material shader;
 
     private GravityField[] gravityFields; // Reference to the GravityField script
-    bool inGravityField = false;
-    bool lineCollidesWithPlanet = false;
+    private bool inGravityField = false;
+    private bool lineCollidesWithPlanet = false;
 
     // Player Vars
     private GameObject player;
@@ -42,7 +42,7 @@ public class TrajectoryLine : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Set  flags
+        // Reset flags
         inGravityField = false;
         lineCollidesWithPlanet = false;
 
@@ -56,14 +56,12 @@ public class TrajectoryLine : MonoBehaviour
 
         float totalLength = 0f; //  Accumulator for line length
 
-
         for (int i = 1; i < segmentCount; i++)
         {
 
             // To prevent really long segments that are flat, cut the timeOffset down when velocity is large
             float timeOffset = i * Time.fixedDeltaTime * curveLength;
             float maxOffset = 1f;
-
             if (timeOffset > maxOffset) timeOffset /= 2f;
 
             // Compute the gravity offset
@@ -77,18 +75,11 @@ public class TrajectoryLine : MonoBehaviour
             // Set start velocity of the player trajectory for the next loop
             startVelocity = (segments[i] - segments[i - 1]) / timeOffset;
 
-
             // Calculate the distance between the current point and the previous point
             float segmentLength = Vector3.Distance(segments[i], segments[i - 1]);
             totalLength += segmentLength;
 
-            // Validate segment point
-            // Use the bottom-left of screen to calculate out of bounds
-            float cameraDepth = Mathf.Abs(Camera.main.transform.position.z); // Assumes our game happens at z = 0
-            Vector3 segPt = Camera.main.WorldToScreenPoint(segments[i]);
-            Vector3 worldBottomLeft = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, cameraDepth));
-            bool pointOutOfBounds = segPt.x > Screen.width || segPt.y > Screen.height || segPt.x < worldBottomLeft.x || segPt.y < worldBottomLeft.y;
-
+            bool pointOutOfBounds = IsPointOutOfBounds(segments[i]);
             if (pointOutOfBounds || lineCollidesWithPlanet)
             {
                 // If new point is invalid just repeat the last one
@@ -110,15 +101,10 @@ public class TrajectoryLine : MonoBehaviour
         // Enable or disable the Line Renderer based on the total length, otherwise we have a weird blinking dot for a nose
         lineRenderer.enabled = totalLength >= 0.1f && inGravityField;
 
-        // When the line is long, render more dashes and vice versa
-        // At its longest it should have 5 dashes, at its shortest half of a dash 
-        float numShaderDashes = Map(totalLength, 1f, 25f, 0.25f, 5f);
-        float lerpedValue = Mathf.Lerp(prevNumDashes, numShaderDashes, 0.1f); // interpolate for smoothness
-        prevNumDashes = numShaderDashes;
-
-        // Set the x tiling of ths shader via number of dashes prop
-        shader.SetFloat("_Number_Of_Dashes", lerpedValue);
+        UpdateTrajectoryShader(totalLength);
     }
+
+
 
     private Vector3 GetGravityOffset(Vector3 prevSegmentPosition)
     {
@@ -173,10 +159,27 @@ public class TrajectoryLine : MonoBehaviour
         return force;
     }
 
+    private bool IsPointOutOfBounds(Vector3 segmentPos)
+    {
+        // Validate segment point
+        // Use the bottom-left of screen to calculate out of bounds
+        float cameraDepth = Mathf.Abs(Camera.main.transform.position.z); // Assumes our game happens at z = 0
+        Vector3 segPt = Camera.main.WorldToScreenPoint(segmentPos);
+        Vector3 worldBottomLeft = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, cameraDepth));
+        bool pointOutOfBounds = segPt.x > Screen.width || segPt.y > Screen.height || segPt.x < worldBottomLeft.x || segPt.y < worldBottomLeft.y;
+        return pointOutOfBounds;
+    }
 
-    // private Vector4 dxdt(float timeOffset, Vector4 x) {
-    //     // float xs 
-    // }
+    private void UpdateTrajectoryShader(float totalLength)
+    {
+        // When the line is long, render more dashes and vice versa
+        // At its longest it should have 5 dashes, at its shortest half of a dash 
+        float numShaderDashes = Map(totalLength, 1f, 25f, 0.25f, 5f);
+        float lerpedValue = Mathf.Lerp(prevNumDashes, numShaderDashes, 0.1f); // interpolate for smoothness
+        prevNumDashes = numShaderDashes;
+        // Set the x tiling of ths shader via number of dashes prop
+        shader.SetFloat("_Number_Of_Dashes", lerpedValue);
+    }
 
 
 

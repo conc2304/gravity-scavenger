@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TrackPlayer : MonoBehaviour
@@ -20,14 +18,12 @@ public class TrackPlayer : MonoBehaviour
         vel = rb.velocity;
     }
 
+    // Update is called once per frame
     private void Update()
     {
-        if (!target)
-        {
-            GetTarget();
-        }
-
+        if (!target) GetTarget();
     }
+
     private void GetTarget()
     {
         if (GameObject.FindGameObjectWithTag("Player"))
@@ -37,13 +33,13 @@ public class TrackPlayer : MonoBehaviour
     }
 
 
-    // Update is called once per frame
+    // FixedUpdate is called once per physics tick
     private void FixedUpdate()
     {
         if (!target) return;
 
         Vector3 targetPos = target.position + offset;
-        targetPos.z = transform.position.z;
+        targetPos.z = transform.position.z; // Keep camera in the same z position
         transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref vel, damping);
     }
 }

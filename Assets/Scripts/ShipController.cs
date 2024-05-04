@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class ShipController : MonoBehaviour
@@ -47,7 +46,7 @@ public class ShipController : MonoBehaviour
         Destroy(anim, 2f);
 
         // Change the Z scale of the particle system to simulate a longer engine trail for different thrust levels as players upgrade
-        jetEnginePS.transform.localScale = new Vector3(jetEnginePS.transform.localScale.x, jetEnginePS.transform.localScale.y, Map(thrust, PlayerStatsManager.Instance.thrust.baseValue, PlayerStatsManager.Instance.thrust.maxValue, 0.1f, 3f));
+        jetEnginePS.transform.localScale = new Vector3(jetEnginePS.transform.localScale.x, jetEnginePS.transform.localScale.y, Map(thrust, PlayerStatsManager.Instance.thrust.baseValue, PlayerStatsManager.Instance.thrust.maxValue, 0.1f, 2f));
     }
 
 
@@ -86,7 +85,6 @@ public class ShipController : MonoBehaviour
         }
 
         emission.rateOverTime = Mathf.Lerp(emissioRate, prevRate, emissionDecayTime);
-
     }
 
     // FixedUpdate is called fixed intervals determined by the physics system
@@ -99,8 +97,9 @@ public class ShipController : MonoBehaviour
         pos.y = playerPos.y;
 
         Vector2 lookDir = mousePos - pos;
-        float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg + 90f;
+        float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg + 90f; // offset angle by 90 degress
 
+        // Set the rotation
         Quaternion newRotation = Quaternion.Euler(0, 0, angle);
         player.localRotation = newRotation;
 
@@ -108,14 +107,12 @@ public class ShipController : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
 
-            // Add thrust in the forward direction
+            // Add thrust in the forward direction 
             if (rigidBody != null) rigidBody.AddForce(thrust * Time.deltaTime * -transform.up);
 
             // Deplete Fuel levels
             gameObject.GetComponent<PlayerStats>().DepleteFuel();
         }
-
-
     }
 
     private void Shoot()

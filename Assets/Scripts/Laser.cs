@@ -7,13 +7,12 @@ public class Laser : MonoBehaviour
     [SerializeField] private float speed = 10f;
 
     [Range(1, 10)]
-    public float range = 3f;
-
+    public float range = 3f;    // Lifetime of laser in seconds
     public float damage = 10f;
 
     // Prevent lasers from doing damage to the shooter
     private float collisionTimer = 0;
-    private readonly float collisionBuffer = 0.05f;
+    private readonly float collisionBuffer = 0.01f;
     private string shooterTag;
 
     [SerializeField] private GameObject explosionEffect;
@@ -27,7 +26,7 @@ public class Laser : MonoBehaviour
         Destroy(gameObject, range);
     }
 
-    // Update is called once per frame
+    // Using fixed update since we are updating physics based properties
     void FixedUpdate()
     {
         rb.velocity = transform.up * speed;
@@ -36,19 +35,17 @@ public class Laser : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        other.gameObject.TryGetComponent<EntityStats>(out var stats); // if game object has entity stats then take damage
 
-        if (collisionTimer > collisionBuffer) // Let laser get past the collider
+        // Let laser get past the shooter's own collider
+        if (collisionTimer > collisionBuffer)
         {
-            if (other.gameObject.CompareTag(shooterTag))
-            {
-                // turn off friendly fire so enemies can't destroy each other
-                // do nothing
-            }
-            else if (stats)
-            {
-                stats.TakeDamage(damage);
-            }
+            // Turn off friendly fire
+            if (other.gameObject.CompareTag(shooterTag)) return;
+
+            // If game object has entity stats then take damage
+            other.gameObject.TryGetComponent<EntityStats>(out var stats);
+            if (stats) stats.TakeDamage(damage);
+
             Die();
         }
     }
@@ -65,6 +62,6 @@ public class Laser : MonoBehaviour
 
         // Bullet Collision animation
         GameObject explosion = Instantiate(explosionEffect, gameObject.transform.position, gameObject.transform.rotation);
-        Destroy(explosion, 2f);
+        Destroy(explosion, 2f); // 2 seconds is the durration of the explosion effect, but not sure how to access that currently. // TODO
     }
 }

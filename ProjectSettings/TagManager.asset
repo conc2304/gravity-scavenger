@@ -12,6 +12,7 @@ TagManager:
   - Parts
   - Planet
   - Asteroid
+  - Player Ship
   layers:
   - Default
   - TransparentFX

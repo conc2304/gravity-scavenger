@@ -31,22 +31,6 @@ public class AudioManager : MonoBehaviour
 
 
 
-    // Various public methods to call on the audio sources
-    public static void Mute(AudioSource audioSource)
-    {
-        audioSource.mute = true;
-    }
-
-    public static void unMute(AudioSource audioSource)
-    {
-        audioSource.mute = false;
-    }
-
-    public static void Pause(AudioSource audioSource)
-    {
-        audioSource.Pause();
-    }
-
     public static void Play(AudioSource audioSource, bool stopOthers)
     {
 

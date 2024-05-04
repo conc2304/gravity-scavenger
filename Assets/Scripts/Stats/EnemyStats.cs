@@ -17,6 +17,7 @@ public class EnemyStats : EntityStats
             { 100, 1 }  // Health[1] (15% probability, added to previous percentage)
         };
 
+    private int xpMultiplier = 1; // Used to dynamically scale the values of enemy stats and points given
 
     // Unity MonoBehaviour Methods
 
@@ -24,12 +25,16 @@ public class EnemyStats : EntityStats
     {
         if (!Player) Player = GameObject.FindGameObjectWithTag("Player");
 
-        // TODO make these change based on player xp
-        maxHealth = 20f;
+        // for every 120xp over 250xp increment the xpMyultiplier by 1
+        float playerXP = PlayerStatsManager.Instance.points;
+        int xpMultiplier = (int)(Mathf.Max(1f, playerXP - 250) / 120);
+
+        // Dynamic initial stats based on XP
+        maxHealth = Random.Range(20f, 20f * xpMultiplier);
         currentHealth = maxHealth;
-        firingRange = 0.3f;
-        fireRate = 5f;
-        damage = 7f;
+        firingRange = 0.3f * (xpMultiplier > 1 ? xpMultiplier / 1.2f : 1f);
+        fireRate = 5f / xpMultiplier;
+        damage = 7f * xpMultiplier;
     }
 
     // Class Methods
@@ -39,13 +44,15 @@ public class EnemyStats : EntityStats
     public int SelectItemIndex(int percent)
     {
         // Iterate through the probability mappings
-        foreach (var kvp in pickUpProbability)
+        foreach (KeyValuePair<int, int> kvp in pickUpProbability)
         {
+            int probability = kvp.Key;
+            int prefabIndex = kvp.Value;
+
             // Check if the given percent falls within the current range
-            if (percent <= kvp.Key)
+            if (percent <= probability)
             {
-                // Return the  index
-                return kvp.Value;
+                return prefabIndex;
             }
         }
 
@@ -68,11 +75,10 @@ public class EnemyStats : EntityStats
         int itemIndex = SelectItemIndex(Random.Range(0, 100));
         GameObject selectedPickup = PickupPrefabs[itemIndex];
         GameObject pickupObject = Instantiate(selectedPickup, transform.position, selectedPickup.transform.rotation);
-        pickupObject.GetComponent<PowerUp>().pickupValue = GetPickupValue(selectedPickup);
-
+        pickupObject.GetComponent<Pickup>().pickupValue = GetPickupValue(selectedPickup);
 
         // Give the player game points for killing an enemy
-        Player.GetComponent<PlayerStats>().AddPoints(10);   // TODO make points dynamic basic on level difficulty
+        Player.GetComponent<PlayerStats>().AddPoints(10 * xpMultiplier);
 
         // Kill Enemy Entity
         GetComponent<MeshRenderer>().enabled = false; // hide the ship 
@@ -83,18 +89,20 @@ public class EnemyStats : EntityStats
     // Give different items different pickup values
     private float GetPickupValue(GameObject selectedPickup)
     {
-        float pickupValue = 5;
+
+        float pickupValue = 5 * xpMultiplier;
+
         if (selectedPickup.CompareTag("Fuel"))
         {
-            pickupValue = Random.Range(10, 15); // TODO make points dynamic basic on level difficulty
+            pickupValue = Random.Range(10 * xpMultiplier, 15 * xpMultiplier);
         }
         else if (selectedPickup.CompareTag("Health"))
         {
-            pickupValue = Random.Range(10, 20); // TODO make points dynamic basic on level difficulty
+            pickupValue = Random.Range(10 * xpMultiplier, 20 * xpMultiplier);
         }
         else if (selectedPickup.CompareTag("Parts"))
         {
-            pickupValue = Random.Range(3, 7); // TODO make points dynamic basic on level difficulty
+            pickupValue = Random.Range(3 * xpMultiplier, 7 * xpMultiplier);
         }
         return pickupValue;
     }

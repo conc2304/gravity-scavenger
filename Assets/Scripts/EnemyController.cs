@@ -72,17 +72,18 @@ public class EnemyController : MonoBehaviour
 
     private void FixedUpdate()
     {
-
         // If target is not in the non-aggression distance add force toward target
         float distance = target != null ? Vector3.Distance(transform.position, target.transform.position) : 1;
-        // High aggression maps to enemies pursuing from farther away, and vice versa,
+
+        // High aggression maps to enemies pursuing from farther away, and vice versa
         float aggressionRange = Map(aggressionLevel, 0f, maxAggressionLevel, 5f, 200f);
         bool inAggressionZone = distance < aggressionRange;
-        // High anxiety map to enemies staying further away, and vice versa
+
+        // High anxiety map to enemies pursuing, but staying further away, and vice versa
         float anxietyZone = Map(anxiousLevel, 0f, maxAnxiousLevel, 5f, 0f);
         bool inAnxietyZone = distance < anxietyZone;
 
-        bool isBelowMaxSpeed = rb.velocity.magnitude < 3; // prevent ship from going too fast
+        bool isBelowMaxSpeed = rb.velocity.magnitude < 3; // Prevent ship from going too fast
         if (targetIsInFront && isBelowMaxSpeed && inAggressionZone && !inAnxietyZone)
         {
             // only turn on thrusters if our intended target is infront of us
@@ -120,15 +121,18 @@ public class EnemyController : MonoBehaviour
     {
         if (target == null) return;
 
+        // Calculate the left and right bounds of the angle
         Vector3 targetDirection = target.position - transform.position;
-        float angle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg + 90f;
+        float angle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg + 90f; // Account for 90 degree offset of model
         float angle2 = Vector3.Angle(transform.up, targetDirection);
 
+        // Given an left and right bounds, determine whether the target is in front.
         targetIsInFront = angle2 >= 180 - angleRange || angle2 <= 180 + angleRange;
+
         targetIsInFiringRange = targetDirection.magnitude <= firingRange * 2; // let them start shooting even out of range
 
+        // Interpolate to the new rotation
         Quaternion newRotation = Quaternion.Euler(0, 0, angle);
-        // slowly interpolate to that rotation
         transform.localRotation = Quaternion.Slerp(transform.localRotation, newRotation, rotateSpeed);
     }
 

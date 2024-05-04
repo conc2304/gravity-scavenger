@@ -40,7 +40,6 @@ public class GamePlayStatsBar : MonoBehaviour
         livesStatusContainer = gamePlayStatsRoot.Q<VisualElement>("livesStatus");
 
         if (PlayerStatsManager.Instance != null) UpdateUI();
-
     }
 
     private void Update()
@@ -56,7 +55,6 @@ public class GamePlayStatsBar : MonoBehaviour
 
     public void UpdateUI()
     {
-
         // Update Progress Bar Size
         // Make the progress bar grow in width based on max fuel/health to show upgrades in max fuel/health
         // For each upgrade used, increment the maxWidth of the progress bar container so that it gets longer
@@ -83,12 +81,12 @@ public class GamePlayStatsBar : MonoBehaviour
         if (fuelBar != null)
         {
 
-            fuelBar.value = PlayerStatsManager.Instance.maxFuel.currentValue;
+            fuelBar.highValue = PlayerStatsManager.Instance.maxFuel.currentValue;
             fuelBar.value = PlayerStatsManager.Instance.currentFuel;
 
             float fuelIncAmount = (progressFinalMaxWidth - progressBaseMaxWidth) / PlayerStatsManager.Instance.maxFuel.maxUpgrades;
             fuelProgressWrapper.style.maxWidth = Length.Percent(progressBaseMaxWidth + (fuelIncAmount * PlayerStatsManager.Instance.maxFuel.upgradesUsed));
-            if (PlayerStatsManager.Instance.currentFuel / PlayerStatsManager.Instance.maxFuel.currentValue < 0.15)
+            if (PlayerStatsManager.Instance.currentFuel / PlayerStatsManager.Instance.maxFuel.currentValue < 0.20)
             {
                 fuelProgressWrapper.Q<VisualElement>(className: "unity-progress-bar__background").AddToClassList("danger");
             }
@@ -111,9 +109,9 @@ public class GamePlayStatsBar : MonoBehaviour
         }
 
 
-
         // Update lives values
         List<VisualElement> upgradeSlots = gamePlayStatsRoot.Query<VisualElement>(className: "upgradeSlot").ToList();
+
         // Instantiate if not there
         if (upgradeSlots == null || upgradeSlots.Count == 0)
         {

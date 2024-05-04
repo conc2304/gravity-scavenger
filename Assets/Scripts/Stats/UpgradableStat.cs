@@ -35,6 +35,7 @@ public class UpgradableStat
             downgradeCost = upgradeCost;
             upgradesUsed++;
             currentValue += upgradeIncrement;
+            // Increase cost of the next upgrade 
             upgradeCost = Mathf.RoundToInt(upgradeCost * costScale);
             isUpgradable = upgradesUsed < maxUpgrades;
             isDowngradable = upgradesUsed > 0;
@@ -55,6 +56,7 @@ public class UpgradableStat
             upgradeCost = downgradeCost;
             upgradesUsed--;
             currentValue -= upgradeIncrement;
+            // Decrease cost of the next downgrade 
             downgradeCost = Mathf.RoundToInt(upgradeCost / costScale);
             isDowngradable = upgradesUsed > 0;
             isUpgradable = upgradesUsed < maxUpgrades;

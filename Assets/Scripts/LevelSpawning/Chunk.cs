@@ -26,6 +26,7 @@ public class Chunk
     private readonly float Spawn_Z = -0.5f;
     private float playerXp = 0f;
     private float minXPForEnemies = 200f;
+    private bool isEmptySpace;
 
     public Chunk(Vector2Int coordinates, Vector2 chunkSize, List<GameObject> enemyPrefabs, List<GameObject> pickupPrefabs, List<GameObject> planetPrefabs, List<GameObject> asteroidPrefabs, GameObject spaceStationPrefab)
     {
@@ -53,6 +54,7 @@ public class Chunk
         maxMass = Mathf.Min((int)(35 + (Mathf.Max(0f, playerXp - 100) / 75 * 5)), 55);
     }
 
+    // Spawn items in the new chunk
     public void Load()
     {
         Debug.Log("Load Chunk: " + isActive);
@@ -68,19 +70,24 @@ public class Chunk
         if (r < chanceOfEmptiness)
         {
             SpawnItems();
+            isEmptySpace = false;
         }
         else if (r2 < 15f)
         {
             // Percent chance that empty zone has a space station
             SpawnSpaceStation();
+            isEmptySpace = false;
         }
         else if (r3 < 50)
         {
             // Spawn Asteroids in empty spaces
+            isEmptySpace = true;
             SpawnAsteroids();
         }
+        isEmptySpace = true;
     }
 
+    // Despawn and Cleanup
     public void Unload()
     {
         Debug.Log("Unload");
@@ -147,19 +154,19 @@ public class Chunk
 
     private void SpawnAsteroids()
     {
-
-        int asteroidCount = Random.Range(1, 3);
+        // If space is empty allow for larger asteroid fields
+        int asteroidMax = isEmptySpace ? 12 : 4;
+        int asteroidCount = Random.Range(1, asteroidMax);
         bool sameDirection = Random.Range(0f, 100f) < 45F;
-        Vector3 GetRandomDirection() => new Vector3(Random.Range(0.5f, 10f), Random.Range(0.5f, 15f), 0);
+
+        static Vector3 GetRandomDirection() => new(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0);
         Vector3 direction = GetRandomDirection();
 
         for (int i = 0; i < asteroidCount; i++)
         {
-            // directi
-            GameObject asteroid = SpawnObject(AsteroidPrefabs[Mathf.RoundToInt(Random.Range(0, PickupPrefabs.Count))]);
+            GameObject asteroid = SpawnObject(AsteroidPrefabs[Mathf.RoundToInt(Random.Range(0, AsteroidPrefabs.Count))]);
             if (!sameDirection) direction = GetRandomDirection();
-
-            asteroid.GetComponent<Rigidbody>().AddForce(direction);
+            asteroid.GetComponent<Asteroid>().initialForce = direction;
 
             items.Add(asteroid);
         }
@@ -195,7 +202,6 @@ public class Chunk
             items.Add(planet);
         }
     }
-
     private void SpawnOrbiters(GameObject planet, float planetScale)
     {
         int pickupCount = Random.Range(1, 5);
@@ -204,8 +210,18 @@ public class Chunk
         float radius = (planetScale * Random.Range(1.5f, 3.5f)) + pickupSize;
 
         float chanceOfOrbiting = playerXp > 200f ? 20f : 0f;
+        float chanceOfPlanetInOrbit = playerXp > 350f ? 30f : 0f;
+        float chanceOfObstacle = playerXp > 275f ? 30f : 0;
+        bool addObstacle = Random.Range(1f, 100f) < chanceOfObstacle;
         bool enableOrbit = Random.Range(1f, 100f) < chanceOfOrbiting;
 
+        // At above 275 xp, make the radius of the orbit go in and out
+        float chanceOfDynamicRadius = playerXp > 275f ? 30f : 0f;
+        bool enableDynamicRadius = Random.Range(1f, 100f) < chanceOfDynamicRadius;
+        float dynamicRadiusSize = Random.Range(1, 1.25f);
+        float rotationSpeed = Random.Range(0.1f, 0.75f);
+
+        GameObject spawnedObj;
         for (int j = 0; j < pickupCount; j++)
         {
             // Calculate the angle for this item
@@ -214,20 +230,57 @@ public class Chunk
             // Calculate the position using trigonometry
             float x = planet.transform.position.x + (radius * Mathf.Cos(angle * Mathf.Deg2Rad));
             float y = planet.transform.position.y + (radius * Mathf.Sin(angle * Mathf.Deg2Rad));
-
+            GameObject prefab;
             // Pick a random prefab and spawn it
-            GameObject prefab = PickupPrefabs[Mathf.RoundToInt(Random.Range(0, PickupPrefabs.Count))];
-            Vector3 spawnPosition = new Vector3(x, y, prefab.transform.position.z);
-            GameObject spawnedObj = Object.Instantiate(prefab, spawnPosition, prefab.transform.rotation);
+            if (addObstacle)
+            {
+                // For higher difficulty add obstacles like planets and  asteroids in the orbiting path.
+                if (Random.Range(1f, 100) < chanceOfPlanetInOrbit)
+                {
+                    // Add Planet to orbit
+                    prefab = PlanetPrefabs[Mathf.RoundToInt(Random.Range(0, PlanetPrefabs.Count))];
+                    Vector3 spawnPosition = new Vector3(x, y, prefab.transform.position.z);
+                    spawnedObj = Object.Instantiate(prefab, spawnPosition, prefab.transform.rotation);
+                    // Set Gravity props
+                    // Gravity is dictated by planetary mass
+                    spawnedObj.GetComponent<Rigidbody>().mass = Random.Range(minMass, maxMass);
+                    // Sets the radius of gravitational pull
+                    spawnedObj.GetComponent<GravityField>().maxDistance = Random.Range(minGravityRange, maxGravityRange);
+                    planet.transform.localScale *= planetScale / Random.Range(2f, 4f);
+                }
+                else
+                {
+                    // Add Asteroid to orbit
+                    prefab = AsteroidPrefabs[Mathf.RoundToInt(Random.Range(0, AsteroidPrefabs.Count))];
+                    Vector3 spawnPosition = new Vector3(x, y, prefab.transform.position.z);
+                    spawnedObj = Object.Instantiate(prefab, spawnPosition, prefab.transform.rotation);
+                }
+            }
+            else
+            {
+                // Add Pickup item
+                prefab = PickupPrefabs[Mathf.RoundToInt(Random.Range(0, PickupPrefabs.Count))];
+                Vector3 spawnPosition = new Vector3(x, y, prefab.transform.position.z);
+                spawnedObj = Object.Instantiate(prefab, spawnPosition, prefab.transform.rotation);
+            }
 
-            float rotationSpeed = Random.Range(0.25f, 1.5f);
+
+            // For higher difficulty, make the objects orbit around the main planet
             if (enableOrbit && spawnedObj.TryGetComponent(out
             OrbitObject orbitCenterComponent))
             {
                 orbitCenterComponent.enabled = true; ;
                 orbitCenterComponent.Initialize(angle, radius, planet.transform.position, rotationSpeed);
+
+                if (enableDynamicRadius)
+                {
+                    orbitCenterComponent.dynamicRadius = true;
+                    orbitCenterComponent.dynamicRadiusSize = dynamicRadiusSize;
+
+                }
             }
 
+            // Add object to chunk registry
             items.Add(spawnedObj);
         }
     }

@@ -18,7 +18,6 @@ public class PlayerUpgrade : MonoBehaviour
     private TextElement totalQtyElem;
     private Button upgradeBtn;
 
-
     // UI Audio
     [SerializeField] private AudioSource confirmAudio;
     [SerializeField] private AudioSource upgradeAudio;
@@ -115,7 +114,6 @@ public class PlayerUpgrade : MonoBehaviour
             disabledeAudio.Play();
             Debug.Log("Too expensive: " + cost + " vs " + PlayerStatsManager.Instance.parts);
         }
-
     }
 
     private void OnDowngradeStat(UpgradableStat stat)
@@ -142,7 +140,7 @@ public class PlayerUpgrade : MonoBehaviour
         }
         else
         {
-            // play disabled button sound
+            // Play disabled button sound
             disabledeAudio.Play();
         }
     }
