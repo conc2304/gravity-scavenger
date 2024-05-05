@@ -214,7 +214,7 @@ MonoBehaviour:
   firingRange: 2
   thrust: 3
   isDead: 0
-  dieSoundSource: {fileID: 2611870040280482766, guid: 5b3c14725a56f4aa2b3994d93f0e2508, type: 3}
+  dieSoundSource: {fileID: -2650467927995352128}
   DeathAnimation: {fileID: 8829934830357975777, guid: ff4b0c2caab8740a0ae759166826dbc9, type: 3}
   PickupPrefabs:
   - {fileID: 7774372439403873602, guid: fba327d039b74437c91dd810b0de4977, type: 3}
@@ -235,8 +235,8 @@ MonoBehaviour:
   target: {fileID: 0}
   rotateSpeed: 0.1
   laserPrefab: {fileID: 3052431056016438781, guid: 5445fde96bd4b485a8de644fbe34b11d, type: 3}
-  firingPoint: {fileID: 6623851907093027770, guid: 5b3c14725a56f4aa2b3994d93f0e2508, type: 3}
-  laserSoundSource: {fileID: 2611870040280482766, guid: 5b3c14725a56f4aa2b3994d93f0e2508, type: 3}
+  firingPoint: {fileID: 4428898625779559723}
+  laserSoundSource: {fileID: -194067358690528306}
 --- !u!114 &-8934610931520843190
 MonoBehaviour:
   m_ObjectHideFlags: 0

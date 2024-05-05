@@ -1,18 +1,25 @@
 # Gravity Scavenger
-<p>By Jose Conchello</p>
-<p>Harvard Extension School | GD50 Game Development Final project<p>
-<p>Spring 2024</p>
-<p>Developed on Unity v.2022.3.22f1 </p>
+By Jose Conchello
+
+Harvard Extension School | GD50 Game Development Final project
+
+Spring 2024
+
+Developed on Unity v.2022.3.22f1
+
+Final Project Video: [https://youtu.be/Cs_P3tOuU4w](https://youtu.be/Cs_P3tOuU4w) 
+
 
 <!-- Intro -->
 ## Intro
-Gravity Scavenger is a 2.5D top down shooter and prodedural open world explorer. While learning trigonometry and calculus, I was inspired to create a game that incorporated some of the concepts I had been learning. The first thing that came to mind was using calculus to plot the trajectory path of space ships as they encounter gravitational fields. Gravity Scavenger is inspired by 3 games in particular: the classic Asteroid game, Spore, and Gravitura. I liked the game play of Spore where you are a creature trying to evolve, and I liked the game mechanics of using the mouse to direct the player while keeping the player in the center in an infinitely scrolling and generating space. Gravitura inspired a lot of the game mechanics of using gravitational fields on planets and having pick ups to maneuver to, as well as their implementation of a trajectory path, but I did not want to design and create individual hardcoded levels and would rather it procedurally build an infinite scroller like Spore.
+Gravity Scavenger is a 2.5D top down shooter and procedural open world explorer. While learning trigonometry and calculus, I was inspired to create a game that incorporated some of the concepts I had been learning. The first thing that came to mind was using calculus to plot the trajectory path of spaceships as they encounter gravitational fields. Gravity Scavenger is inspired by 3 games in particular: the classic Asteroid game, Spore, and Gravitura. I liked the game play of Spore where you are a creature trying to evolve, and I liked the game mechanics of using the mouse to direct the player while keeping the player in the center in an infinitely scrolling and generating space. Gravitura inspired a lot of the game mechanics of using gravitational fields on planets and having pickups to maneuver to, as well as their implementation of a trajectory path, but I did not want to design and create individual hard coded levels and would rather it the levels procedurally generate an infinite scrolling game like Spore.
 
-In Gravity Scavenger you are the pilot of your ship that is out in deep space. You are a space scavenger trying to survive on limited fuel. You will need to scavenge for fuel, health, and parts to upgrade your ship as you traverse space. But its not that easy. As you traverse the galaxy you will find that you have to learn to harness the gravitational pull of planets in order to get the most of your fuel and survive. Lucky for you your ship comes with a built in flight path trajectory that will forcast your flight path given the gravity of planets acting on your ship. Use this to predict where planets will be and where your ship is headed with their gravity in mind.
+In Gravity Scavenger you are the pilot of your ship that is out in deep space. You are a space scavenger trying to survive on limited fuel. You will need to scavenge for fuel, health, and parts to upgrade your ship as you traverse space. But it is not that easy. As you traverse the galaxy you will find that you have to learn to harness the gravitational pull of planets in order to get the most of your fuel and survive. Lucky for you your ship comes with a built-in flight path trajectory that will forecast your flight path given the gravity of planets acting on your ship. Use this to predict where planets will be and where your ship is headed with their gravity in mind.
 
-Piloting your ship through the galaxy, you can scavenge for and collect parts you find in asteroid or around planets. You can take these parts to any space station and use to upgrade your ship. Upgrade things like your ship's thrust, armor, firing rate, and firing range among other things. The more you upgrade the better chance you have of surviving. And while you are here at the station enjoy a free fuelup on us. But watch out, there are other scavengers out there trying to steal from you. Look out for raiders, they will try to shoot you down and board you to take your hard earned parts. Use the gravitational pull of the planets to your advantage as you engage in dog fights with other raiders. Take them down and you can scavenge their parts. As you gain XP in the game, more complex planetary systems emerge to challenge you. Lets see how long you can last in deep space as a Gravity Scavenger.
+Piloting your ship through the galaxy, you can scavenge for and collect parts you find in asteroid or around planets. You can take these parts to any space station and use to upgrade your ship. Upgrade things like your ship's thrust, armor, firing rate, and firing range among other things. The more you upgrade, the better chance you have of surviving. And while you are here at the station enjoy a free fuel up on us. But watch out, there are other scavengers out there trying to steal from you. Look out for raiders, they will try to shoot you down and board you to take your hard-earned parts. Use the gravitational pull of the planets to your advantage as you engage in dog fights with other raiders. Take them down and you can scavenge their parts. As you gain XP in the game, more complex planetary systems emerge to challenge you. Let's see how long you can last in deep space as a Gravity Scavenger.
 
-## Game mechanics/controlls
+## Game mechanics/controls
+- The game's starting scene is Home
 - Use your mouse to steer your ship in the direction of your mouse.
 - Press the left mouse button to add thrust to your ship to move forward. Using thrust depletes your fuel, and if you run out of fuel, you die.
 - You start with 3 lives.
@@ -22,26 +29,26 @@ Piloting your ship through the galaxy, you can scavenge for and collect parts yo
     - You can shoot down enemies and scavenge their parts.
 - Crashing into asteroid does damage to your ship. But can also be a lifeline if the alternative is crashing into a planet.
 - Crashing into a planet is instant death, and you lose a life.
-- Crashing into a enemy ship is instant death, you lose a life, and you lose some parts to being scavenged.
-- 
+- Crashing into an enemy ship, believe it or not, also instant death, you lose a life, and you lose some parts to being scavenged.
+- Once you lose all 3 lives it is game over.
 
-- Tips: Go slow, let yourself drift, don't fight gravity and learn to use it to your advantage.
+- **Tip**s: Go slow, let yourself drift, don't fight gravity and learn to use it to your advantage. This may sound obvious, but don't fly straight into planets because you probably won't survive it. It is also best to go in a horizontal direction versus a vertical one so that you have a little more time to react to incoming planets. Orbiting planets is a good strategy to use for having a dogfight with an enemy ship.
 
 
 <!-- Directory Overview -->
 ## Assets Directory Overview
-**Scripts associated with prefabs will be described in full in the Scripts section**
-- `/Audio`: Contains all of the games audio sources.
-    - Most game audio came from a free sound library at Pixabay, and background music from Soundcloud with some modification to make game audio infitely loop.
+**Scripts associated with prefabs will be described in full in the Script's section**
+- `/Audio`: Contains all the game's audio sources.
+    - Most game audio came from a free sound library at Pixabay, and background music from Soundcloud with some modification to make game audio infinitely loop.
     - https://pixabay.com/sound-effects/search/game/
 - `/Fonts`: Contains fonts used in the UI found on https://www.1001fonts.com/
 - `/Materials`: Simple materials made in unity that are used to color various models in the game.
 - `/Prefabs`: 
-    - `/Pickups`: prefabs for spanwning pick up items
+    - `/Pickups`: prefabs for spawning pick up items
         -  Fuel, Health, & Parts Pickups were made using Unity Pro Builder
             - Add fuel/health/parts to player stats as they pick them up
             - Tag for fuel/health/parts is used for determining pickup type
-            - Comrpised of Mesh Collider for collision detection
+            - Comprised of Mesh Collider for collision detection
             - Scripts:
                 - Power Up 
                 - Orbit Object
@@ -51,10 +58,10 @@ Piloting your ship through the galaxy, you can scavenge for and collect parts yo
         - Low Poly Planet models are from the Unity Asset Store via [One Potato Kingdom](https://assetstore.unity.com/packages/3d/environments/stylized-planet-pack-full-148233)
             - Comprised of Rigid Body for physics and Mesh collider for collision
             - Scripts:
-                - Gravity Field : uses the mass of the rigid body and the player's rigid body mass to apply gravitation attraction around each planet
+                - Gravity Field : uses the mass of the rigid body and the player's rigid body mass to apply gravitation attraction around each planet.
                 - Planet Collision
                 - Rotate
-        - Asteroid models are from [CGTrader](https://www.cgtrader.com/) with ground material from the Ground Texture from [TextureCan]()
+        - Asteroid models are from [CGTrader](https://www.cgtrader.com/) with ground material from the Ground Texture from [TextureCan](https://www.texturecan.com/details/136/)
             - Comprised of Rigid Body for physics and Mesh collider for collision
             - Scripts:
                 - Asteroid
@@ -74,7 +81,7 @@ Piloting your ship through the galaxy, you can scavenge for and collect parts yo
                 - Enemy Stats
             - Contains a Firing Point game object that is used to indicate where to shoot lasers from.
 
-        - Laser prefab: styled capsule wi
+        - Laser prefab: styled capsule model with attached scripts
     - **misc**
         - Laser: Capsule model made in Unity; Fired by player and enemy ship to do damage to each other
             - Comprised of Rigid Body for physics and capsule collider for collision
@@ -187,53 +194,53 @@ Piloting your ship through the galaxy, you can scavenge for and collect parts yo
             - In order to skew the probbility of dropping certain pickups versus others. EnemyStats has a probabilty map that maps the prefabs index to a probability range.
     - **Uncategorized Scripts**
         - `ShipController.cs`: 
-            - Responsible for the movement and control of the player's space ship via mouse and keyboard.
+            - Responsible for the movement and control of the player's spaceship via mouse and keyboard.
             - The ship rotates to face the user's mouse on screen, by translating the angle of the mouse to the player in camera view.
             - On left mouse button hold, a thrust force is added to the rigid body of the player's ship
             - On left mouse button down/up
-                - Play/Pause thurst audio source
+                - Play/Pause thrust audio source
                 - Set jet engine particle system emission rate to high/low
             - On right mouse button fire the laser prefab and set the range of the fired laser to the damage and range settings based on the player.
             - Uses PlayerStats to determine thrust amount, firing rate, firing range, and laser damage.
             - A fire rate timer is used to limit the rate at which a player can fire; this stat can be upgraded in the player upgrade scene, and the range is for how far the laser can travel.
         - `EnemyController.cs`: 
-            - Responsible for the AI movement logic of the enemy space ship.
+            - Responsible for the AI movement logic of the enemy spaceship.
             - If enemy collides with the player then they kill the player and scavenge some of their parts inventory.
             - Sets a random value of aggression and anxiety level for the enemy.
             - Aggression Level dictates how far a target can be before it will start pursuing.
             - Anxiety Level dictates how close an enemy will get to its target.
             - This is to create a small variety in the behavior of the enemy.
-            - Controlls the direction the enemy is facing by rotating towards its target.  If the target is infront add thrust, up to a certain magnitude so that they don't go zooming through the scene.
-            - If the target is the player and they are ahead of the enemy then shoot at the player.
+            - Controls the direction the enemy is facing by rotating towards its target.  If the target is in front add thrust, up to a certain magnitude so that they don't go zooming through the scene.
+            - If the target is the player, and they are ahead of the enemy then shoot at the player.
             - Uses EnemyStats to determine thrust amount, firing rate, firing range, and laser damage.
             - A fire rate timer is used to limit the rate at which a player can fire; this stat can be upgraded in the player upgrade scene, and the range is for how far the laser can travel.
             - TODO: Make a random variation that pursues pickups instead of the player to compete for resources.
         - `TrajectoryLine.cs`: 
-            - This component was the entire foundation for the idea of this game. I have been learning trigonometry and calculus the past year and I wanted to incorporate that into this game. So the idea of plotting the trajectory of a space ship with regards to the gravitational pull of multiple bodies inspired and informed the rest of the game's mechanics.
-            - Responsible for plotting the trajectory of the ship given its mass, via Rigid Body physics, and the mass/gravitational force of all of the gravity fields acting on it in the game. The Trajectory Line will only render when there are gravitational forces being applied to the ship. Otherwise it will turn itself off.
-            - For this component, I built a simple custom shader material that acts as the animation for the trajectory line. I used Photoshop to create the white to grey faded line, which is then offset over the course of the Line Renderer to show movement in that direction.
+            - This component was the entire foundation for the idea of this game. I have been learning trigonometry and calculus the past year and I wanted to incorporate that into this game. So the idea of plotting the trajectory of a spaceship in regard to the gravitational pull of multiple bodies inspired and informed the rest of the game's mechanics.
+            - Responsible for plotting the trajectory of the ship given its mass, via Rigid Body physics, and the mass/gravitational force of all the gravity fields acting on it in the game. The Trajectory Line will only render when there are gravitational forces being applied to the ship. Otherwise, it will turn itself off.
+            - For this component, I built a simple custom shader material that acts as the animation for the trajectory line. I used Photoshop to create the white to gray faded line, which is then offset over the course of the Line Renderer to show movement in that direction.
             - TrajectoryLine uses the LineRenderer component attached to the game object to render a line with a given number of points on the along the line and a time offset which represents the time between each point on the line.
-            - For each point on the line, iterate over all of the gravity fields in play and add their forces together in order to get the position of the next point in the line renderer.
-            - Due to the fact that the line renderer gets completely culled when any segment of it is outside of the camera view, validation is added to make sure that each new segment of the line is valid. If it is not, then fill the rest of the segment's positions to the last valid position.
-            - TODO: The original idea was to use differential equations by implementing the Runge-Kutta method to calculate the force of all of the gravitational fields.  This however was taking too long to implement, so instead the more rudimentary Euler method is used.
+            - For each point on the line, iterate over all the gravity fields in play and add their forces together in order to get the position of the next point in the line renderer.
+            - Due to the fact that the line renderer gets completely culled when any segment of it is outside the camera view, validation is added to make sure that each new segment of the line is valid. If it is not, then fill the rest with the segment's positions to the last valid position.
+            - TODO: The original idea was to use differential equations by implementing the Runge-Kutta method to calculate the force of all the gravitational fields.  This however was taking too long to implement, so instead the more rudimentary Euler method is used.
         - `Laser.cs`:
             - Responsible for the movement and behavior of lasers shot by the player and enemies.
-            - The Range propery dictates the lifetime of the laser in seconds before it gets destroyed if it has not collided with anything.
+            - The Range property dictates the lifetime of the laser in seconds before it gets destroyed if it has not collided with anything.
             - It uses rigid body physics to add a force vector in the forward direction multiplied by the Speed constant to move/fire the laser.
-            - Uses a collisionBuffer/Timer to ignore collisions for a brief moment so as to not collide the shooter's collider.
+            - Uses a collisionBuffer/Timer to ignore collisions for a brief moment to not collide the shooter's collider.
             - On collision with an entity, it calls the entity's TakeDamage() function with the given damage amount.
             - It then plays the explosion sound and animation before destroying itself
         - `TrackPlayer.cs`: 
             - Responsible for the camera tracking that keeps the player in the center of the screen.
-            - The idea to use  SmoothDamp is from a tutorial on smooth camera tracking. However some adjustment will need to be made in the future to properly use the damping amount.
+            - The idea to use SmoothDamp is from a tutorial on smooth camera tracking. However, some adjustment will need to be made in the future to properly use the damping amount.
         - `FollowUV.cs`: 
-            - Responsible for the bi directional parralax scrolling effect of the backgrounds that make it appear that the player is moving through space.
-            - It is implemented on 3 different starfiels/nebula backgrounds, each with a different level of parralax to simulate things closer to the camera moving faster than those further away in the background by updating x and y offset of the material.
+            - Responsible for the bi-directional parallax scrolling effect of the backgrounds that make it appear that the player is moving through space.
+            - It is implemented on 3 different star fields/nebula backgrounds, each with a different level of parallax to simulate things closer to the camera moving faster than those further away in the background by updating x and y offset of the material.
         - `LoadPlayerUpgradeScene.cs`: 
-            - Responsible for taking the user to the Player Upgrade scene when they fly into the the space station.
+            - Responsible for taking the user to the Player Upgrade scene when they fly into the space station.
             - Attached the blue barrier game object with a capsule collider that detects when the player has entered the space station area and takes them to the player upgrade scene.
         - `Rotate.cs`: 
-            - Responsible of adding constant rotation to objects on the X/Y/Z directions.
+            - Responsible for adding constant rotation to objects on the X/Y/Z directions.
             - This is used on components like planets, and the rings around the pickups to give them a rotation animation.
 - `/Shaders`: 
     - `TrajectoryLine.shadergraph`:
@@ -245,31 +252,31 @@ Piloting your ship through the galaxy, you can scavenge for and collect parts yo
     - Contains the textures/images used in the game.
     - The `/Backgrounds` and `/Ground` assets are from free asset repositories online.
     - The icons were made in photoshop.
-    - The main game logo was made with generative ai: Dall-E/
+    - The main game logo was made with generative AI: Dall-E/
 - `/UI`
     - Contains files associated with interactive user interfaces seen in the game.
-    - These UI components were made using Unity's UI toolkit. Making UI in this fashion is very similar to making UI for the web and it give the developer more granular control over look and behavior as compared to the basic Canvas components. It uses `uxml` as the document to structure the elements, similar to the web's html; `uss` is Unity's version of the CSS, and then a c# script acts as the javascript to add interactivity.  Coming from a web UI background, this work flow was very intuitive for me, plus the added GUI to edit the document and see the changes as I make them in the UI Editor is a nice perk.
+    - These UI components were made using Unity's UI toolkit. Making UI in this fashion is very similar to making UI for the web, and it gives the developer more granular control over look and behavior as compared to the basic Canvas components. It uses `uxml` as the document to structure the elements, similar to the web's HTML; `uss` is Unity's version of the CSS, and then a c# script acts as the JavaScript to add interactivity.  Coming from a web UI background, this work flow was very intuitive for me, plus the added GUI to edit the document and see the changes as I make them in the UI Editor is a nice perk.
     - UIs include: Main Menu, Game Over, Player Upgrade, Game Play Stats Bar, Help Modal
     - `/PlayerUpgrade`:
         - Responsible for the UI in the Player Upgrade scene.
         - Makes use of UI Toolkit's template for building more complex components out of smaller ones in the `/Components` directory: UpgradeSlot, UpgradeStatRow.
         - Takes in a UI Document, a stat row template, and an upgrade slot template.
-        - The `PlayerUpgrade.cs` script starts by getting all of the upgradable stats from the persisten PlayerStatsManager class and for each of those stats it creates a UI row that manages upgrading and downgrading that given stat. Populating the data into the visual elements works similarly to vanilla javascript where you query for an element and then set its properties such as text, styles, classes, etc... Each upgradable stat row contains the name of the stat, upgrade slots, and buttons and prices associated with upgrading and downgrading stats.
-        - The upgradeSlot visual element is used to show the state of whether an upgrade slot is empty or not to indicate how many of the total availabe upgrades have been used. When it is used, the "slotUsed" class is added to the element and vice versa.
+        - The `PlayerUpgrade.cs` script starts by getting all  the upgradable stats from the persistent PlayerStatsManager class and for each of those stats it creates a UI row that manages upgrading and downgrading that given stat. Populating the data into the visual elements works similarly to vanilla JavaScript where you query for an element and then set its properties such as text, styles, classes, etc... Each upgradable stat row contains the name of the stat, upgrade slots, and buttons and prices associated with upgrading and downgrading stats.
+        - The upgradeSlot visual element is used to show the state of whether an upgrade slot is empty or not to indicate how many of the total available upgrades have been used. When it is used, the "slotUsed" class is added to the element and vice versa.
         - Each row has a button to upgrade and downgrade each of the stats.  If an upgrade or a downgrade is not available then the buttons takes on the styles of the "disabled" class and further button clicks are ignored.
-        - When an upgrade or a down grade is made, all of the user stat rows update their state. This is so that upgrades that are too expensive given the player's current available parts can be disabled.
+        - When an upgrade or a downgrade is made, all the user stat rows update their state. This is so that upgrades that are too expensive given the player's current available parts can be disabled.
         - There are Audio Sources associated with the buttons for upgrading, downgrading, and for when it is disabled, as well on to confirm upgrade.
-        - When the user clicks on the "Upgrade" button, the confirm audio is played and then they are returned to the Play scene.
+        - When the user clicks on the "Upgrade" button, the confirm-audio is played then they are returned to the Play scene.
     - `/GamePlayStatsBar`:
-        - Responsible for updating the realtime in game stats which inlcude the player's lives, current health, current fuel, parts collects, and XP gained.
+        - Responsible for updating the real time in game stats which include the player's lives, current health, current fuel, parts collects, and XP gained.
         - Using Unity query selectors, the various visual elements and their properties are made accessible via the c# script.
         - Updating the UI reads from the state store that is the PlayerStatsManager instance. It uses those values to set text elements for XP and parts, progress bar values for fuel and health, and reuses the upgradeSlots component to visualize how many lives the play has and has used.
-        - Rather than unnecessarily updating on every Update() call in the game, an public UpdateUI method is exposed so that other components/objects can manually update the UI.
+        - Rather than unnecessarily updating on every Update() call in the game, a public UpdateUI() method is exposed so that other components/objects can manually update the UI.
     - `/MainMenu`:
-        - Responsobile for the UI of the Home Scene whose interactions include moving the player to one of the following scenes: Help, Play, as well as a button to quit.
+        - Responsible for the UI of the Home Scene whose interactions include moving the player to one of the following scenes: Help, Play, as well as a button to quit.
         - The `MainMenu.cs` is reused on the GameOver UI since the button behavior is the same.
         - The script takes in an audio source for the audio to play when a button has been clicked.
-        - On clicking start, it resets all of the player's stats so that they are fresh as the player starts a new round.
+        - On clicking start, it resets all the player's stats so that they are fresh as the player starts a new round.
     - `/GameOver`:
         - Responsible for the UI that is in the Game Over scene which shows the player's score as well as buttons to play again, go home, or quit.
         - This component reuses the USS styles from the MainMenu as well and its buttons for Home/Help/Quit use the click event listeners in the MainMenu.cs.
