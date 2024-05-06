@@ -85,6 +85,9 @@ public class ShipController : MonoBehaviour
         }
 
         emission.rateOverTime = Mathf.Lerp(emissioRate, prevRate, emissionDecayTime);
+
+        // Quit on "Q"
+        if (Input.GetKey(KeyCode.Q)) Application.Quit();
     }
 
     // FixedUpdate is called fixed intervals determined by the physics system

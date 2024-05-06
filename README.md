@@ -31,6 +31,7 @@ Piloting your ship through the galaxy, you can scavenge for and collect parts yo
 - Crashing into a planet is instant death, and you lose a life.
 - Crashing into an enemy ship, believe it or not, also instant death, you lose a life, and you lose some parts to being scavenged.
 - Once you lose all 3 lives it is game over.
+- You can quit by pressing Q during
 
 - **Tip**s: Go slow, let yourself drift, don't fight gravity and learn to use it to your advantage. This may sound obvious, but don't fly straight into planets because you probably won't survive it. It is also best to go in a horizontal direction versus a vertical one so that you have a little more time to react to incoming planets. Orbiting planets is a good strategy to use for having a dogfight with an enemy ship.
 

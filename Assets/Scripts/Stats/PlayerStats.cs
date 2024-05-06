@@ -134,6 +134,11 @@ public class PlayerStats : EntityStats
         {
             StartCoroutine(DoAfter(() =>
             {
+                // Reset player health and and fuel for next round
+                PlayerStatsManager.Instance.currentHealth = PlayerStatsManager.Instance.maxHealth.currentValue;
+                PlayerStatsManager.Instance.currentFuel = PlayerStatsManager.Instance.maxFuel.currentValue;
+                UpdateUI();
+
                 SceneManager.LoadScene("Play");
             }, delay));
         }
