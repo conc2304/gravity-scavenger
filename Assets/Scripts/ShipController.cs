@@ -46,7 +46,7 @@ public class ShipController : MonoBehaviour
         Destroy(anim, 2f);
 
         // Change the Z scale of the particle system to simulate a longer engine trail for different thrust levels as players upgrade
-        jetEnginePS.transform.localScale = new Vector3(jetEnginePS.transform.localScale.x, jetEnginePS.transform.localScale.y, Map(thrust, PlayerStatsManager.Instance.thrust.baseValue, PlayerStatsManager.Instance.thrust.maxValue, 0.1f, 2f));
+        jetEnginePS.transform.localScale = new Vector3(jetEnginePS.transform.localScale.x, jetEnginePS.transform.localScale.y, Map(thrust, PlayerStatsManager.Instance.thrust.baseValue, PlayerStatsManager.Instance.thrust.maxValue, 0.1f, 1f));
     }
 
 
