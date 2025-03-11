@@ -9,7 +9,7 @@ Developed on Unity v.2022.3.22f1
 
 Final Project Video: [https://youtu.be/Cs_P3tOuU4w](https://youtu.be/Cs_P3tOuU4w) 
 
-Play Gravity Scavenger: [https://play.unity.com/mg/other/gravity-scavenger](https://play.unity.com/mg/other/gravity-scavenger)
+Play Gravity Scavenger: [https://play.unity.com/en/games/f6872dc0-9da6-462f-b037-1d6f705c55d8/gravity-scavenger](https://play.unity.com/en/games/f6872dc0-9da6-462f-b037-1d6f705c55d8/gravity-scavenger)
 
 
 <!-- Intro -->
